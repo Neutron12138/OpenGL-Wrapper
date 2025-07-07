@@ -10,14 +10,14 @@ namespace gl_wrapper
     class Texture2D : public Texture
     {
     public:
-        Texture2D() : Texture(TextureType::Texture2D) {}
+        Texture2D() : Texture(GL_TEXTURE_2D) {}
         ~Texture2D() override = default;
 
     public:
         inline void tex_image2D(GLint level, GLint internalformat, GLsizei width, GLsizei height,
                                 GLint border, GLenum format, GLenum type, const void *pixels)
         {
-            glTexImage2D(static_cast<GLenum>(get_type()), level, internalformat,
+            glTexImage2D(get_type(), level, internalformat,
                          width, height, border, format, type, pixels);
         }
 

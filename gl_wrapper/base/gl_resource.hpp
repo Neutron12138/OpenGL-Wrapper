@@ -1,7 +1,8 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <base/misc/resource.hpp>
-#include <glad/glad.h>
+#include "gl_loader.hpp"
 
 namespace gl_wrapper
 {

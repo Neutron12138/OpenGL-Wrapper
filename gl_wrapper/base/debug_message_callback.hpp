@@ -4,7 +4,7 @@
 #include <vector>
 #include <functional>
 #include <base/core/noncopyable_object.hpp>
-#include <glad/glad.h>
+#include "gl_loader.hpp"
 
 namespace gl_wrapper
 {
@@ -32,6 +32,9 @@ namespace gl_wrapper
     private:
         inline DebugMessageCallback()
         {
+            if (!glGetString)
+                throw BASE_MAKE_RUNTIME_ERROR("OpenGL has not been initialized yet");
+
             if (!GLAD_GL_VERSION_4_3)
                 throw BASE_MAKE_RUNTIME_ERROR(
                     "The current OpenGL context version is too low. To enable debug message callback, it should be at least OpenGL 4.3");

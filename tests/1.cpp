@@ -21,13 +21,16 @@ int main()
     glViewport(0, 0, 512, 512);
 
     auto &debug_message_callback = gl_wrapper::DebugMessageCallback::get_instance();
+    auto &gl_context = gl_wrapper::Context::get_instance();
 
-    gl_wrapper::Shader vshader(gl_wrapper::Shader::ShaderType::Vertex);
+    gl_wrapper::Shader vshader(GL_VERTEX_SHADER);
     vshader.shader_source(base::read_string_from_file("shaders/1.vert"));
     vshader.compile_shader();
-    gl_wrapper::Shader fshader(gl_wrapper::Shader::ShaderType::Fragment);
+    std::cout << vshader.get_source() << std::endl;
+    gl_wrapper::Shader fshader(GL_FRAGMENT_SHADER);
     fshader.shader_source(base::read_string_from_file("shaders/1.frag"));
     fshader.compile_shader();
+    std::cout << fshader.get_source() << std::endl;
     gl_wrapper::Program program;
     program.attach_shader(vshader);
     program.attach_shader(fshader);
@@ -49,7 +52,7 @@ int main()
 
     gl_wrapper::VertexArray vao;
     vao.bind();
-    gl_wrapper::Buffer vbo(gl_wrapper::Buffer::BufferType::Array);
+    gl_wrapper::Buffer vbo(GL_ARRAY_BUFFER);
     vbo.bind();
     vbo.buffer_data(vertices);
     vao.vertex_attrib_pointer<glm::vec3>(0, 3 * sizeof(glm::vec3));
@@ -74,16 +77,19 @@ int main()
     texture.tex_image2D(GL_RGB, width, height, GL_RGB, pixels);
     texture.generate_mipmap();
     stbi_image_free(pixels);
+    texture.set_border_color(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+    glm::vec4 color = texture.get_border_color();
+    std::cout << color.r << ", " << color.g << ", " << color.b << ", " << color.a << std::endl;
 
     while (!window.should_close())
     {
         context.poll_events();
 
         glClear(GL_COLOR_BUFFER_BIT);
-        vao.bind();
         program.use();
         texture.bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        vao.bind();
+        vao.draw_arrays(GL_TRIANGLES, 3);
 
         window.swap_buffers();
     }

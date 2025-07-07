@@ -23,36 +23,20 @@ namespace gl_wrapper
         inline ~Program() override { glDeleteProgram(m_id); }
 
     public:
-        inline GLuint get_id() const { return m_id; }
         inline base::Int64 get_resource_type() const { return static_cast<base::Int64>(ResourceType::Program); }
 
     public:
-        inline void use() { glUseProgram(m_id); }
+        inline void use() const { glUseProgram(m_id); }
         inline void attach_shader(const Shader &shader) { glAttachShader(m_id, shader.get_id()); }
-
-        void link_program()
-        {
-            glLinkProgram(m_id);
-
-            GLint success;
-            glGetProgramiv(m_id, GL_LINK_STATUS, &success);
-            if (success)
-                return;
-
-            GLint length;
-            glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &length);
-
-            std::string info_log;
-            info_log.resize(length);
-            glGetProgramInfoLog(m_id, length, nullptr, info_log.data());
-            throw BASE_MAKE_RUNTIME_ERROR(
-                "Failed to link program, info log:\n",
-                info_log);
-        }
+        void link_program();
 
     public:
         inline GLuint get_uniform_location(const std::string &name) const { return glGetUniformLocation(m_id, name.data()); }
         inline GLuint get_attrib_location(const std::string &name) const { return glGetAttribLocation(m_id, name.data()); }
+
+    public:
+        inline void set_parameter(GLenum pname, GLint value) { glProgramParameteri(m_id, pname, value); }
+        GLint get_parameter(GLenum pname) const;
     };
 
 } // namespace gl_wrapper
