@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <base/core/exception.hpp>
 #include <base/core/noncopyable_object.hpp>
 #include <glad/glad.h>

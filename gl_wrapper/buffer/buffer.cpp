@@ -2,6 +2,28 @@
 
 namespace gl_wrapper
 {
+    Buffer &Buffer::operator=(Buffer &&from)
+    {
+        destroy();
+        m_id = std::exchange(from.m_id, 0);
+        m_type = std::exchange(from.m_type, 0);
+        return *this;
+    }
+
+    void Buffer::create(GLenum type)
+    {
+        destroy();
+        glGenBuffers(1, &m_id);
+        m_type = type;
+    }
+
+    void Buffer::destroy()
+    {
+        glDeleteBuffers(1, &m_id);
+        m_id = 0;
+        m_type = 0;
+    }
+
     template <>
     GLint Buffer::get_parameter(GLenum pname) const
     {

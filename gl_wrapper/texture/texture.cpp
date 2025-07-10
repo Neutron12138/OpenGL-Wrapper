@@ -2,6 +2,28 @@
 
 namespace gl_wrapper
 {
+    Texture &Texture::operator=(Texture &&from)
+    {
+        destroy();
+        m_id = std::exchange(from.m_id, 0);
+        m_type = std::exchange(from.m_type, 0);
+        return *this;
+    }
+
+    void Texture::create(GLenum type)
+    {
+        destroy();
+        glGenTextures(1, &m_id);
+        m_type = type;
+    }
+
+    void Texture::destroy()
+    {
+        glDeleteTextures(1, &m_id);
+        m_id = 0;
+        m_type = 0;
+    }
+
     template <>
     void Texture::set_parameter(GLenum pname, GLint param)
     {

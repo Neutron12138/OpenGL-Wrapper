@@ -10,21 +10,24 @@ namespace gl_wrapper
     class Texture2D : public Texture
     {
     public:
-        Texture2D() : Texture(GL_TEXTURE_2D) {}
-        ~Texture2D() override = default;
+        inline Texture2D() : Texture(GL_TEXTURE_2D) {}
+        inline Texture2D(Texture2D &&from) : Texture(std::move(from)) {}
+
+    public:
+        inline void create() { Texture::create(GL_TEXTURE_2D); }
 
     public:
         inline void tex_image2D(GLint level, GLint internalformat, GLsizei width, GLsizei height,
-                                GLint border, GLenum format, GLenum type, const void *pixels)
+                                GLenum format, GLenum type, const void *pixels = nullptr)
         {
             glTexImage2D(get_type(), level, internalformat,
-                         width, height, border, format, type, pixels);
+                         width, height, 0, format, type, pixels);
         }
 
         inline void tex_image2D(GLint internalformat, GLsizei width,
-                                GLsizei height, GLenum format, const void *pixels)
+                                GLsizei height, GLenum format, const void *pixels = nullptr)
         {
-            tex_image2D(0, internalformat, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+            tex_image2D(0, internalformat, width, height, format, GL_UNSIGNED_BYTE, pixels);
         }
     };
 

@@ -1,6 +1,8 @@
 #include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
 #include <base/core/read_string.hpp>
 #include <glfw_wrapper/glfw_wrapper.hpp>
 #include "../gl_wrapper/gl_wrapper.hpp"
@@ -14,21 +16,19 @@ int main()
 
     glfw_wrapper::Window::set_opengl(true);
     auto window = glfw_wrapper::Window(glm::ivec2(512, 512));
-    glfwSetFramebufferSizeCallback(window.get_window(), on_framebuffer_resize);
-
+    glfwSetFramebufferSizeCallback(window, on_framebuffer_resize);
     window.make_context_current();
     gl_wrapper::GLLoader loader;
-    glViewport(0, 0, 512, 512);
 
     auto &debug_message_callback = gl_wrapper::DebugMessageCallback::get_instance();
     auto &gl_context = gl_wrapper::Context::get_instance();
 
     gl_wrapper::Shader vshader(GL_VERTEX_SHADER);
-    vshader.shader_source(base::read_string_from_file("shaders/1.vert"));
+    vshader.set_source(base::read_string_from_file("shaders/1.vert"));
     vshader.compile_shader();
     std::cout << vshader.get_source() << std::endl;
     gl_wrapper::Shader fshader(GL_FRAGMENT_SHADER);
-    fshader.shader_source(base::read_string_from_file("shaders/1.frag"));
+    fshader.set_source(base::read_string_from_file("shaders/1.frag"));
     fshader.compile_shader();
     std::cout << fshader.get_source() << std::endl;
     gl_wrapper::Program program;
@@ -54,12 +54,12 @@ int main()
     vao.bind();
     gl_wrapper::Buffer vbo(GL_ARRAY_BUFFER);
     vbo.bind();
-    vbo.buffer_data(vertices);
-    vao.vertex_attrib_pointer<glm::vec3>(0, 3 * sizeof(glm::vec3));
+    vbo.set_data(vertices);
+    vao.set_vertex_attrib<glm::vec3>(0, 3 * sizeof(glm::vec3));
     vao.enable_vertex_attrib_array(0);
-    vao.vertex_attrib_pointer<glm::vec3>(1, 3 * sizeof(glm::vec3), sizeof(glm::vec3));
+    vao.set_vertex_attrib<glm::vec3>(1, 3 * sizeof(glm::vec3), sizeof(glm::vec3));
     vao.enable_vertex_attrib_array(1);
-    vao.vertex_attrib_pointer<glm::vec3>(2, 3 * sizeof(glm::vec3), 2 * sizeof(glm::vec3));
+    vao.set_vertex_attrib<glm::vec3>(2, 3 * sizeof(glm::vec3), 2 * sizeof(glm::vec3));
     vao.enable_vertex_attrib_array(2);
     vao.unbind();
 
@@ -81,18 +81,34 @@ int main()
     glm::vec4 color = texture.get_border_color();
     std::cout << color.r << ", " << color.g << ", " << color.b << ", " << color.a << std::endl;
 
-    while (!window.should_close())
-    {
-        context.poll_events();
+    gl_wrapper::Texture2D color_texture;
+    color_texture.bind();
+    color_texture.tex_image2D(GL_RGBA, 512, 512, GL_RGBA);
+    color_texture.unbind();
+    gl_wrapper::Renderbuffer rbo;
+    rbo.bind();
+    rbo.set_storage(GL_DEPTH24_STENCIL8, 512, 512);
+    rbo.unbind();
+    gl_wrapper::Framebuffer fbo(GL_FRAMEBUFFER);
+    fbo.bind();
+    fbo.attach_color_texture(color_texture);
+    fbo.attach_renderbuffer(GL_DEPTH_STENCIL_ATTACHMENT, rbo);
+    std::cout << "is complete: " << (fbo.check_status() == GL_FRAMEBUFFER_COMPLETE) << std::endl;
+    fbo.unbind();
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        program.use();
-        texture.bind();
-        vao.bind();
-        vao.draw_arrays(GL_TRIANGLES, 3);
+    fbo.bind();
+    gl_context.set_viewport(0, 0, 512, 512);
+    gl_context.clear_color(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+    gl_context.clear(GL_COLOR_BUFFER_BIT);
+    program.bind();
+    texture.bind();
+    vao.bind();
+    vao.draw_arrays(GL_TRIANGLES, 3);
+    fbo.unbind();
 
-        window.swap_buffers();
-    }
+    fbo.bind();
+    auto framebuffer_pixels = fbo.read_pixels_as_RGBA(0, 0, 512, 512);
+    stbi_write_png("triangle.png", 512, 512, 4, framebuffer_pixels.data(), 0);
 
     return 0;
 }

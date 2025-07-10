@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <base/misc/resource.hpp>
 #include "gl_loader.hpp"
 
@@ -27,6 +26,10 @@ namespace gl_wrapper
             Program,
             /// @brief 纹理
             Texture,
+            /// @brief 帧缓冲
+            Framebuffer,
+            /// @brief 渲染缓冲
+            Renderbuffer,
         };
 
     protected:
@@ -34,13 +37,21 @@ namespace gl_wrapper
         GLuint m_id = 0;
 
     protected:
-        inline GLResource() {}
+        inline GLResource() = default;
 
     public:
+        inline GLResource(GLResource &&from) : m_id(std::exchange(from.m_id, 0)) {}
         inline ~GLResource() override { m_id = 0; }
 
     public:
+        inline operator GLuint() const { return m_id; }
         inline GLuint get_id() const { return m_id; }
+        inline bool is_valid() const override { return m_id; }
+        inline GLResource &operator=(GLResource &&from)
+        {
+            m_id = std::exchange(from.m_id, 0);
+            return *this;
+        }
     };
 
 } // namespace gl_wrapper

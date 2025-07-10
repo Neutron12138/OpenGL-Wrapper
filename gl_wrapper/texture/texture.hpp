@@ -1,31 +1,37 @@
 #pragma once
 
-#include "../base/gl_resource.hpp"
+#include "../base/bindable.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Texture);
 
     /// @brief 纹理对象
-    class Texture : public GLResource
+    class Texture : public Bindable
     {
     private:
         /// @brief 纹理类型
-        GLenum m_type;
+        GLenum m_type = 0;
 
     public:
-        inline Texture(GLenum type) : m_type(type) { glGenTextures(1, &m_id); }
-        inline ~Texture() override { glDeleteTextures(1, &m_id); }
+        inline Texture() = default;
+        inline Texture(GLenum type) : m_type(type) { create(type); }
+        inline Texture(Texture &&from) : Bindable(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
+        inline ~Texture() override { destroy(); }
 
     public:
+        Texture &operator=(Texture &&from);
         inline GLenum get_type() const { return m_type; }
         inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Texture); }
+        inline void bind() const override { glBindTexture(m_type, m_id); }
+        inline void unbind() const override { glBindTexture(m_type, 0); }
 
     public:
-        inline void bind() const { glBindTexture(m_type, m_id); }
-        inline void unbind() const { glBindTexture(m_type, 0); }
-        inline void generate_mipmap() { glGenerateMipmap(m_type); }
+        void create(GLenum type);
+        void destroy();
 
+    public:
+        inline void generate_mipmap() { glGenerateMipmap(m_type); }
         inline void set_wrap_s(GLenum wrap = GL_MIRRORED_REPEAT) { glTexParameteri(m_type, GL_TEXTURE_WRAP_S, wrap); }
         inline void set_wrap_t(GLenum wrap = GL_MIRRORED_REPEAT) { glTexParameteri(m_type, GL_TEXTURE_WRAP_T, wrap); }
         inline void set_wrap_r(GLenum wrap = GL_MIRRORED_REPEAT) { glTexParameteri(m_type, GL_TEXTURE_WRAP_R, wrap); }

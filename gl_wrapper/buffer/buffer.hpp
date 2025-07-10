@@ -1,41 +1,48 @@
 #pragma once
 
 #include <vector>
-#include "../base/gl_resource.hpp"
+#include "../base/bindable.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Buffer);
 
     /// @brief 缓冲区对象
-    class Buffer : public GLResource
+    class Buffer : public Bindable
     {
     private:
         /// @brief 缓冲区类型
-        GLenum m_type;
+        GLenum m_type = 0;
 
     public:
-        inline Buffer(GLenum type) : m_type(type) { glGenBuffers(1, &m_id); }
-        inline ~Buffer() override { glDeleteBuffers(1, &m_id); }
+        inline Buffer() = default;
+        inline Buffer(GLenum type) { create(type); }
+        inline Buffer(Buffer &&from) : Bindable(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
+        inline ~Buffer() override { destroy(); }
 
     public:
+        Buffer &operator=(Buffer &&from);
         inline void set_type(GLenum type) { m_type = type; }
         inline GLenum get_type() const { return m_type; }
         inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Buffer); }
 
     public:
-        inline void bind() const { glBindBuffer(m_type, m_id); }
-        inline void unbind() const { glBindBuffer(m_type, 0); }
+        void create(GLenum type);
+        void destroy();
 
-        inline void buffer_data(GLsizeiptr size, const void *data, GLenum usage = GL_STATIC_DRAW)
+    public:
+        inline void bind() const override { glBindBuffer(m_type, m_id); }
+        inline void unbind() const override { glBindBuffer(m_type, 0); }
+
+        inline void set_data(GLsizeiptr size, const void *data, GLenum usage = GL_STATIC_DRAW)
         {
             glBufferData(m_type, size, data, usage);
         }
 
         template <typename T>
-        inline void buffer_data(const std::vector<T> &data, GLenum usage = GL_STATIC_DRAW)
+        inline void set_data(const std::vector<T> &data, GLenum usage = GL_STATIC_DRAW)
         {
-            buffer_data(data.size() * sizeof(T), data.data(), usage);
+            set_data(data.size() * sizeof(T), data.data(), usage);
         }
 
         inline void sub_data(GLintptr offset, GLsizeiptr size, const void *data)

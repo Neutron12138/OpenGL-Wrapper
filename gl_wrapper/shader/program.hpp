@@ -1,32 +1,31 @@
 #pragma once
 
 #include "shader.hpp"
+#include "../base/bindable.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Program);
 
     /// @brief 着色器程序对象
-    class Program : public GLResource
+    class Program : public Bindable
     {
     public:
-        static inline void unuse() { glUseProgram(0); }
+        inline Program() { create(); }
+        inline Program(Program &&from) : Bindable(std::move(from)) {}
+        inline ~Program() override { destroy(); }
 
     public:
-        inline Program()
-        {
-            m_id = glCreateProgram();
-            if (m_id == 0)
-                throw BASE_MAKE_RUNTIME_ERROR("Failed to create Program");
-        }
-
-        inline ~Program() override { glDeleteProgram(m_id); }
-
-    public:
+        Program &operator=(Program &&from);
         inline base::Int64 get_resource_type() const { return static_cast<base::Int64>(ResourceType::Program); }
+        inline void bind() const override { glUseProgram(m_id); }
+        inline void unbind() const override { glUseProgram(0); }
 
     public:
-        inline void use() const { glUseProgram(m_id); }
+        void create();
+        void destroy();
+
+    public:
         inline void attach_shader(const Shader &shader) { glAttachShader(m_id, shader.get_id()); }
         void link_program();
 

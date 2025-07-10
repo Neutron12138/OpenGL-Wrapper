@@ -2,6 +2,27 @@
 
 namespace gl_wrapper
 {
+    Program &Program::operator=(Program &&from)
+    {
+        destroy();
+        m_id = std::exchange(from.m_id, 0);
+        return *this;
+    }
+
+    void Program::create()
+    {
+        destroy();
+        m_id = glCreateProgram();
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Program");
+    }
+
+    void Program::destroy()
+    {
+        glDeleteProgram(m_id);
+        m_id = 0;
+    }
+
     void Program::link_program()
     {
         glLinkProgram(m_id);

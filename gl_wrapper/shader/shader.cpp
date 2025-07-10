@@ -2,7 +2,32 @@
 
 namespace gl_wrapper
 {
-    void Shader::shader_source(const std::string &source)
+    Shader &Shader::operator=(Shader &&from)
+    {
+        destroy();
+        m_id = std::exchange(from.m_id, 0);
+        m_type = std::exchange(from.m_type, 0);
+        return *this;
+    }
+
+    void Shader::create(GLenum type)
+    {
+        destroy();
+        m_id = glCreateShader(type);
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR(
+                "Failed to create Shader, type: ", type);
+        m_type = type;
+    }
+
+    void Shader::destroy()
+    {
+        glDeleteShader(m_id);
+        m_id = 0;
+        m_type = 0;
+    }
+
+    void Shader::set_source(const std::string &source)
     {
         const char *source_ptr = source.data();
         glShaderSource(m_id, 1, &source_ptr, nullptr);

@@ -35,9 +35,9 @@ namespace gl_wrapper
             if (!glGetString)
                 throw BASE_MAKE_RUNTIME_ERROR("OpenGL has not been initialized yet");
 
-            if (!GLAD_GL_VERSION_4_3)
+            if (!glDebugMessageCallback)
                 throw BASE_MAKE_RUNTIME_ERROR(
-                    "The current OpenGL context version is too low. To enable debug message callback, it should be at least OpenGL 4.3");
+                    "The current OpenGL context version is not support debug message");
 
             glDebugMessageCallback(_debug_message_callback, nullptr);
             m_callbacks.push_back(Function(_default_debug_message_callback));
