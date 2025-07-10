@@ -1,14 +1,14 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(VertexArray);
 
     /// @brief 顶点数组对象
-    class VertexArray : public GLResource
+    class VertexArray : public Resource
     {
     public:
         static inline bool is_vertex_array(GLuint id) { return glIsVertexArray(id); }
@@ -16,7 +16,7 @@ namespace gl_wrapper
 
     public:
         inline VertexArray() { create(); }
-        inline VertexArray(VertexArray &&from) : GLResource(std::move(from)) {}
+        inline VertexArray(VertexArray &&from) : Resource(std::move(from)) {}
         inline ~VertexArray() override { destroy(); }
 
     public:

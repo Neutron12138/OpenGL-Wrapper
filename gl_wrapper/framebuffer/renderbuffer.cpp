@@ -2,6 +2,12 @@
 
 namespace gl_wrapper
 {
+    Renderbuffer &Renderbuffer::operator=(Renderbuffer &&from)
+    {
+        m_id = std::exchange(from.m_id, 0);
+        return *this;
+    }
+
     void Renderbuffer::create()
     {
         destroy();

@@ -6,7 +6,7 @@ namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Texture2D);
 
-    /// @brief 2D纹理资源
+    /// @brief 2D纹理
     class Texture2D : public Texture
     {
     public:

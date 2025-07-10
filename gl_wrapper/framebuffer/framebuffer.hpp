@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 #include "../texture/texture_2d.hpp"
 #include "renderbuffer.hpp"
 
@@ -9,7 +9,7 @@ namespace gl_wrapper
     BASE_DECLARE_REF_TYPE(Framebuffer);
 
     /// @brief 帧缓冲对象
-    class Framebuffer : public GLResource
+    class Framebuffer : public Resource
     {
     public:
         static inline bool is_framebuffer(GLuint id) { return glIsFramebuffer(id); }

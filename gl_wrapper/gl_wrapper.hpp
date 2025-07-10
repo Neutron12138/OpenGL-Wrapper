@@ -6,7 +6,7 @@
 
 #include <glad/glad.h>
 #include "base/gl_loader.hpp"
-#include "base/gl_resource.hpp"
+#include "base/resource.hpp"
 #include "base/debug_message_callback.hpp"
 #include "base/scoped_binder.hpp"
 

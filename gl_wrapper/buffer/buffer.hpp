@@ -1,14 +1,14 @@
 #pragma once
 
 #include <vector>
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Buffer);
 
     /// @brief 缓冲区对象
-    class Buffer : public GLResource
+    class Buffer : public Resource
     {
     public:
         static inline bool is_buffer(GLuint id) { return glIsBuffer(id); }
@@ -20,7 +20,7 @@ namespace gl_wrapper
     public:
         inline Buffer() = default;
         inline Buffer(GLenum type) { create(type); }
-        inline Buffer(Buffer &&from) : GLResource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
+        inline Buffer(Buffer &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
         inline ~Buffer() override { destroy(); }
 
     public:

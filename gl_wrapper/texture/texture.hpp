@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Texture);
 
     /// @brief 纹理对象
-    class Texture : public GLResource
+    class Texture : public Resource
     {
     public:
         static inline bool is_texture(GLuint id) { return glIsTexture(id); }
@@ -19,7 +19,7 @@ namespace gl_wrapper
     public:
         inline Texture() = default;
         inline Texture(GLenum type) : m_type(type) { create(type); }
-        inline Texture(Texture &&from) : GLResource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
+        inline Texture(Texture &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
         inline ~Texture() override { destroy(); }
 
     public:

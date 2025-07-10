@@ -2,14 +2,14 @@
 
 #include <string>
 #include <base/core/exception.hpp>
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Shader);
 
     /// @brief 着色器对象
-    class Shader : public GLResource
+    class Shader : public Resource
     {
     public:
         static inline bool is_shader(GLuint id) { return glIsShader(id); }
@@ -21,7 +21,7 @@ namespace gl_wrapper
     public:
         inline Shader() = default;
         inline Shader(GLenum type) { create(type); }
-        inline Shader(Shader &&from) : GLResource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
+        inline Shader(Shader &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
         inline ~Shader() override { destroy(); }
 
     public:

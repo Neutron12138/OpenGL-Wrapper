@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Renderbuffer);
 
     /// @brief 渲染缓冲对象
-    class Renderbuffer : public GLResource
+    class Renderbuffer : public Resource
     {
     public:
         static inline bool is_renderbuffer(GLuint id) { return glIsRenderbuffer(id); }
@@ -15,10 +15,11 @@ namespace gl_wrapper
 
     public:
         inline Renderbuffer() { create(); }
-        inline Renderbuffer(Renderbuffer &&from) : GLResource(std::move(from)) {}
+        inline Renderbuffer(Renderbuffer &&from) : Resource(std::move(from)) {}
         inline ~Renderbuffer() override { destroy(); }
 
     public:
+        Renderbuffer &operator=(Renderbuffer &&from);
         inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Renderbuffer); }
         inline void bind() const { glBindRenderbuffer(GL_RENDERBUFFER, m_id); }
 

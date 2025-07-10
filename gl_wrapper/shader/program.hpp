@@ -1,14 +1,14 @@
 #pragma once
 
 #include "shader.hpp"
-#include "../base/gl_resource.hpp"
+#include "../base/resource.hpp"
 
 namespace gl_wrapper
 {
     BASE_DECLARE_REF_TYPE(Program);
 
     /// @brief 着色器程序对象
-    class Program : public GLResource
+    class Program : public Resource
     {
     public:
         static inline bool is_program(GLuint id) { return glIsProgram(id); }
@@ -16,7 +16,7 @@ namespace gl_wrapper
 
     public:
         inline Program() { create(); }
-        inline Program(Program &&from) : GLResource(std::move(from)) {}
+        inline Program(Program &&from) : Resource(std::move(from)) {}
         inline ~Program() override { destroy(); }
 
     public:

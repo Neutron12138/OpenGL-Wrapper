@@ -4,6 +4,9 @@
 
 namespace gl_wrapper
 {
+    BASE_DECLARE_REF_TYPE(TextureCubeMap);
+
+    /// @brief 立方体贴图纹理
     class TextureCubeMap : public Texture
     {
     public:
