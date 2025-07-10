@@ -1,0 +1,43 @@
+#pragma once
+
+#include "../base/gl_resource.hpp"
+
+namespace gl_wrapper
+{
+    BASE_DECLARE_REF_TYPE(Renderbuffer);
+
+    /// @brief 渲染缓冲对象
+    class Renderbuffer : public GLResource
+    {
+    public:
+        static void unbind() { glBindRenderbuffer(GL_RENDERBUFFER, 0); }
+
+    public:
+        inline Renderbuffer() { create(); }
+        inline Renderbuffer(Renderbuffer &&from) : GLResource(std::move(from)) {}
+        inline ~Renderbuffer() override { destroy(); }
+
+    public:
+        inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Renderbuffer); }
+        inline void bind() const { glBindRenderbuffer(GL_RENDERBUFFER, m_id); }
+
+    public:
+        void create();
+        void destroy();
+
+    public:
+        inline void set_storage(GLenum internalformat, GLsizei width, GLsizei height)
+        {
+            glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
+        }
+
+        inline void set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
+        {
+            glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
+        }
+
+    public:
+        GLint get_parameter(GLenum pname) const;
+    };
+
+} // namespace gl_wrapper
