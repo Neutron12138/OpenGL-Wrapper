@@ -10,7 +10,8 @@ namespace gl_wrapper
     class Renderbuffer : public GLResource
     {
     public:
-        static void unbind() { glBindRenderbuffer(GL_RENDERBUFFER, 0); }
+        static inline bool is_renderbuffer(GLuint id) { return glIsRenderbuffer(id); }
+        static inline void unbind() { glBindRenderbuffer(GL_RENDERBUFFER, 0); }
 
     public:
         inline Renderbuffer() { create(); }

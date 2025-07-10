@@ -9,6 +9,9 @@ namespace gl_wrapper
     /// @brief 纹理对象
     class Texture : public GLResource
     {
+    public:
+        static inline bool is_texture(GLuint id) { return glIsTexture(id); }
+
     private:
         /// @brief 纹理类型
         GLenum m_type = 0;

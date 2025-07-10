@@ -11,6 +11,9 @@ namespace gl_wrapper
     /// @brief 着色器对象
     class Shader : public GLResource
     {
+    public:
+        static inline bool is_shader(GLuint id) { return glIsShader(id); }
+
     private:
         /// @brief 着色器类型
         GLenum m_type = 0;

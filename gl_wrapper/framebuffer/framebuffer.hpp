@@ -11,6 +11,9 @@ namespace gl_wrapper
     /// @brief 帧缓冲对象
     class Framebuffer : public GLResource
     {
+    public:
+        static inline bool is_framebuffer(GLuint id) { return glIsFramebuffer(id); }
+
     private:
         /// @brief 帧缓冲类型
         GLenum m_type = 0;

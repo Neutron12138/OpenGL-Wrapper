@@ -43,6 +43,8 @@
 #include "shader/shader.cpp"
 #include "shader/program.cpp"
 #include "shader/program_scoped_binder.cpp"
+#include "shader/program_set_uniform.cpp"
+#include "shader/program_get_uniform.cpp"
 
 // texture
 

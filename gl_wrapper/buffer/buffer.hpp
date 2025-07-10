@@ -10,6 +10,9 @@ namespace gl_wrapper
     /// @brief 缓冲区对象
     class Buffer : public GLResource
     {
+    public:
+        static inline bool is_buffer(GLuint id) { return glIsBuffer(id); }
+
     private:
         /// @brief 缓冲区类型
         GLenum m_type = 0;

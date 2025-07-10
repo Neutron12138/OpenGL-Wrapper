@@ -11,7 +11,8 @@ namespace gl_wrapper
     class VertexArray : public GLResource
     {
     public:
-        static void unbind() { glBindVertexArray(0); }
+        static inline bool is_vertex_array(GLuint id) { return glIsVertexArray(id); }
+        static inline void unbind() { glBindVertexArray(0); }
 
     public:
         inline VertexArray() { create(); }

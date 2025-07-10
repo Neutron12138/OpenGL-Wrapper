@@ -11,7 +11,8 @@ namespace gl_wrapper
     class Program : public GLResource
     {
     public:
-        static void unuse() { glUseProgram(0); }
+        static inline bool is_program(GLuint id) { return glIsProgram(id); }
+        static inline void unuse() { glUseProgram(0); }
 
     public:
         inline Program() { create(); }
@@ -32,8 +33,16 @@ namespace gl_wrapper
         void link_program();
 
     public:
-        inline GLuint get_uniform_location(const std::string &name) const { return glGetUniformLocation(m_id, name.data()); }
-        inline GLuint get_attrib_location(const std::string &name) const { return glGetAttribLocation(m_id, name.data()); }
+        inline GLint get_uniform_location(const std::string &name) const { return glGetUniformLocation(m_id, name.data()); }
+        inline GLint get_attrib_location(const std::string &name) const { return glGetAttribLocation(m_id, name.data()); }
+        template <typename T>
+        void set_uniform(GLint location, T &&value);
+        template <typename T>
+        T get_uniform(GLint location);
+        /*template <typename T>
+        void set_attrib(GLint location, T &&value);
+        template <typename T>
+        T get_attrib(GLint location);*/
 
     public:
         inline void set_parameter(GLenum pname, GLint value) { glProgramParameteri(m_id, pname, value); }
