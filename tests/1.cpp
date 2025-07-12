@@ -12,11 +12,11 @@ void on_framebuffer_resize(GLFWwindow *window, int width, int height);
 int main()
 {
     //  初始化GLFW与OpenGL
-    
+
     auto &error_callback = glfw_wrapper::ErrorCallback::get_instance();
     auto &context = glfw_wrapper::Context::get_instance();
 
-    glfw_wrapper::Window::set_opengl(true);
+    glfw_wrapper::Window::set_opengl(glm::ivec2(3, 3), true);
     auto window = glfw_wrapper::Window(glm::ivec2(512, 512));
     glfwSetFramebufferSizeCallback(window, on_framebuffer_resize);
     window.make_context_current();

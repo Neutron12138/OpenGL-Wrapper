@@ -15,24 +15,35 @@ namespace gl_wrapper
         {
             if (!gladLoadGL())
                 throw BASE_MAKE_RUNTIME_ERROR("Unable to load OpenGL function pointers");
-
-            if (!GLAD_GL_VERSION_3_3)
-                throw BASE_MAKE_RUNTIME_ERROR(
-                    "The current OpenGL context version is too low, it should be at least OpenGL 3.3");
+            check_version();
         }
-
         inline GLLoader(GLADloadproc proc)
         {
             if (!gladLoadGLLoader(proc))
                 throw BASE_MAKE_RUNTIME_ERROR("Unable to load OpenGL function pointers",
                                               ", load proc: ", proc);
+            check_version();
+        }
+        inline ~GLLoader() = default;
 
-            if (!GLAD_GL_VERSION_3_3)
-                throw BASE_MAKE_RUNTIME_ERROR(
-                    "The current OpenGL context version is too low, it should be at least OpenGL 3.3");
+    public:
+        glm::ivec2 get_version() const
+        {
+            glm::ivec2 version;
+            glGetIntegerv(GL_MAJOR_VERSION, &version.x);
+            glGetIntegerv(GL_MINOR_VERSION, &version.y);
+            return version;
         }
 
-        inline ~GLLoader() = default;
+        void check_version() const
+        {
+            glm::ivec2 version = get_version();
+            if (version.x == 4 || (version.x == 3 && version.y >= 3))
+                return;
+
+            throw BASE_MAKE_RUNTIME_ERROR(
+                "The current OpenGL context version is too low, it should be at least OpenGL 3.3");
+        }
     };
 
 } // namespace gl_wrapper
