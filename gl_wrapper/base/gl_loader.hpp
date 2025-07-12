@@ -38,11 +38,11 @@ namespace gl_wrapper
         void check_version() const
         {
             glm::ivec2 version = get_version();
-            if (version.x == 4 || (version.x == 3 && version.y >= 3))
+            if (version.x == 4 && version.y >= 5)
                 return;
 
             throw BASE_MAKE_RUNTIME_ERROR(
-                "The current OpenGL context version is too low, it should be at least OpenGL 3.3");
+                "The current OpenGL context version is too low, it should be at least OpenGL 4.5");
         }
     };
 

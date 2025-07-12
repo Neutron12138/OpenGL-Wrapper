@@ -14,7 +14,6 @@
 
 // state
 
-#include "state/scoped_state.hpp"
 #include "state/viewport_state.hpp"
 #include "state/depth_test_state.hpp"
 #include "state/clear_state.hpp"
@@ -42,7 +41,6 @@
 
 #include "shader/shader.cpp"
 #include "shader/program.cpp"
-#include "shader/program_scoped_binder.cpp"
 #include "shader/program_set_uniform.cpp"
 #include "shader/program_get_uniform.cpp"
 

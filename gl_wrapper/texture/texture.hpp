@@ -34,12 +34,12 @@ namespace gl_wrapper
         void destroy();
 
     public:
-        inline void generate_mipmap() { glGenerateMipmap(m_type); }
-        inline void set_wrap_s(GLenum wrap = GL_MIRRORED_REPEAT) { glTexParameteri(m_type, GL_TEXTURE_WRAP_S, wrap); }
-        inline void set_wrap_t(GLenum wrap = GL_MIRRORED_REPEAT) { glTexParameteri(m_type, GL_TEXTURE_WRAP_T, wrap); }
-        inline void set_wrap_r(GLenum wrap = GL_MIRRORED_REPEAT) { glTexParameteri(m_type, GL_TEXTURE_WRAP_R, wrap); }
-        inline void set_min_filter(GLenum filter = GL_LINEAR) { glTexParameteri(m_type, GL_TEXTURE_MIN_FILTER, filter); }
-        inline void set_mag_filter(GLenum filter = GL_LINEAR) { glTexParameteri(m_type, GL_TEXTURE_MAG_FILTER, filter); }
+        inline void generate_mipmap() { glGenerateTextureMipmap(m_id); }
+        inline void set_wrap_s(GLenum wrap = GL_MIRRORED_REPEAT) { glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, wrap); }
+        inline void set_wrap_t(GLenum wrap = GL_MIRRORED_REPEAT) { glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, wrap); }
+        inline void set_wrap_r(GLenum wrap = GL_MIRRORED_REPEAT) { glTextureParameteri(m_id, GL_TEXTURE_WRAP_R, wrap); }
+        inline void set_min_filter(GLenum filter = GL_LINEAR) { glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, filter); }
+        inline void set_mag_filter(GLenum filter = GL_LINEAR) { glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, filter); }
 
     public:
         template <typename T>

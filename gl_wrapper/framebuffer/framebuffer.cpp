@@ -13,7 +13,7 @@ namespace gl_wrapper
     void Framebuffer::create(GLenum type)
     {
         destroy();
-        glGenFramebuffers(1, &m_id);
+        glCreateFramebuffers(1, &m_id);
         m_type = type;
     }
 
@@ -27,7 +27,14 @@ namespace gl_wrapper
     GLint Framebuffer::get_parameter(GLenum pname) const
     {
         GLint param;
-        glGetBufferParameteriv(m_type, pname, &param);
+        glGetNamedFramebufferParameteriv(m_id, pname, &param);
+        return param;
+    }
+
+    GLint Framebuffer::get_attachment_parameter(GLenum attachment, GLenum pname) const
+    {
+        GLint param;
+        glGetNamedFramebufferAttachmentParameteriv(m_id, attachment, pname, &param);
         return param;
     }
 

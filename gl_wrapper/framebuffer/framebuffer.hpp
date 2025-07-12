@@ -25,6 +25,7 @@ namespace gl_wrapper
 
     public:
         Framebuffer &operator=(Framebuffer &&from);
+        inline void set_type(GLenum type) { m_type = type; }
         inline GLenum get_type() const { return m_type; }
         inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Framebuffer); }
         inline void bind() const { glBindFramebuffer(m_type, m_id); }
@@ -39,9 +40,10 @@ namespace gl_wrapper
         inline void set_draw_buffers(const std::vector<GLenum> &bufs) { glDrawBuffers(bufs.size(), bufs.data()); }
         inline void set_read_buffer(GLenum src) { glReadBuffer(src); }
 
+    public:
         inline void attach_texture(GLenum attachment, const Texture2D &texture, GLint level = 0)
         {
-            glFramebufferTexture2D(m_type, attachment, texture.get_type(), texture, level);
+            glNamedFramebufferTexture(m_id, attachment, texture, level);
         }
 
         inline void attach_color_texture(const Texture2D &texture, GLsizei index = 0, GLint level = 0)
@@ -49,15 +51,16 @@ namespace gl_wrapper
             attach_texture(GL_COLOR_ATTACHMENT0 + index, texture, level);
         }
 
-        inline void attach_renderbuffer(GLenum attachment, const Renderbuffer &renderbuffer)
+        inline void attach_renderbuffer(GLenum attachment, const Renderbuffer &rbo)
         {
-            glFramebufferRenderbuffer(m_type, attachment, GL_RENDERBUFFER, renderbuffer);
+            glNamedFramebufferRenderbuffer(m_id, attachment, GL_RENDERBUFFER, rbo);
         }
 
     public:
-        inline void set_parameter(GLenum pname, GLint param) { glFramebufferParameteri(m_type, pname, param); }
+        inline void set_parameter(GLenum pname, GLint param) { glNamedFramebufferParameteri(m_id, pname, param); }
         GLint get_parameter(GLenum pname) const;
-        inline GLenum check_status() const { return glCheckFramebufferStatus(m_type); }
+        GLint get_attachment_parameter(GLenum attachment, GLenum pname) const;
+        inline GLenum check_status() const { return glCheckNamedFramebufferStatus(m_id, m_type); }
         inline void read_pixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void *pixels) const
         {
             glReadPixels(x, y, width, height, format, type, pixels);

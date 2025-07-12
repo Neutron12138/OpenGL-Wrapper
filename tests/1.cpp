@@ -16,7 +16,7 @@ int main()
     auto &error_callback = glfw_wrapper::ErrorCallback::get_instance();
     auto &context = glfw_wrapper::Context::get_instance();
 
-    glfw_wrapper::Window::set_opengl(glm::ivec2(3, 3), true);
+    glfw_wrapper::Window::set_opengl(glm::ivec2(4, 5), true);
     auto window = glfw_wrapper::Window(glm::ivec2(512, 512));
     glfwSetFramebufferSizeCallback(window, on_framebuffer_resize);
     window.make_context_current();
@@ -59,21 +59,19 @@ int main()
         glm::vec3(0.933f, 0.75f, 0.0f),
     };
 
-    gl_wrapper::VertexArray vao;
     gl_wrapper::Buffer vbo(GL_ARRAY_BUFFER);
-    {
-        gl_wrapper::ScopedBinder sb(&vao, nullptr);
-
-        vbo.bind();
-        vbo.set_data(vertices);
-
-        vao.set_vertex_attrib<glm::vec3>(0, 3 * sizeof(glm::vec3));
-        vao.enable_vertex_attrib_array(0);
-        vao.set_vertex_attrib<glm::vec3>(1, 3 * sizeof(glm::vec3), sizeof(glm::vec3));
-        vao.enable_vertex_attrib_array(1);
-        vao.set_vertex_attrib<glm::vec3>(2, 3 * sizeof(glm::vec3), 2 * sizeof(glm::vec3));
-        vao.enable_vertex_attrib_array(2);
-    }
+    vbo.set_storage(vertices);
+    gl_wrapper::VertexArray vao;
+    vao.bind_vertex_buffer(0, vbo, 0, 3 * sizeof(glm::vec3));
+    vao.enable_attrib(0);
+    vao.set_attrib_format<glm::vec3>(0);
+    vao.set_attrib_binding(0, 0);
+    vao.enable_attrib(1);
+    vao.set_attrib_format<glm::vec3>(1, sizeof(glm::vec3));
+    vao.set_attrib_binding(1, 0);
+    vao.enable_attrib(2);
+    vao.set_attrib_format<glm::vec3>(2, 2 * sizeof(glm::vec3));
+    vao.set_attrib_binding(2, 0);
 
     // 加载纹理
 
@@ -83,51 +81,51 @@ int main()
         throw "Failed to load image";
 
     gl_wrapper::Texture2D texture;
-    {
-        gl_wrapper::ScopedBinder sb(&texture, nullptr);
-        texture.set_wrap_s();
-        texture.set_wrap_t();
-        texture.set_min_filter();
-        texture.set_mag_filter();
-        texture.tex_image2D(GL_RGB, width, height, GL_RGB, pixels);
-        texture.generate_mipmap();
+    texture.set_wrap_s();
+    texture.set_wrap_t();
+    texture.set_min_filter();
+    texture.set_mag_filter();
+    texture.set_storage(1, GL_RGB8, width, width);
+    texture.set_sub_image(0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+    texture.generate_mipmap();
 
-        stbi_image_free(pixels);
-        texture.set_border_color(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
-        glm::vec4 color = texture.get_border_color();
-        std::cout << "border color:" << std::endl
-                  << color.r << ", " << color.g << ", " << color.b << ", " << color.a << std::endl
-                  << std::endl;
-    }
+    stbi_image_free(pixels);
+    texture.set_border_color(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+    glm::vec4 color = texture.get_border_color();
+    std::cout << "border color:" << std::endl
+              << color.r << ", " << color.g << ", " << color.b << ", " << color.a << std::endl
+              << std::endl;
 
     // 创建帧缓冲
 
     gl_wrapper::Texture2D color_texture;
-    {
-        gl_wrapper::ScopedBinder sb(&color_texture, nullptr);
-        color_texture.tex_image2D(GL_RGBA, 512, 512, GL_RGBA);
-    }
+    color_texture.set_storage(1, GL_RGBA8, 512, 512);
     gl_wrapper::Renderbuffer rbo;
-    {
-        gl_wrapper::ScopedBinder sb(&rbo, nullptr);
-        rbo.set_storage(GL_DEPTH24_STENCIL8, 512, 512);
-    }
+    rbo.set_storage(GL_DEPTH24_STENCIL8, 512, 512);
     gl_wrapper::Framebuffer fbo(GL_FRAMEBUFFER);
-    {
-        gl_wrapper::ScopedBinder sb(&fbo, nullptr);
-        fbo.attach_color_texture(color_texture);
-        fbo.attach_renderbuffer(GL_DEPTH_STENCIL_ATTACHMENT, rbo);
-        std::cout << "is framebuffer complete: " << (fbo.check_status() == GL_FRAMEBUFFER_COMPLETE) << std::endl
-                  << std::endl;
-    };
+    fbo.attach_color_texture(color_texture);
+    fbo.attach_renderbuffer(GL_DEPTH_STENCIL_ATTACHMENT, rbo);
+    std::cout << "is framebuffer complete: " << (fbo.check_status() == GL_FRAMEBUFFER_COMPLETE) << std::endl
+              << std::endl;
 
     // 渲染到帧缓冲
 
     {
-        gl_wrapper::ScopedBinder sb1(&fbo, nullptr);
-        gl_wrapper::ScopedBinder sb2(&texture, nullptr);
-        gl_wrapper::ScopedBinder sb3(&vao, nullptr);
-        gl_wrapper::ScopedBinder sb4(&program, nullptr);
+        auto binder = [&]()
+        {
+            fbo.bind();
+            vao.bind();
+            program.use();
+            texture.bind();
+        };
+        auto unbinder = [&]()
+        {
+            fbo.unbind();
+            vao.unbind();
+            program.unuse();
+            texture.unbind();
+        };
+        gl_wrapper::ScopedBinder sb(binder, unbinder);
 
         glViewport(0, 0, 512, 512);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -141,11 +139,12 @@ int main()
     // 保存到图像
 
     {
-        gl_wrapper::ScopedBinder sb(&fbo, nullptr);
+        fbo.bind();
         auto framebuffer_pixels = fbo.read_pixels_as_RGBA(0, 0, 512, 512);
         int success = stbi_write_png("triangle.png", 512, 512, 4, framebuffer_pixels.data(), 0);
         std::cout << "save image: " << success << std::endl
                   << std::endl;
+        fbo.unbind();
     }
 
     return 0;

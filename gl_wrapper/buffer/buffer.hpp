@@ -37,9 +37,10 @@ namespace gl_wrapper
         inline void bind() const { glBindBuffer(m_type, m_id); }
         inline void unbind() const { glBindBuffer(m_type, 0); }
 
+    public:
         inline void set_data(GLsizeiptr size, const void *data, GLenum usage = GL_STATIC_DRAW)
         {
-            glBufferData(m_type, size, data, usage);
+            glNamedBufferData(m_id, size, data, usage);
         }
 
         template <typename T>
@@ -48,15 +49,37 @@ namespace gl_wrapper
             set_data(data.size() * sizeof(T), data.data(), usage);
         }
 
-        inline void sub_data(GLintptr offset, GLsizeiptr size, const void *data)
+        inline void set_storage(GLsizeiptr size, const void *data, GLbitfield flags = 0)
         {
-            glBufferSubData(m_type, offset, size, data);
+            glNamedBufferStorage(m_id, size, data, flags);
         }
 
         template <typename T>
-        inline void sub_data(GLintptr offset, const std::vector<T> &data)
+        inline void set_storage(const std::vector<T> &data, GLbitfield flags = 0)
         {
-            sub_data(offset, data.size() * sizeof(T), data.data());
+            set_storage(data.size() * sizeof(T), data.data(), flags);
+        }
+
+        inline void set_sub_data(GLintptr offset, GLsizeiptr size, const void *data)
+        {
+            glNamedBufferSubData(m_id, offset, size, data);
+        }
+
+        template <typename T>
+        inline void set_sub_data(GLintptr offset, const std::vector<T> &data)
+        {
+            set_sub_data(offset, data.size() * sizeof(T), data.data());
+        }
+
+    public:
+        inline void clear_data(GLenum internalformat, GLenum format, GLenum type, const void *data = nullptr)
+        {
+            glClearNamedBufferData(m_id, internalformat, format, type, data);
+        }
+
+        inline void clear_sub_data(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void *data)
+        {
+            glClearNamedBufferSubData(m_id, internalformat, offset, size, format, type, data);
         }
 
     public:
@@ -64,6 +87,25 @@ namespace gl_wrapper
         T get_parameter(GLenum pname) const;
         void *get_pointer() const;
         std::vector<base::UInt8> get_sub_data(GLintptr offset, GLsizeiptr size) const;
+
+    public:
+        inline void *map(GLenum access = GL_READ_WRITE) { return glMapNamedBuffer(m_id, access); }
+        inline GLboolean unmap() { return glUnmapNamedBuffer(m_id); }
+        inline void *map_range(GLintptr offset, GLsizeiptr length, GLbitfield access)
+        {
+            return glMapNamedBufferRange(m_id, offset, length, access);
+        }
+        inline void flush_mapped_range(GLintptr offset, GLsizeiptr length)
+        {
+            glFlushMappedNamedBufferRange(m_id, offset, length);
+        }
+
+    public:
+        inline void invalidate_data() { glInvalidateBufferData(m_id); }
+        inline void invalidate_sub_data(GLintptr offset, GLsizeiptr length)
+        {
+            glInvalidateBufferSubData(m_id, offset, length);
+        }
     };
 
 } // namespace gl_wrapper

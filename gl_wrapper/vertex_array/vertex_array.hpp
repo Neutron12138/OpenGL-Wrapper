@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "../base/resource.hpp"
+#include "../buffer/buffer.hpp"
 
 namespace gl_wrapper
 {
@@ -29,24 +30,39 @@ namespace gl_wrapper
         void destroy();
 
     public:
-        inline void enable_vertex_attrib_array(GLuint index) { glEnableVertexAttribArray(index); }
-        inline void disable_vertex_attrib_array(GLuint index) { glDisableVertexAttribArray(index); }
-        inline void vertex_attrib_divisor(GLuint index, GLuint divisor = 0) { glVertexAttribDivisor(index, divisor); }
+        inline void set_binding_divisor(GLuint index, GLuint divisor = 0) { glVertexArrayBindingDivisor(m_id, index, divisor); }
+        inline void enable_attrib(GLuint index) { glEnableVertexArrayAttrib(m_id, index); }
+        inline void disable_attrib(GLuint index) { glDisableVertexArrayAttrib(m_id, index); }
 
-        inline void set_vertex_attrib(GLuint index, GLint size, GLenum type, GLboolean normalized,
-                                      GLsizei stride, const void *pointer = nullptr)
+        inline void set_attrib_format(GLuint attribindex, GLint size, GLenum type,
+                                      GLboolean normalized, GLuint relativeoffset)
         {
-            glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+            glVertexArrayAttribFormat(m_id, attribindex, size, type, normalized, relativeoffset);
         }
 
-        inline void set_vertex_attrib(GLuint index, GLint size, GLenum type, GLsizei stride,
-                                      const void *pointer = nullptr)
+        inline void set_attrib_format(GLuint attribindex, GLint size, GLenum type,
+                                      GLuint relativeoffset = 0)
         {
-            set_vertex_attrib(index, size, type, GL_FALSE, stride, pointer);
+            glVertexArrayAttribFormat(m_id, attribindex, size, type, GL_FALSE, relativeoffset);
         }
 
         template <typename T>
-        void set_vertex_attrib(GLuint index, base::Size size = sizeof(T), base::Size offset = 0);
+        void set_attrib_format(GLuint attribindex, GLuint relativeoffset = 0);
+
+        inline void set_attrib_binding(GLuint attribindex, GLuint bindingindex)
+        {
+            glVertexArrayAttribBinding(m_id, attribindex, bindingindex);
+        }
+
+        inline void bind_vertex_buffer(GLuint bindingindex, const Buffer &vbo, GLintptr offset, GLsizei stride)
+        {
+            glVertexArrayVertexBuffer(m_id, bindingindex, vbo, offset, stride);
+        }
+
+        inline void bind_element_buffer(const Buffer &ebo)
+        {
+            glVertexArrayElementBuffer(m_id, ebo);
+        }
 
     public:
         inline void draw_arrays(GLenum mode, GLint first, GLsizei count) const { glDrawArrays(mode, first, count); }

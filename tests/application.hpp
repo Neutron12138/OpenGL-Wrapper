@@ -22,6 +22,7 @@ public:
         window.create(glm::ivec2(1152, 648));
         window.make_context_current();
         gl_wrapper::GLLoader loader();
+        gl_wrapper::DebugMessageCallback::get_instance();
         glViewport(0, 0, 1152, 648);
 
         _initialize();
@@ -36,18 +37,15 @@ public:
 
     gl_wrapper::Program load_program_from_file(const std::string &vfilename, const std::string &ffilename)
     {
-        gl_wrapper::Shader vs;
-        vs.create(GL_VERTEX_SHADER);
+        gl_wrapper::Shader vs(GL_VERTEX_SHADER);
         vs.set_source(base::read_string_from_file(vfilename));
         vs.compile_shader();
 
-        gl_wrapper::Shader fs;
-        fs.create(GL_FRAGMENT_SHADER);
+        gl_wrapper::Shader fs(GL_FRAGMENT_SHADER);
         fs.set_source(base::read_string_from_file(ffilename));
         fs.compile_shader();
 
         gl_wrapper::Program program;
-        program.create();
         program.attach_shader(vs);
         program.attach_shader(fs);
         program.link_program();

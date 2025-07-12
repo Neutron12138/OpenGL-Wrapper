@@ -13,7 +13,7 @@ namespace gl_wrapper
     void Buffer::create(GLenum type)
     {
         destroy();
-        glGenBuffers(1, &m_id);
+        glCreateBuffers(1, &m_id);
         m_type = type;
     }
 
@@ -28,7 +28,7 @@ namespace gl_wrapper
     GLint Buffer::get_parameter(GLenum pname) const
     {
         GLint param;
-        glGetBufferParameteriv(m_type, pname, &param);
+        glGetNamedBufferParameteriv(m_id, pname, &param);
         return param;
     }
 
@@ -36,21 +36,21 @@ namespace gl_wrapper
     GLint64 Buffer::get_parameter(GLenum pname) const
     {
         GLint64 param;
-        glGetBufferParameteri64v(m_type, pname, &param);
+        glGetNamedBufferParameteri64v(m_id, pname, &param);
         return param;
     }
 
     void *Buffer::get_pointer() const
     {
         void *param;
-        glGetBufferPointerv(m_type, GL_BUFFER_MAP_POINTER, &param);
+        glGetNamedBufferPointerv(m_id, GL_BUFFER_MAP_POINTER, &param);
         return param;
     }
 
     std::vector<base::UInt8> Buffer::get_sub_data(GLintptr offset, GLsizeiptr size) const
     {
         std::vector<base::UInt8> data(size);
-        glGetBufferSubData(m_type, offset, size, data.data());
+        glGetNamedBufferSubData(m_id, offset, size, data.data());
         return std::move(data);
     }
 

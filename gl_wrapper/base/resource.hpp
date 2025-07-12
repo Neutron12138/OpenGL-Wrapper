@@ -30,6 +30,10 @@ namespace gl_wrapper
             Framebuffer,
             /// @brief 渲染缓冲
             Renderbuffer,
+            /// @brief 采样器
+            Sampler,
+            /// @brief 查询
+            Query,
         };
 
     protected:
@@ -47,7 +51,7 @@ namespace gl_wrapper
         inline operator GLuint() const { return m_id; }
         inline GLuint get_id() const { return m_id; }
         inline bool is_valid() const override { return m_id; }
-        inline Resource &operator=(Resource &&from)
+        inline virtual Resource &operator=(Resource &&from)
         {
             m_id = std::exchange(from.m_id, 0);
             return *this;

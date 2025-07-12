@@ -39,10 +39,6 @@ namespace gl_wrapper
         void set_uniform(GLint location, T &&value);
         template <typename T>
         T get_uniform(GLint location);
-        /*template <typename T>
-        void set_attrib(GLint location, T &&value);
-        template <typename T>
-        T get_attrib(GLint location);*/
 
     public:
         inline void set_parameter(GLenum pname, GLint value) { glProgramParameteri(m_id, pname, value); }

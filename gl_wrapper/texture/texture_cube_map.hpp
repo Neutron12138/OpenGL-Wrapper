@@ -17,16 +17,14 @@ namespace gl_wrapper
         inline void create() { Texture::create(GL_TEXTURE_CUBE_MAP); }
 
     public:
-        inline void tex_image2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
-                                GLenum format, GLenum type, const void *pixels = nullptr)
+        inline void set_storage(GLsizei levels, GLint internalformat, GLsizei width, GLsizei height)
         {
-            glTexImage2D(target, level, internalformat, width, height, 0, format, type, pixels);
+            glTextureStorage2D(m_id, levels, internalformat, width, height);
         }
 
-        inline void tex_image2D(GLenum target, GLint internalformat, GLsizei width,
-                                GLsizei height, GLenum format, const void *pixels = nullptr)
+        inline void set_sub_image(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels)
         {
-            tex_image2D(target, 0, internalformat, width, height, format, GL_UNSIGNED_BYTE, pixels);
+            glTextureSubImage2D(m_id, level, xoffset, yoffset, width, height, format, type, pixels);
         }
     };
 

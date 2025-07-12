@@ -12,7 +12,7 @@ namespace gl_wrapper
     void VertexArray::create()
     {
         destroy();
-        glGenVertexArrays(1, &m_id);
+        glCreateVertexArrays(1, &m_id);
     }
 
     void VertexArray::destroy()
@@ -22,45 +22,39 @@ namespace gl_wrapper
     }
 
     template <>
-    void VertexArray::set_vertex_attrib<GLint>(GLuint index, base::Size size, base::Size offset)
+    void VertexArray::set_attrib_format<GLint>(GLuint attribindex, GLuint relativeoffset)
     {
-        set_vertex_attrib(index, 1, GL_INT, size, reinterpret_cast<const void *>(offset));
+        set_attrib_format(attribindex, 1, GL_INT, relativeoffset);
     }
 
     template <>
-    void VertexArray::set_vertex_attrib<GLuint>(GLuint index, base::Size size, base::Size offset)
+    void VertexArray::set_attrib_format<GLuint>(GLuint attribindex, GLuint relativeoffset)
     {
-        set_vertex_attrib(index, 1, GL_UNSIGNED_INT, size, reinterpret_cast<const void *>(offset));
+        set_attrib_format(attribindex, 1, GL_UNSIGNED_INT, relativeoffset);
     }
 
     template <>
-    void VertexArray::set_vertex_attrib<GLfloat>(GLuint index, base::Size size, base::Size offset)
+    void VertexArray::set_attrib_format<GLfloat>(GLuint attribindex, GLuint relativeoffset)
     {
-        set_vertex_attrib(index, 1, GL_FLOAT, size, reinterpret_cast<const void *>(offset));
+        set_attrib_format(attribindex, 1, GL_FLOAT, relativeoffset);
     }
 
     template <>
-    void VertexArray::set_vertex_attrib<glm::vec1>(GLuint index, base::Size size, base::Size offset)
+    void VertexArray::set_attrib_format<glm::vec2>(GLuint attribindex, GLuint relativeoffset)
     {
-        set_vertex_attrib(index, 1, GL_FLOAT, size, reinterpret_cast<const void *>(offset));
+        set_attrib_format(attribindex, 2, GL_FLOAT, relativeoffset);
     }
 
     template <>
-    void VertexArray::set_vertex_attrib<glm::vec2>(GLuint index, base::Size size, base::Size offset)
+    void VertexArray::set_attrib_format<glm::vec3>(GLuint attribindex, GLuint relativeoffset)
     {
-        set_vertex_attrib(index, 2, GL_FLOAT, size, reinterpret_cast<const void *>(offset));
+        set_attrib_format(attribindex, 3, GL_FLOAT, relativeoffset);
     }
 
     template <>
-    void VertexArray::set_vertex_attrib<glm::vec3>(GLuint index, base::Size size, base::Size offset)
+    void VertexArray::set_attrib_format<glm::vec4>(GLuint attribindex, GLuint relativeoffset)
     {
-        set_vertex_attrib(index, 3, GL_FLOAT, size, reinterpret_cast<const void *>(offset));
-    }
-
-    template <>
-    void VertexArray::set_vertex_attrib<glm::vec4>(GLuint index, base::Size size, base::Size offset)
-    {
-        set_vertex_attrib(index, 4, GL_FLOAT, size, reinterpret_cast<const void *>(offset));
+        set_attrib_format(attribindex, 4, GL_FLOAT, relativeoffset);
     }
 
 } // namespace gl_wrapper

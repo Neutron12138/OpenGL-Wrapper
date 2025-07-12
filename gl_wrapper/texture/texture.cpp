@@ -13,7 +13,8 @@ namespace gl_wrapper
     void Texture::create(GLenum type)
     {
         destroy();
-        glGenTextures(1, &m_id);
+        glCreateTextures(type, 1, &m_id);
+        // if(m_id==0)
         m_type = type;
     }
 
@@ -27,19 +28,19 @@ namespace gl_wrapper
     template <>
     void Texture::set_parameter(GLenum pname, GLint param)
     {
-        glTexParameteri(m_type, pname, param);
-    }
-
-    template <>
-    void Texture::set_parameter(GLenum pname, GLfloat param)
-    {
-        glTexParameterf(m_type, pname, param);
+        glTextureParameteri(m_id, pname, param);
     }
 
     template <>
     void Texture::set_parameter(GLenum pname, GLuint param)
     {
-        glTexParameteri(m_type, pname, param);
+        glTextureParameteri(m_id, pname, param);
+    }
+
+    template <>
+    void Texture::set_parameter(GLenum pname, GLfloat param)
+    {
+        glTextureParameterf(m_id, pname, param);
     }
 
     template <>
@@ -68,13 +69,13 @@ namespace gl_wrapper
 
     void Texture::set_border_color(const glm::vec4 &color)
     {
-        glTexParameterfv(m_type, GL_TEXTURE_BORDER_COLOR, reinterpret_cast<const GLfloat *>(&color));
+        glTextureParameterfv(m_id, GL_TEXTURE_BORDER_COLOR, reinterpret_cast<const GLfloat *>(&color));
     }
 
     glm::vec4 Texture::get_border_color() const
     {
         glm::vec4 color;
-        glGetTexParameterfv(m_type, GL_TEXTURE_BORDER_COLOR, reinterpret_cast<GLfloat *>(&color));
+        glGetTextureParameterfv(m_id, GL_TEXTURE_BORDER_COLOR, reinterpret_cast<GLfloat *>(&color));
         return color;
     }
 

@@ -30,12 +30,12 @@ namespace gl_wrapper
     public:
         inline void set_storage(GLenum internalformat, GLsizei width, GLsizei height)
         {
-            glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
+            glNamedRenderbufferStorage(m_id, internalformat, width, height);
         }
 
         inline void set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
         {
-            glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
+            glNamedRenderbufferStorageMultisample(m_id, samples, internalformat, width, height);
         }
 
     public:

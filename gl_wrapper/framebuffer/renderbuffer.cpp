@@ -11,7 +11,7 @@ namespace gl_wrapper
     void Renderbuffer::create()
     {
         destroy();
-        glGenRenderbuffers(1, &m_id);
+        glCreateRenderbuffers(1, &m_id);
     }
 
     void Renderbuffer::destroy()
@@ -23,7 +23,7 @@ namespace gl_wrapper
     GLint Renderbuffer::get_parameter(GLenum pname) const
     {
         GLint param;
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &param);
+        glGetNamedRenderbufferParameteriv(m_id,pname,&param);
         return param;
     }
 

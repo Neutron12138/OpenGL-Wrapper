@@ -11,7 +11,7 @@ namespace gl_wrapper
     GLint Program::get_uniform(GLint location)
     {
         GLint result;
-        glGetUniformiv(m_id, location, &result);
+        glGetnUniformiv(m_id, location, sizeof(GLint), &result);
         return result;
     }
 
@@ -19,7 +19,7 @@ namespace gl_wrapper
     GLuint Program::get_uniform(GLint location)
     {
         GLuint result;
-        glGetUniformuiv(m_id, location, &result);
+        glGetnUniformuiv(m_id, location, sizeof(GLuint), &result);
         return result;
     }
 
@@ -27,7 +27,7 @@ namespace gl_wrapper
     GLfloat Program::get_uniform(GLint location)
     {
         GLfloat result;
-        glGetUniformfv(m_id, location, &result);
+        glGetnUniformfv(m_id, location, sizeof(GLfloat), &result);
         return result;
     }
 
@@ -35,7 +35,7 @@ namespace gl_wrapper
     GLdouble Program::get_uniform(GLint location)
     {
         GLdouble result;
-        glGetUniformdv(m_id, location, &result);
+        glGetnUniformdv(m_id, location, sizeof(GLdouble), &result);
         return result;
     }
 
@@ -47,7 +47,7 @@ namespace gl_wrapper
     glm::ivec2 Program::get_uniform(GLint location)
     {
         glm::ivec2 result;
-        glGetUniformiv(m_id, location, glm::value_ptr(result));
+        glGetnUniformiv(m_id, location, sizeof(glm::ivec2), glm::value_ptr(result));
         return result;
     }
 
@@ -55,7 +55,7 @@ namespace gl_wrapper
     glm::uvec2 Program::get_uniform(GLint location)
     {
         glm::uvec2 result;
-        glGetUniformuiv(m_id, location, glm::value_ptr(result));
+        glGetnUniformuiv(m_id, location, sizeof(glm::uvec2), glm::value_ptr(result));
         return result;
     }
 
@@ -63,7 +63,7 @@ namespace gl_wrapper
     glm::vec2 Program::get_uniform(GLint location)
     {
         glm::vec2 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::vec2), glm::value_ptr(result));
         return result;
     }
 
@@ -71,7 +71,7 @@ namespace gl_wrapper
     glm::dvec2 Program::get_uniform(GLint location)
     {
         glm::dvec2 result;
-        glGetUniformdv(m_id, location, glm::value_ptr(result));
+        glGetnUniformdv(m_id, location, sizeof(glm::dvec2), glm::value_ptr(result));
         return result;
     }
 
@@ -83,7 +83,7 @@ namespace gl_wrapper
     glm::ivec3 Program::get_uniform(GLint location)
     {
         glm::ivec3 result;
-        glGetUniformiv(m_id, location, glm::value_ptr(result));
+        glGetnUniformiv(m_id, location, sizeof(glm::ivec3), glm::value_ptr(result));
         return result;
     }
 
@@ -91,7 +91,7 @@ namespace gl_wrapper
     glm::uvec3 Program::get_uniform(GLint location)
     {
         glm::uvec3 result;
-        glGetUniformuiv(m_id, location, glm::value_ptr(result));
+        glGetnUniformuiv(m_id, location, sizeof(glm::uvec3), glm::value_ptr(result));
         return result;
     }
 
@@ -99,7 +99,7 @@ namespace gl_wrapper
     glm::vec3 Program::get_uniform(GLint location)
     {
         glm::vec3 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::vec3), glm::value_ptr(result));
         return result;
     }
 
@@ -107,7 +107,7 @@ namespace gl_wrapper
     glm::dvec3 Program::get_uniform(GLint location)
     {
         glm::dvec3 result;
-        glGetUniformdv(m_id, location, glm::value_ptr(result));
+        glGetnUniformdv(m_id, location, sizeof(glm::dvec3), glm::value_ptr(result));
         return result;
     }
 
@@ -119,7 +119,7 @@ namespace gl_wrapper
     glm::ivec4 Program::get_uniform(GLint location)
     {
         glm::ivec4 result;
-        glGetUniformiv(m_id, location, glm::value_ptr(result));
+        glGetnUniformiv(m_id, location, sizeof(glm::ivec4), glm::value_ptr(result));
         return result;
     }
 
@@ -127,7 +127,7 @@ namespace gl_wrapper
     glm::uvec4 Program::get_uniform(GLint location)
     {
         glm::uvec4 result;
-        glGetUniformuiv(m_id, location, glm::value_ptr(result));
+        glGetnUniformuiv(m_id, location, sizeof(glm::uvec4), glm::value_ptr(result));
         return result;
     }
 
@@ -135,7 +135,7 @@ namespace gl_wrapper
     glm::vec4 Program::get_uniform(GLint location)
     {
         glm::vec4 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::vec4), glm::value_ptr(result));
         return result;
     }
 
@@ -143,7 +143,7 @@ namespace gl_wrapper
     glm::dvec4 Program::get_uniform(GLint location)
     {
         glm::dvec4 result;
-        glGetUniformdv(m_id, location, glm::value_ptr(result));
+        glGetnUniformdv(m_id, location, sizeof(glm::dvec4), glm::value_ptr(result));
         return result;
     }
 
@@ -155,7 +155,7 @@ namespace gl_wrapper
     glm::mat2 Program::get_uniform(GLint location)
     {
         glm::mat2 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat2), glm::value_ptr(result));
         return result;
     }
 
@@ -163,7 +163,7 @@ namespace gl_wrapper
     glm::mat2x3 Program::get_uniform(GLint location)
     {
         glm::mat2x3 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat2x3), glm::value_ptr(result));
         return result;
     }
 
@@ -171,7 +171,7 @@ namespace gl_wrapper
     glm::mat2x4 Program::get_uniform(GLint location)
     {
         glm::mat2x4 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat2x4), glm::value_ptr(result));
         return result;
     }
 
@@ -179,7 +179,7 @@ namespace gl_wrapper
     glm::mat3 Program::get_uniform(GLint location)
     {
         glm::mat3 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat3), glm::value_ptr(result));
         return result;
     }
 
@@ -187,7 +187,7 @@ namespace gl_wrapper
     glm::mat3x2 Program::get_uniform(GLint location)
     {
         glm::mat3x2 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat3x2), glm::value_ptr(result));
         return result;
     }
 
@@ -195,7 +195,7 @@ namespace gl_wrapper
     glm::mat3x4 Program::get_uniform(GLint location)
     {
         glm::mat3x4 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat3x4), glm::value_ptr(result));
         return result;
     }
 
@@ -203,7 +203,7 @@ namespace gl_wrapper
     glm::mat4 Program::get_uniform(GLint location)
     {
         glm::mat4 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat4), glm::value_ptr(result));
         return result;
     }
 
@@ -211,7 +211,7 @@ namespace gl_wrapper
     glm::mat4x2 Program::get_uniform(GLint location)
     {
         glm::mat4x2 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat4x2), glm::value_ptr(result));
         return result;
     }
 
@@ -219,7 +219,7 @@ namespace gl_wrapper
     glm::mat4x3 Program::get_uniform(GLint location)
     {
         glm::mat4x3 result;
-        glGetUniformfv(m_id, location, glm::value_ptr(result));
+        glGetnUniformfv(m_id, location, sizeof(glm::mat4x3), glm::value_ptr(result));
         return result;
     }
 

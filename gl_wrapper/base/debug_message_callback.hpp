@@ -19,7 +19,7 @@ namespace gl_wrapper
 
         /// @brief 获取实例
         /// @return 实例
-        static DebugMessageCallback &get_instance()
+        static inline DebugMessageCallback &get_instance()
         {
             static DebugMessageCallback instance;
             return instance;
