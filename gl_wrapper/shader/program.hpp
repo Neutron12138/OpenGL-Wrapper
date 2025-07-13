@@ -37,7 +37,7 @@ namespace gl_wrapper
         inline GLint get_uniform_location(const std::string &name) const { return glGetUniformLocation(m_id, name.data()); }
         inline GLint get_attrib_location(const std::string &name) const { return glGetAttribLocation(m_id, name.data()); }
         template <typename T>
-        void set_uniform(GLint location, T &&value);
+        void set_uniform(GLint location, const T &value);
         template <typename T>
         T get_uniform(GLint location);
 
