@@ -41,6 +41,7 @@ namespace gl_wrapper
 
     public:
         inline ~DebugMessageCallback() { glDebugMessageCallback(nullptr, nullptr); }
+        BASE_DELETE_COPY_FUNCTION(DebugMessageCallback);
 
     private:
         static inline void _debug_message_callback(GLenum source, GLenum type, GLuint id, GLenum severity,

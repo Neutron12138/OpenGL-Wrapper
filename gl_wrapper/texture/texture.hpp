@@ -21,6 +21,7 @@ namespace gl_wrapper
         inline Texture(GLenum type) : m_type(type) { create(type); }
         inline Texture(Texture &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
         inline ~Texture() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(Texture);
 
     public:
         Texture &operator=(Texture &&from);

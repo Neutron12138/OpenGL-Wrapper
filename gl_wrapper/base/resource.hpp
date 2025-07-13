@@ -46,6 +46,7 @@ namespace gl_wrapper
     public:
         inline Resource(Resource &&from) : m_id(std::exchange(from.m_id, 0)) {}
         inline ~Resource() override { m_id = 0; }
+        BASE_DELETE_COPY_FUNCTION(Resource);
 
     public:
         inline operator GLuint() const { return m_id; }

@@ -17,6 +17,7 @@ namespace gl_wrapper
         inline Renderbuffer() { create(); }
         inline Renderbuffer(Renderbuffer &&from) : Resource(std::move(from)) {}
         inline ~Renderbuffer() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(Renderbuffer);
 
     public:
         Renderbuffer &operator=(Renderbuffer &&from);

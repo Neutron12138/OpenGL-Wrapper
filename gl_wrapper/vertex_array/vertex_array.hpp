@@ -19,6 +19,7 @@ namespace gl_wrapper
         inline VertexArray() { create(); }
         inline VertexArray(VertexArray &&from) : Resource(std::move(from)) {}
         inline ~VertexArray() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(VertexArray);
 
     public:
         VertexArray &operator=(VertexArray &&from);

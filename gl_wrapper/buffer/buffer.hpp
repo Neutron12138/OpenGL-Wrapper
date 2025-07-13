@@ -22,6 +22,7 @@ namespace gl_wrapper
         inline Buffer(GLenum type) { create(type); }
         inline Buffer(Buffer &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
         inline ~Buffer() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(Buffer);
 
     public:
         Buffer &operator=(Buffer &&from);

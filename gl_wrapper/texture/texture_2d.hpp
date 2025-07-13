@@ -12,6 +12,8 @@ namespace gl_wrapper
     public:
         inline Texture2D() : Texture(GL_TEXTURE_2D) {}
         inline Texture2D(Texture2D &&from) : Texture(std::move(from)) {}
+        inline ~Texture2D() override = default;
+        BASE_DELETE_COPY_FUNCTION(Texture2D);
 
     public:
         inline void create() { Texture::create(GL_TEXTURE_2D); }

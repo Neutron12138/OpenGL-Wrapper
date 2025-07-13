@@ -22,6 +22,7 @@ namespace gl_wrapper
         inline Framebuffer() = default;
         inline Framebuffer(GLenum type) { create(type); }
         inline ~Framebuffer() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(Framebuffer);
 
     public:
         Framebuffer &operator=(Framebuffer &&from);

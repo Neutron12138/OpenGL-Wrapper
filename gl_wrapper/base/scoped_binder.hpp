@@ -39,6 +39,7 @@ namespace gl_wrapper
             : m_binder(std::exchange(from.m_binder, nullptr)),
               m_unbinder(std::exchange(from.m_unbinder, nullptr)) { _bind(); }
         inline ~ScopedBinder() { _unbind(); }
+        BASE_DELETE_COPY_FUNCTION(ScopedBinder);
 
     public:
         Function get_binder() const { return m_binder; }

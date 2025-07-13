@@ -18,6 +18,7 @@ namespace gl_wrapper
         inline Program() { create(); }
         inline Program(Program &&from) : Resource(std::move(from)) {}
         inline ~Program() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(Program);
 
     public:
         Program &operator=(Program &&from);

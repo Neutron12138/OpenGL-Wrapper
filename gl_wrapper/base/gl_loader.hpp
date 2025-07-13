@@ -25,6 +25,7 @@ namespace gl_wrapper
             check_version();
         }
         inline ~GLLoader() = default;
+        BASE_DELETE_COPY_FUNCTION(GLLoader);
 
     public:
         glm::ivec2 get_version() const

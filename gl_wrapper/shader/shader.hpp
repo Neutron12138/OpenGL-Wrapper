@@ -23,6 +23,7 @@ namespace gl_wrapper
         inline Shader(GLenum type) { create(type); }
         inline Shader(Shader &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
         inline ~Shader() override { destroy(); }
+        BASE_DELETE_COPY_FUNCTION(Shader);
 
     public:
         Shader &operator=(Shader &&from);

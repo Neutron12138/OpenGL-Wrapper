@@ -11,7 +11,9 @@ namespace gl_wrapper
     {
     public:
         inline TextureCubeMap() : Texture(GL_TEXTURE_CUBE_MAP) {}
+        inline TextureCubeMap(TextureCubeMap &&from) : Texture(std::move(from)) {}
         inline ~TextureCubeMap() override = default;
+        BASE_DELETE_COPY_FUNCTION(TextureCubeMap);
 
     public:
         inline void create() { Texture::create(GL_TEXTURE_CUBE_MAP); }
