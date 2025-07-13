@@ -29,6 +29,7 @@ namespace gl_wrapper
         inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Texture); }
         inline void bind() const { glBindTexture(m_type, m_id); }
         inline void unbind() const { glBindTexture(m_type, 0); }
+        inline void bind_unit(GLuint unit) const { glBindTextureUnit(unit, m_id); }
 
     public:
         void create(GLenum type);
