@@ -26,7 +26,11 @@ namespace gl_wrapper
     void Framebuffer::create(FramebufferType type)
     {
         destroy();
+
         glCreateFramebuffers(1, &m_id);
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Framebuffer object");
+
         m_type = type;
     }
 

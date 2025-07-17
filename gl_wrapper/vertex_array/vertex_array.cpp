@@ -21,7 +21,10 @@ namespace gl_wrapper
     void VertexArray::create()
     {
         destroy();
+
         glCreateVertexArrays(1, &m_id);
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR("Failed to create VertexArray object");
     }
 
     void VertexArray::destroy()

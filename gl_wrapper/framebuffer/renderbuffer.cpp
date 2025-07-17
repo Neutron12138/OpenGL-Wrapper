@@ -12,6 +12,7 @@ namespace gl_wrapper
 
     Renderbuffer &Renderbuffer::operator=(Renderbuffer &&from)
     {
+        destroy();
         m_id = std::exchange(from.m_id, 0);
         return *this;
     }
@@ -22,7 +23,10 @@ namespace gl_wrapper
     void Renderbuffer::create()
     {
         destroy();
+
         glCreateRenderbuffers(1, &m_id);
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Renderbuffer object");
     }
 
     void Renderbuffer::destroy()

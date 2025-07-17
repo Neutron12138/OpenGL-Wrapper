@@ -42,10 +42,12 @@ namespace gl_wrapper
     void Shader::create(ShaderType type)
     {
         destroy();
+
         m_id = glCreateShader(static_cast<GLenum>(type));
         if (m_id == 0)
             throw BASE_MAKE_RUNTIME_ERROR(
-                "Failed to create Shader, type: ", static_cast<GLenum>(type));
+                "Failed to create Shader object, type: ", static_cast<GLenum>(type));
+
         m_type = type;
     }
 

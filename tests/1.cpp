@@ -108,6 +108,8 @@ int main()
 
     // 渲染到帧缓冲
 
+    gl_wrapper::Query query(gl_wrapper::Query::QueryType::TimeElapsed);
+
     {
         auto binder = [&]()
         {
@@ -128,11 +130,17 @@ int main()
         glViewport(0, 0, 512, 512);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        query.begin();
         vao.draw_arrays(gl_wrapper::VertexArray::DrawMode::Triangles, 3);
+        query.end();
 
         std::cout << "successfully drawn a triangle" << std::endl
                   << std::endl;
     }
+
+    std::cout << "time elapsed of drawn a triangle: " << query.get_parameter<GLint>(gl_wrapper::Query::ParameterName::Result) << std::endl
+              << std::endl;
 
     // 保存到图像
 

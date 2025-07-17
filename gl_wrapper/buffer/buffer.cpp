@@ -26,7 +26,11 @@ namespace gl_wrapper
     void Buffer::create(BufferType type)
     {
         destroy();
+
         glCreateBuffers(1, &m_id);
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Buffer object");
+
         m_type = type;
     }
 

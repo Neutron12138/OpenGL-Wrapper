@@ -28,7 +28,12 @@ namespace gl_wrapper
     void Texture::create(TextureType type)
     {
         destroy();
+
         glCreateTextures(static_cast<GLenum>(type), 1, &m_id);
+        if (m_id == 0)
+            throw BASE_MAKE_RUNTIME_ERROR(
+                "Failed to create Texture object, type: ", static_cast<GLenum>(type));
+
         m_type = type;
     }
 

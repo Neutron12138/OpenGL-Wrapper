@@ -43,9 +43,10 @@ namespace gl_wrapper
     void Program::create()
     {
         destroy();
+
         m_id = glCreateProgram();
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Program");
+            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Program object");
     }
 
     void Program::destroy()

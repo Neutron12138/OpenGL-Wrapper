@@ -47,3 +47,7 @@
 
 #include "framebuffer/renderbuffer.cpp"
 #include "framebuffer/framebuffer.cpp"
+
+// query
+
+#include "query/query.cpp"
