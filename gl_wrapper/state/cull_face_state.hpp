@@ -8,32 +8,36 @@ namespace gl_wrapper
     class CullFaceState
     {
     public:
+        /// @brief 剔除面
+        enum class CullFace : GLenum
+        {
+            Front = GL_FRONT,
+            Back = GL_BACK,
+            FrontAndBack = GL_FRONT_AND_BACK,
+        };
+
+        /// @brief 前面
+        enum class FrontFace : GLenum
+        {
+            CW = GL_CW,
+            CCW = GL_CCW,
+        };
+
+    public:
         /// @brief 是否启用面剔除
         GLboolean is_cull_face_enabled = GL_TRUE;
         /// @brief 正面环绕方式
-        GLenum front_face = GL_CCW;
+        FrontFace front_face = FrontFace::CCW;
         /// @brief 要剔除的面
-        GLenum cull_face = GL_BACK;
+        CullFace cull_face = CullFace::Back;
 
     public:
-        constexpr CullFaceState() = default;
-        constexpr CullFaceState(GLboolean enabled, GLenum front = GL_CCW, GLenum cull = GL_BACK)
-            : is_cull_face_enabled(enabled), front_face(front), cull_face(cull) {}
-        inline ~CullFaceState() = default;
+        CullFaceState() = default;
+        CullFaceState(GLboolean enabled, FrontFace front = FrontFace::CCW, CullFace cull = CullFace::Back);
+        ~CullFaceState() = default;
 
     public:
-        void operator()() const
-        {
-            if (!is_cull_face_enabled)
-            {
-                glDisable(GL_CULL_FACE);
-                return;
-            }
-
-            glEnable(GL_CULL_FACE);
-            glFrontFace(front_face);
-            glCullFace(cull_face);
-        }
+        void operator()() const;
     };
 
 } // namespace gl_wrapper

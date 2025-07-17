@@ -14,14 +14,12 @@ namespace gl_wrapper
         glm::uvec2 viewport_size;
 
     public:
-        constexpr ViewportState(const glm::uvec2 &size)
-            : viewport_size(size) {}
-        constexpr ViewportState(const glm::ivec2 &origin, const glm::uvec2 &size)
-            : viewport_origin(origin), viewport_size(size) {}
-        inline ~ViewportState() = default;
+        ViewportState(const glm::uvec2 &size);
+        ViewportState(const glm::ivec2 &origin, const glm::uvec2 &size);
+        ~ViewportState() = default;
 
     public:
-        inline void operator()() const { glViewport(viewport_origin.x, viewport_origin.y, viewport_size.x, viewport_size.y); }
+        void operator()() const;
     };
 
 } // namespace gl_wrapper

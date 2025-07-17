@@ -16,26 +16,12 @@ namespace gl_wrapper
         glm::uvec2 scissor_size;
 
     public:
-        constexpr ScissorTestState(GLboolean enabled, const glm::uvec2 &size)
-            : is_scissor_test_enabled(enabled),
-              scissor_size(size) {}
-        constexpr ScissorTestState(GLboolean enabled, const glm::ivec2 &origin, const glm::uvec2 &size)
-            : is_scissor_test_enabled(enabled),
-              scissor_origin(origin), scissor_size(size) {}
-        inline ~ScissorTestState() = default;
+        ScissorTestState(GLboolean enabled, const glm::uvec2 &size);
+        ScissorTestState(GLboolean enabled, const glm::ivec2 &origin, const glm::uvec2 &size);
+        ~ScissorTestState() = default;
 
     public:
-        void operator()() const
-        {
-            if (!is_scissor_test_enabled)
-            {
-                glDisable(GL_SCISSOR_TEST);
-                return;
-            }
-
-            glEnable(GL_SCISSOR_TEST);
-            glScissor(scissor_origin.x, scissor_origin.y, scissor_size.x, scissor_size.y);
-        }
+        void operator()() const;
     };
 
 } // namespace gl_wrapper

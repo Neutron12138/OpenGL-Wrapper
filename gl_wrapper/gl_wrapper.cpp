@@ -11,6 +11,16 @@
 #include "base/debug_message_callback.cpp"
 #include "base/scoped_binder.cpp"
 
+// state
+
+#include "state/viewport_state.cpp"
+#include "state/depth_test_state.cpp"
+#include "state/clear_state.cpp"
+#include "state/cull_face_state.cpp"
+#include "state/blend_state.cpp"
+#include "state/scissor_test_state.cpp"
+#include "state/stencil_test_state.cpp"
+
 // buffer
 
 #include "buffer/buffer.cpp"

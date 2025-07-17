@@ -16,18 +16,12 @@ namespace gl_wrapper
         GLint clear_stencil = 0;
 
     public:
-        constexpr ClearState() = default;
-        constexpr ClearState(const glm::vec4 &color, GLdouble depth = 1.0, GLint stencil = 0)
-            : clear_color(color), clear_depth(depth), clear_stencil(stencil) {}
-        inline ~ClearState() = default;
+        ClearState() = default;
+        ClearState(const glm::vec4 &color, GLdouble depth = 1.0, GLint stencil = 0);
+        ~ClearState() = default;
 
     public:
-        void operator()() const
-        {
-            glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
-            glClearDepth(clear_depth);
-            glClearStencil(clear_stencil);
-        }
+        void operator()() const;
     };
 
 } // namespace gl_wrapper
