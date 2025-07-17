@@ -1,69 +1,93 @@
+#pragma once
+
 #include "texture.hpp"
 
 namespace gl_wrapper
 {
+    bool Texture::is_texture(GLuint id) { return glIsTexture(id); }
+
+    Texture::Texture(TextureType type) : m_type(type) { create(type); }
+    Texture::Texture(Texture &&from) : Resource(std::move(from)),
+                                       m_type(std::exchange(from.m_type, TextureType::None)) {}
+    Texture::~Texture() { destroy(); }
+
     Texture &Texture::operator=(Texture &&from)
     {
         destroy();
         m_id = std::exchange(from.m_id, 0);
-        m_type = std::exchange(from.m_type, 0);
+        m_type = std::exchange(from.m_type, TextureType::None);
         return *this;
     }
 
-    void Texture::create(GLenum type)
+    Texture::TextureType Texture::get_type() const { return m_type; }
+    base::Int64 Texture::get_resource_type() const { return static_cast<base::Int64>(ResourceType::Texture); }
+    void Texture::bind() const { glBindTexture(static_cast<GLenum>(m_type), m_id); }
+    void Texture::unbind() const { glBindTexture(static_cast<GLenum>(m_type), 0); }
+    void Texture::bind_unit(GLuint unit) const { glBindTextureUnit(unit, m_id); }
+
+    void Texture::create(TextureType type)
     {
         destroy();
-        glCreateTextures(type, 1, &m_id);
-        // if(m_id==0)
+        glCreateTextures(static_cast<GLenum>(type), 1, &m_id);
         m_type = type;
     }
 
     void Texture::destroy()
     {
+        if (m_id == 0)
+            return;
+
         glDeleteTextures(1, &m_id);
         m_id = 0;
-        m_type = 0;
+        m_type = TextureType::None;
     }
 
+    void Texture::generate_mipmap() { glGenerateTextureMipmap(m_id); }
+    void Texture::set_wrap_s(WrapParameter wrap) { glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrap)); }
+    void Texture::set_wrap_t(WrapParameter wrap) { glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrap)); }
+    void Texture::set_wrap_r(WrapParameter wrap) { glTextureParameteri(m_id, GL_TEXTURE_WRAP_R, static_cast<GLint>(wrap)); }
+    void Texture::set_min_filter(MinFilter filter) { glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(filter)); }
+    void Texture::set_mag_filter(MagFilter filter) { glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filter)); }
+
     template <>
-    void Texture::set_parameter(GLenum pname, GLint param)
+    void Texture::set_parameter(ParameterName pname, GLint param)
     {
-        glTextureParameteri(m_id, pname, param);
+        glTextureParameteri(m_id, static_cast<GLenum>(pname), param);
     }
 
     template <>
-    void Texture::set_parameter(GLenum pname, GLuint param)
+    void Texture::set_parameter(ParameterName pname, GLuint param)
     {
-        glTextureParameteri(m_id, pname, param);
+        glTextureParameteri(m_id, static_cast<GLenum>(pname), param);
     }
 
     template <>
-    void Texture::set_parameter(GLenum pname, GLfloat param)
+    void Texture::set_parameter(ParameterName pname, GLfloat param)
     {
-        glTextureParameterf(m_id, pname, param);
+        glTextureParameterf(m_id, static_cast<GLenum>(pname), param);
     }
 
     template <>
-    GLint Texture::get_parameter(GLenum pname) const
+    GLint Texture::get_parameter(ParameterName pname) const
     {
         GLint param;
-        glGetTextureParameteriv(m_id, pname, &param);
+        glGetTextureParameteriv(m_id, static_cast<GLenum>(pname), &param);
         return param;
     }
 
     template <>
-    GLfloat Texture::get_parameter(GLenum pname) const
+    GLfloat Texture::get_parameter(ParameterName pname) const
     {
         GLfloat param;
-        glGetTextureParameterfv(m_id, pname, &param);
+        glGetTextureParameterfv(m_id, static_cast<GLenum>(pname), &param);
         return param;
     }
 
     template <>
-    GLuint Texture::get_parameter(GLenum pname) const
+    GLuint Texture::get_parameter(ParameterName pname) const
     {
         GLuint param;
-        glGetTextureParameterIuiv(m_id, pname, &param);
+        glGetTextureParameterIuiv(m_id, static_cast<GLenum>(pname), &param);
         return param;
     }
 

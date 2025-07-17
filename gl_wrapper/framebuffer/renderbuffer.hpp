@@ -10,37 +10,46 @@ namespace gl_wrapper
     class Renderbuffer : public Resource
     {
     public:
-        static inline bool is_renderbuffer(GLuint id) { return glIsRenderbuffer(id); }
-        static inline void unbind() { glBindRenderbuffer(GL_RENDERBUFFER, 0); }
+        /// @brief 渲染缓冲参数名
+        enum class ParameterName : GLenum
+        {
+            Width = GL_RENDERBUFFER_WIDTH,
+            Height = GL_RENDERBUFFER_HEIGHT,
+            InternalFormat = GL_RENDERBUFFER_INTERNAL_FORMAT,
+            Samples = GL_RENDERBUFFER_SAMPLES,
+
+            RedSize = GL_RENDERBUFFER_RED_SIZE,
+            GreenSize = GL_RENDERBUFFER_GREEN_SIZE,
+            BluseSize = GL_RENDERBUFFER_BLUE_SIZE,
+            AlphaSize = GL_RENDERBUFFER_ALPHA_SIZE,
+            DepthSize = GL_RENDERBUFFER_DEPTH_SIZE,
+            StencilSize = GL_RENDERBUFFER_STENCIL_SIZE,
+        };
+
+        static bool is_renderbuffer(GLuint id);
+        static void unbind();
 
     public:
-        inline Renderbuffer() { create(); }
-        inline Renderbuffer(Renderbuffer &&from) : Resource(std::move(from)) {}
-        inline ~Renderbuffer() override { destroy(); }
+        Renderbuffer() = default;
+        Renderbuffer(Renderbuffer &&from);
+        ~Renderbuffer() override;
         BASE_DELETE_COPY_FUNCTION(Renderbuffer);
 
     public:
         Renderbuffer &operator=(Renderbuffer &&from);
-        inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Renderbuffer); }
-        inline void bind() const { glBindRenderbuffer(GL_RENDERBUFFER, m_id); }
+        base::Int64 get_resource_type() const override;
+        void bind() const;
 
     public:
         void create();
         void destroy();
 
     public:
-        inline void set_storage(GLenum internalformat, GLsizei width, GLsizei height)
-        {
-            glNamedRenderbufferStorage(m_id, internalformat, width, height);
-        }
-
-        inline void set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
-        {
-            glNamedRenderbufferStorageMultisample(m_id, samples, internalformat, width, height);
-        }
+        void set_storage(GLenum internalformat, GLsizei width, GLsizei height);
+        void set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 
     public:
-        GLint get_parameter(GLenum pname) const;
+        GLint get_parameter(ParameterName pname) const;
     };
 
 } // namespace gl_wrapper

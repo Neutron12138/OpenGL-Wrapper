@@ -3,7 +3,7 @@
 #include <stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
-#include <base/core/read_string.hpp>
+#include <base/misc/read_string.hpp>
 #include <glfw_wrapper/glfw_wrapper.hpp>
 #include "../gl_wrapper/gl_wrapper.hpp"
 
@@ -23,25 +23,13 @@ int main()
 
     gl_wrapper::GLLoader loader;
     auto &debug_message_callback = gl_wrapper::DebugMessageCallback::get_instance();
+    glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_OTHER, 0,
+                         GL_DEBUG_SEVERITY_NOTIFICATION, -1, "It's nothing, just a small test");
+    std::cout << std::endl;
 
     // 加载着色器
 
-    gl_wrapper::Shader vshader(GL_VERTEX_SHADER);
-    vshader.set_source(base::read_string_from_file("shaders/1.vert"));
-    vshader.compile_shader();
-    std::cout << "vertex shader source:" << std::endl
-              << vshader.get_source() << std::endl
-              << std::endl;
-    gl_wrapper::Shader fshader(GL_FRAGMENT_SHADER);
-    fshader.set_source(base::read_string_from_file("shaders/1.frag"));
-    fshader.compile_shader();
-    std::cout << "fragment shader source:" << std::endl
-              << fshader.get_source() << std::endl
-              << std::endl;
-    gl_wrapper::Program program;
-    program.attach_shader(vshader);
-    program.attach_shader(fshader);
-    program.link_program();
+    gl_wrapper::Program program = gl_wrapper::Program::load_from_file("shaders/1.vert", "shaders/1.frag");
 
     // 创建顶点数组
 
@@ -59,9 +47,11 @@ int main()
         glm::vec3(0.933f, 0.75f, 0.0f),
     };
 
-    gl_wrapper::Buffer vbo(GL_ARRAY_BUFFER);
+    gl_wrapper::Buffer vbo;
+    vbo.create(gl_wrapper::Buffer::BufferType::Array);
     vbo.set_storage(vertices);
     gl_wrapper::VertexArray vao;
+    vao.create();
     vao.bind_vertex_buffer(0, vbo, 0, 3 * sizeof(glm::vec3));
     vao.enable_attrib(0);
     vao.set_attrib_format<glm::vec3>(0);
@@ -81,12 +71,13 @@ int main()
         throw "Failed to load image";
 
     gl_wrapper::Texture2D texture;
+    texture.create();
     texture.set_wrap_s();
     texture.set_wrap_t();
     texture.set_min_filter();
     texture.set_mag_filter();
-    texture.set_storage(1, GL_RGB8, width, width);
-    texture.set_sub_image(0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+    texture.set_storage(1, gl_wrapper::InternalFormat::RGB8, width, width);
+    texture.set_sub_image(0, 0, 0, width, height, gl_wrapper::BaseFormat::RGB, gl_wrapper::DataType::UnsignedByte, pixels);
     texture.generate_mipmap();
 
     stbi_image_free(pixels);
@@ -99,13 +90,20 @@ int main()
     // 创建帧缓冲
 
     gl_wrapper::Texture2D color_texture;
-    color_texture.set_storage(1, GL_RGBA8, 512, 512);
+    color_texture.create();
+    color_texture.set_wrap_s();
+    color_texture.set_wrap_t();
+    color_texture.set_min_filter();
+    color_texture.set_mag_filter();
+    color_texture.set_storage(1, gl_wrapper::InternalFormat::RGB8, 512, 512);
     gl_wrapper::Renderbuffer rbo;
+    rbo.create();
     rbo.set_storage(GL_DEPTH24_STENCIL8, 512, 512);
-    gl_wrapper::Framebuffer fbo(GL_FRAMEBUFFER);
+    gl_wrapper::Framebuffer fbo;
+    fbo.create(gl_wrapper::Framebuffer::FramebufferType::Default);
     fbo.attach_color_texture(color_texture);
-    fbo.attach_renderbuffer(GL_DEPTH_STENCIL_ATTACHMENT, rbo);
-    std::cout << "is framebuffer complete: " << (fbo.check_status() == GL_FRAMEBUFFER_COMPLETE) << std::endl
+    fbo.attach_renderbuffer(gl_wrapper::Framebuffer::Attachment::Depth, rbo);
+    std::cout << "is framebuffer complete: " << (fbo.check_status() == gl_wrapper::Framebuffer::Status::Complete) << std::endl
               << std::endl;
 
     // 渲染到帧缓冲
@@ -130,7 +128,7 @@ int main()
         glViewport(0, 0, 512, 512);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        vao.draw_arrays(GL_TRIANGLES, 3);
+        vao.draw_arrays(gl_wrapper::VertexArray::DrawMode::Triangles, 3);
 
         std::cout << "successfully drawn a triangle" << std::endl
                   << std::endl;

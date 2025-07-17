@@ -12,89 +12,66 @@ namespace gl_wrapper
     class VertexArray : public Resource
     {
     public:
-        static inline bool is_vertex_array(GLuint id) { return glIsVertexArray(id); }
-        static inline void unbind() { glBindVertexArray(0); }
+        /// @brief 绘制模式
+        enum class DrawMode : GLenum
+        {
+            Points = GL_POINTS,
+            LineStrip = GL_LINE_STRIP,
+            LineLoop = GL_LINE_LOOP,
+            Lines = GL_LINES,
+            LineStripAdjacency = GL_LINE_STRIP_ADJACENCY,
+            LinesAdjacency = GL_LINES_ADJACENCY,
+            TriangleStrip = GL_TRIANGLE_STRIP,
+            TriangleFan = GL_TRIANGLE_FAN,
+            Triangles = GL_TRIANGLES,
+            TriangleStripAdjacency = GL_TRIANGLE_STRIP_ADJACENCY,
+            TrianglesAdjacency = GL_TRIANGLES_ADJACENCY,
+            Patches = GL_PATCHES,
+        };
+
+        static bool is_vertex_array(GLuint id);
+        static void unbind();
 
     public:
-        inline VertexArray() { create(); }
-        inline VertexArray(VertexArray &&from) : Resource(std::move(from)) {}
-        inline ~VertexArray() override { destroy(); }
+        VertexArray() = default;
+        VertexArray(VertexArray &&from);
+        ~VertexArray() override;
         BASE_DELETE_COPY_FUNCTION(VertexArray);
 
     public:
         VertexArray &operator=(VertexArray &&from);
-        base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::VertexArray); }
-        inline void bind() const { glBindVertexArray(m_id); }
+        base::Int64 get_resource_type() const override;
+        void bind() const;
 
     public:
         void create();
         void destroy();
 
     public:
-        inline void set_binding_divisor(GLuint index, GLuint divisor = 0) { glVertexArrayBindingDivisor(m_id, index, divisor); }
-        inline void enable_attrib(GLuint index) { glEnableVertexArrayAttrib(m_id, index); }
-        inline void disable_attrib(GLuint index) { glDisableVertexArrayAttrib(m_id, index); }
-
-        inline void set_attrib_format(GLuint attribindex, GLint size, GLenum type,
-                                      GLboolean normalized, GLuint relativeoffset)
-        {
-            glVertexArrayAttribFormat(m_id, attribindex, size, type, normalized, relativeoffset);
-        }
-
-        inline void set_attrib_format(GLuint attribindex, GLint size, GLenum type,
-                                      GLuint relativeoffset = 0)
-        {
-            glVertexArrayAttribFormat(m_id, attribindex, size, type, GL_FALSE, relativeoffset);
-        }
+        void set_binding_divisor(GLuint index, GLuint divisor = 0);
+        void enable_attrib(GLuint index);
+        void disable_attrib(GLuint index);
+        void set_attrib_format(GLuint attribindex, GLint size, DataType type,
+                               GLboolean normalized, GLuint relativeoffset);
+        void set_attrib_format(GLuint attribindex, GLint size, DataType type,
+                               GLuint relativeoffset = 0);
+        void set_attrib_binding(GLuint attribindex, GLuint bindingindex);
+        void bind_vertex_buffer(GLuint bindingindex, const Buffer &vbo, GLintptr offset, GLsizei stride);
+        void bind_element_buffer(const Buffer &ebo);
 
         template <typename T>
         void set_attrib_format(GLuint attribindex, GLuint relativeoffset = 0);
 
-        inline void set_attrib_binding(GLuint attribindex, GLuint bindingindex)
-        {
-            glVertexArrayAttribBinding(m_id, attribindex, bindingindex);
-        }
-
-        inline void bind_vertex_buffer(GLuint bindingindex, const Buffer &vbo, GLintptr offset, GLsizei stride)
-        {
-            glVertexArrayVertexBuffer(m_id, bindingindex, vbo, offset, stride);
-        }
-
-        inline void bind_element_buffer(const Buffer &ebo)
-        {
-            glVertexArrayElementBuffer(m_id, ebo);
-        }
-
     public:
-        inline void draw_arrays(GLenum mode, GLint first, GLsizei count) const { glDrawArrays(mode, first, count); }
-        inline void draw_arrays(GLenum mode, GLsizei count) const { draw_arrays(mode, 0, count); }
-
-        inline void draw_arrays_instanced(GLenum mode, GLint first, GLsizei count, GLsizei instancecount) const
-        {
-            glDrawArraysInstanced(mode, first, count, instancecount);
-        }
-
-        inline void draw_arrays_instanced(GLenum mode, GLsizei count, GLsizei instancecount) const
-        {
-            draw_arrays_instanced(mode, 0, count, instancecount);
-        }
-
-        inline void draw_elements(GLenum mode, GLsizei count, GLenum type, const void *indices = nullptr) const
-        {
-            glDrawElements(mode, count, type, indices);
-        }
-
-        inline void draw_elements_instanced(GLenum mode, GLsizei count, GLenum type,
-                                            const void *indices, GLsizei instancecount) const
-        {
-            glDrawElementsInstanced(mode, count, type, indices, instancecount);
-        }
-
-        inline void draw_elements_instanced(GLenum mode, GLsizei count, GLenum type,
-                                            GLsizei instancecount) const
-        {
-            glDrawElementsInstanced(mode, count, type, nullptr, instancecount);
-        }
+        void draw_arrays(DrawMode mode, GLint first, GLsizei count) const;
+        void draw_arrays(DrawMode mode, GLsizei count) const;
+        void draw_arrays_instanced(DrawMode mode, GLint first, GLsizei count, GLsizei instancecount) const;
+        void draw_arrays_instanced(DrawMode mode, GLsizei count, GLsizei instancecount) const;
+        void draw_elements(DrawMode mode, GLsizei count, DataType type, const void *indices = nullptr) const;
+        void draw_elements_instanced(DrawMode mode, GLsizei count, DataType type,
+                                     const void *indices, GLsizei instancecount) const;
+        void draw_elements_instanced(DrawMode mode, GLsizei count, DataType type,
+                                     GLsizei instancecount) const;
     };
 
 } // namespace gl_wrapper

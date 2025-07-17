@@ -10,24 +10,21 @@ namespace gl_wrapper
     class TextureCubeMap : public Texture
     {
     public:
-        inline TextureCubeMap() : Texture(GL_TEXTURE_CUBE_MAP) {}
-        inline TextureCubeMap(TextureCubeMap &&from) : Texture(std::move(from)) {}
-        inline ~TextureCubeMap() override = default;
+        TextureCubeMap() = default;
+        TextureCubeMap(TextureCubeMap &&from);
+        ~TextureCubeMap() override = default;
         BASE_DELETE_COPY_FUNCTION(TextureCubeMap);
 
     public:
-        inline void create() { Texture::create(GL_TEXTURE_CUBE_MAP); }
+        TextureCubeMap &operator=(TextureCubeMap &&from);
+        void create();
 
     public:
-        inline void set_storage(GLsizei levels, GLint internalformat, GLsizei width, GLsizei height)
-        {
-            glTextureStorage2D(m_id, levels, internalformat, width, height);
-        }
-
-        inline void set_sub_image(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels)
-        {
-            glTextureSubImage2D(m_id, level, xoffset, yoffset, width, height, format, type, pixels);
-        }
+        void set_storage(GLsizei levels, InternalFormat internalformat, GLsizei width, GLsizei height);
+        void set_sub_image(GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
+                           GLsizei height, GLsizei depth, BaseFormat format, DataType type, const void *pixels = nullptr);
+        void set_sub_image(GLint level, GLint zoffset, GLsizei width, GLsizei height, BaseFormat format,
+                           DataType type, const void *pixels = nullptr);
     };
 
 } // namespace gl_wrapper

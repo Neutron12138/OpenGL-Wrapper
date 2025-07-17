@@ -2,6 +2,7 @@
 
 #include <base/misc/resource.hpp>
 #include "gl_loader.hpp"
+#include "enums.hpp"
 
 namespace gl_wrapper
 {
@@ -41,22 +42,18 @@ namespace gl_wrapper
         GLuint m_id = 0;
 
     protected:
-        inline Resource() = default;
+        Resource() = default;
 
     public:
-        inline Resource(Resource &&from) : m_id(std::exchange(from.m_id, 0)) {}
-        inline ~Resource() override { m_id = 0; }
+        Resource(Resource &&from);
+        ~Resource() override;
         BASE_DELETE_COPY_FUNCTION(Resource);
 
     public:
-        inline operator GLuint() const { return m_id; }
-        inline GLuint get_id() const { return m_id; }
-        inline bool is_valid() const override { return m_id; }
-        inline virtual Resource &operator=(Resource &&from)
-        {
-            m_id = std::exchange(from.m_id, 0);
-            return *this;
-        }
+        virtual Resource &operator=(Resource &&from);
+        operator GLuint() const;
+        GLuint get_id() const;
+        bool is_valid() const override;
     };
 
 } // namespace gl_wrapper

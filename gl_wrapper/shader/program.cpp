@@ -1,13 +1,44 @@
+#pragma once
+
 #include "program.hpp"
 
 namespace gl_wrapper
 {
+    bool Program::is_program(GLuint id) { return glIsProgram(id); }
+    void Program::unuse() { glUseProgram(0); }
+
+    Program Program::link_shaders(const Shader &shader1, const Shader &shader2)
+    {
+        return std::move(Program(shader1, shader2));
+    }
+
+    Program Program::load_from_file(const std::string &vfilename, const std::string &ffilename)
+    {
+        return std::move(Program(
+            Shader::load_from_file(Shader::ShaderType::Vertex, vfilename),
+            Shader::load_from_file(Shader::ShaderType::Fragment, ffilename)));
+    }
+
+    Program::Program(const Shader &shader1, const Shader &shader2)
+    {
+        create();
+        attach_shader(shader1);
+        attach_shader(shader2);
+        link_program();
+    }
+
+    Program::Program(Program &&from) : Resource(std::move(from)) {}
+    Program::~Program() { destroy(); }
+
     Program &Program::operator=(Program &&from)
     {
         destroy();
         m_id = std::exchange(from.m_id, 0);
         return *this;
     }
+
+    base::Int64 Program::get_resource_type() const { return static_cast<base::Int64>(ResourceType::Program); }
+    void Program::use() const { glUseProgram(m_id); }
 
     void Program::create()
     {
@@ -19,19 +50,24 @@ namespace gl_wrapper
 
     void Program::destroy()
     {
+        if (m_id == 0)
+            return;
+
         glDeleteProgram(m_id);
         m_id = 0;
     }
+
+    void Program::attach_shader(const Shader &shader) { glAttachShader(m_id, shader); }
 
     void Program::link_program()
     {
         glLinkProgram(m_id);
 
-        GLint success = get_parameter(GL_LINK_STATUS);
+        GLint success = get_parameter(ParameterName::LinkStatus);
         if (success)
             return;
 
-        GLint length = get_parameter(GL_INFO_LOG_LENGTH);
+        GLint length = get_parameter(ParameterName::InfoLogLength);
 
         std::string info_log;
         info_log.resize(length);
@@ -41,10 +77,15 @@ namespace gl_wrapper
             info_log);
     }
 
-    GLint Program::get_parameter(GLenum pname) const
+    GLint Program::get_uniform_location(const std::string &name) const { return glGetUniformLocation(m_id, name.data()); }
+    GLint Program::get_attrib_location(const std::string &name) const { return glGetAttribLocation(m_id, name.data()); }
+
+    void Program::set_parameter(ParameterName pname, GLint value) { glProgramParameteri(m_id, static_cast<GLenum>(pname), value); }
+
+    GLint Program::get_parameter(ParameterName pname) const
     {
         GLint value;
-        glGetProgramiv(m_id, pname, &value);
+        glGetProgramiv(m_id, static_cast<GLenum>(pname), &value);
         return value;
     }
 

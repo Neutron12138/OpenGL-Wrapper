@@ -11,39 +11,67 @@ namespace gl_wrapper
     class Program : public Resource
     {
     public:
-        static inline bool is_program(GLuint id) { return glIsProgram(id); }
-        static inline void unuse() { glUseProgram(0); }
+        /// @brief 着色程序参数名
+        enum class ParameterName : GLenum
+        {
+            DeleteStatus = GL_DELETE_STATUS,
+            LinkStatus = GL_LINK_STATUS,
+            ValidateStatus = GL_VALIDATE_STATUS,
+            InfoLogLength = GL_INFO_LOG_LENGTH,
+            AttachedShaders = GL_ATTACHED_SHADERS,
+            ActiveAtomicCounterBuffers = GL_ACTIVE_ATOMIC_COUNTER_BUFFERS,
+            ActiveAttributes = GL_ACTIVE_ATTRIBUTES,
+            ActiveAttributeMaxLength = GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
+            ActiveUniforms = GL_ACTIVE_UNIFORMS,
+            ActiveUniformBlocks = GL_ACTIVE_UNIFORM_BLOCKS,
+            ActiveUniformBlockMaxNameLength = GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH,
+            ActiveUniformMaxLength = GL_ACTIVE_UNIFORM_MAX_LENGTH,
+            ComputeWorkGroupSize = GL_COMPUTE_WORK_GROUP_SIZE,
+            ProgramBinaryLength = GL_PROGRAM_BINARY_LENGTH,
+            TransformFeedbackBufferMode = GL_TRANSFORM_FEEDBACK_BUFFER_MODE,
+            TransformFeedbackVaryings = GL_TRANSFORM_FEEDBACK_VARYINGS,
+            TransformFeedbackVaryingMaxLength = GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH,
+            GeometryVerticesOut = GL_GEOMETRY_VERTICES_OUT,
+            GeometryInputType = GL_GEOMETRY_INPUT_TYPE,
+            GeometryOutputType = GL_GEOMETRY_OUTPUT_TYPE,
+        };
+
+        static bool is_program(GLuint id);
+        static void unuse();
+        static Program link_shaders(const Shader &shader1, const Shader &shader2);
+        static Program load_from_file(const std::string &vfilename, const std::string &ffilename);
 
     public:
-        inline Program() { create(); }
-        inline Program(Program &&from) : Resource(std::move(from)) {}
-        inline ~Program() override { destroy(); }
+        Program() = default;
+        Program(const Shader &shader1, const Shader &shader2);
+        Program(Program &&from);
+        ~Program() override;
         BASE_DELETE_COPY_FUNCTION(Program);
 
     public:
         Program &operator=(Program &&from);
-        inline base::Int64 get_resource_type() const { return static_cast<base::Int64>(ResourceType::Program); }
-        inline void use() const { glUseProgram(m_id); }
+        base::Int64 get_resource_type() const;
+        void use() const;
 
     public:
         void create();
         void destroy();
 
     public:
-        inline void attach_shader(const Shader &shader) { glAttachShader(m_id, shader.get_id()); }
+        void attach_shader(const Shader &shader);
         void link_program();
 
     public:
-        inline GLint get_uniform_location(const std::string &name) const { return glGetUniformLocation(m_id, name.data()); }
-        inline GLint get_attrib_location(const std::string &name) const { return glGetAttribLocation(m_id, name.data()); }
+        GLint get_uniform_location(const std::string &name) const;
+        GLint get_attrib_location(const std::string &name) const;
         template <typename T>
         void set_uniform(GLint location, const T &value);
         template <typename T>
         T get_uniform(GLint location);
 
     public:
-        inline void set_parameter(GLenum pname, GLint value) { glProgramParameteri(m_id, pname, value); }
-        GLint get_parameter(GLenum pname) const;
+        void set_parameter(ParameterName pname, GLint value);
+        GLint get_parameter(ParameterName pname) const;
     };
 
 } // namespace gl_wrapper

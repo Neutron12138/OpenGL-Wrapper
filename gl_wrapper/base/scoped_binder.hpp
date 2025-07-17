@@ -1,5 +1,6 @@
 #pragma once
 
+#include <utility>
 #include <functional>
 #include <base/core/noncopyable_object.hpp>
 
@@ -19,31 +20,20 @@ namespace gl_wrapper
         Function m_unbinder = nullptr;
 
     private:
-        void _bind()
-        {
-            if (m_binder)
-                m_binder();
-        }
-
-        void _unbind()
-        {
-            if (m_unbinder)
-                m_unbinder();
-        }
+        void _bind();
+        void _unbind();
 
     public:
         template <typename F1, typename F2>
-        inline ScopedBinder(F1 binder, F2 unbinder)
+        ScopedBinder(F1 binder, F2 unbinder)
             : m_binder(binder), m_unbinder(unbinder) { _bind(); }
-        inline ScopedBinder(ScopedBinder &&from)
-            : m_binder(std::exchange(from.m_binder, nullptr)),
-              m_unbinder(std::exchange(from.m_unbinder, nullptr)) { _bind(); }
-        inline ~ScopedBinder() { _unbind(); }
+        ScopedBinder(ScopedBinder &&from);
+        ~ScopedBinder();
         BASE_DELETE_COPY_FUNCTION(ScopedBinder);
 
     public:
-        Function get_binder() const { return m_binder; }
-        Function get_unbinder() const { return m_unbinder; }
+        Function get_binder() const;
+        Function get_unbinder() const;
     };
 
 } // namespace gl_wrapper

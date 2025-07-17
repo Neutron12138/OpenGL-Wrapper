@@ -10,24 +10,21 @@ namespace gl_wrapper
     class Texture2D : public Texture
     {
     public:
-        inline Texture2D() : Texture(GL_TEXTURE_2D) {}
-        inline Texture2D(Texture2D &&from) : Texture(std::move(from)) {}
-        inline ~Texture2D() override = default;
+        Texture2D() = default;
+        Texture2D(Texture2D &&from);
+        ~Texture2D() override = default;
         BASE_DELETE_COPY_FUNCTION(Texture2D);
 
     public:
-        inline void create() { Texture::create(GL_TEXTURE_2D); }
+        Texture2D &operator=(Texture2D &&from);
+        void create();
 
     public:
-        inline void set_storage(GLsizei levels, GLint internalformat, GLsizei width, GLsizei height)
-        {
-            glTextureStorage2D(m_id, levels, internalformat, width, height);
-        }
-
-        inline void set_sub_image(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels)
-        {
-            glTextureSubImage2D(m_id, level, xoffset, yoffset, width, height, format, type, pixels);
-        }
+        void set_storage(GLsizei levels, InternalFormat internalformat, GLsizei width, GLsizei height);
+        void set_sub_image(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
+                           BaseFormat format, DataType type, const void *pixels = nullptr);
+        void set_sub_image(GLint level, GLsizei width, GLsizei height, BaseFormat format,
+                           DataType type, const void *pixels = nullptr);
     };
 
 } // namespace gl_wrapper

@@ -12,26 +12,50 @@ namespace gl_wrapper
     class Shader : public Resource
     {
     public:
-        static inline bool is_shader(GLuint id) { return glIsShader(id); }
+        /// @brief 着色器类型
+        enum class ShaderType : GLenum
+        {
+            None = GL_NONE,
+            Compute = GL_COMPUTE_SHADER,
+            Vertex = GL_VERTEX_SHADER,
+            TessControl = GL_TESS_CONTROL_SHADER,
+            TessEvaluation = GL_TESS_EVALUATION_SHADER,
+            Geometry = GL_GEOMETRY_SHADER,
+            Fragment = GL_FRAGMENT_SHADER,
+        };
+
+        /// @brief 着色器参数名
+        enum class ParameterName : GLenum
+        {
+            Type = GL_SHADER_TYPE,
+            DeleteStatus = GL_DELETE_STATUS,
+            CompileStatus = GL_COMPILE_STATUS,
+            InfoLogLength = GL_INFO_LOG_LENGTH,
+            SourceLength = GL_SHADER_SOURCE_LENGTH,
+        };
+
+        static bool is_shader(GLuint id);
+        static Shader load_from_string(ShaderType type, const std::string &source);
+        static Shader load_from_file(ShaderType type, const std::string &filename);
 
     private:
         /// @brief 着色器类型
-        GLenum m_type = 0;
+        ShaderType m_type = ShaderType::None;
 
     public:
-        inline Shader() = default;
-        inline Shader(GLenum type) { create(type); }
-        inline Shader(Shader &&from) : Resource(std::move(from)), m_type(std::exchange(from.m_type, 0)) {}
-        inline ~Shader() override { destroy(); }
+        Shader() = default;
+        Shader(ShaderType type, const std::string &source);
+        Shader(Shader &&from);
+        ~Shader() override;
         BASE_DELETE_COPY_FUNCTION(Shader);
 
     public:
         Shader &operator=(Shader &&from);
-        inline GLenum get_type() const { return m_type; }
-        inline base::Int64 get_resource_type() const override { return static_cast<base::Int64>(ResourceType::Shader); }
+        ShaderType get_type() const;
+        base::Int64 get_resource_type() const override;
 
     public:
-        void create(GLenum type);
+        void create(ShaderType type);
         void destroy();
 
     public:
@@ -39,7 +63,7 @@ namespace gl_wrapper
         void compile_shader();
 
     public:
-        GLint get_parameter(GLenum pname) const;
+        GLint get_parameter(ParameterName pname) const;
         std::string get_source() const;
     };
 
