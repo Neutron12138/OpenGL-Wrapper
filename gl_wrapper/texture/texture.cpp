@@ -34,6 +34,7 @@ namespace gl_wrapper
     void Texture::bind() const { glBindTexture(static_cast<GLenum>(m_type), m_id); }
     void Texture::unbind() const { glBindTexture(static_cast<GLenum>(m_type), 0); }
     void Texture::bind_unit(GLuint unit) const { glBindTextureUnit(unit, m_id); }
+    void Texture::active_unit(TextureUnit unit) const { glActiveTexture(static_cast<GLenum>(unit)); }
 
     base::Size Texture::get_width() const { return m_width; }
     base::Size Texture::get_height() const { return m_height; }
