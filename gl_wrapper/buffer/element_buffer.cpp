@@ -23,7 +23,7 @@ namespace gl_wrapper
         ebo.create();
         ebo.set_storage(indices, flags);
 
-        return std::move(ebo);
+        return ebo;
     }
 
 } // namespace gl_wrapper

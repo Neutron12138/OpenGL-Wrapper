@@ -41,6 +41,7 @@ namespace gl_wrapper
         Query() = default;
         Query(Query &&from);
         ~Query() override;
+        BASE_DELETE_COPY_FUNCTION(Query);
 
     public:
         Query &operator=(Query &&from);
@@ -61,5 +62,7 @@ namespace gl_wrapper
         template <typename T>
         T get_parameter(ParameterName pname) const;
     };
+
+    Query create_query(Query::QueryType type);
 
 } // namespace gl_wrapper

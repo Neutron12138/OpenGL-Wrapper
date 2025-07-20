@@ -38,9 +38,9 @@ namespace gl_wrapper
         m_id = 0;
     }
 
-    void Renderbuffer::set_storage(GLenum internalformat, GLsizei width, GLsizei height)
+    void Renderbuffer::set_storage(InternalFormat internal_format, GLsizei width, GLsizei height)
     {
-        glNamedRenderbufferStorage(m_id, internalformat, width, height);
+        glNamedRenderbufferStorage(m_id, static_cast<GLenum>(internal_format), width, height);
     }
 
     void Renderbuffer::set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
@@ -53,6 +53,15 @@ namespace gl_wrapper
         GLint param;
         glGetNamedRenderbufferParameteriv(m_id, static_cast<GLenum>(pname), &param);
         return param;
+    }
+
+    Renderbuffer create_renderbuffer(InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        Renderbuffer rbo;
+        rbo.create();
+        rbo.set_storage(internal_format, width, height);
+
+        return rbo;
     }
 
 } // namespace gl_wrapper

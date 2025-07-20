@@ -45,11 +45,13 @@ namespace gl_wrapper
         void destroy();
 
     public:
-        void set_storage(GLenum internalformat, GLsizei width, GLsizei height);
+        void set_storage(InternalFormat internal_format, GLsizei width, GLsizei height);
         void set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 
     public:
         GLint get_parameter(ParameterName pname) const;
     };
+
+    Renderbuffer create_renderbuffer(InternalFormat internal_format, base::Size width, base::Size height);
 
 } // namespace gl_wrapper

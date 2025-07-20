@@ -79,14 +79,15 @@ namespace gl_wrapper
         program.attach_shader(shader1);
         program.attach_shader(shader2);
         program.link_program();
-        return std::move(program);
+
+        return program;
     }
 
     Program load_program_from_file(const std::string &vfilename, const std::string &ffilename)
     {
-        return std::move(create_program_from_shaders(
+        return create_program_from_shaders(
             load_shader_from_file(Shader::ShaderType::Vertex, vfilename),
-            load_shader_from_file(Shader::ShaderType::Fragment, ffilename)));
+            load_shader_from_file(Shader::ShaderType::Fragment, ffilename));
     }
 
 } // namespace gl_wrapper

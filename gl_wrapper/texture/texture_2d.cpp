@@ -40,27 +40,42 @@ namespace gl_wrapper
         set_sub_image(level, 0, 0, width, height, format, type, pixels);
     }
 
-    Texture2D create_texture_2d_from_pixels(
-        InternalFormat internal_format, base::Size width, base::Size height,
-        PixelFormat format, DataType type, const void *pixels)
+    Texture2D create_texture_2d(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height)
     {
         Texture2D texture;
         texture.create();
-        texture.set_storage(1, internal_format, width, height);
-        texture.set_sub_image(0, width, height, format, type, pixels);
+        texture.set_storage(levels, internal_format, width, height);
         texture.set_wrap_s();
         texture.set_wrap_t();
         texture.set_min_filter();
         texture.set_mag_filter();
 
-        return std::move(texture);
+        return texture;
+    }
+
+    Texture2D create_texture_2d(
+        InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        return create_texture_2d(1, internal_format, width, height);
     }
 
     Texture2D create_texture_2d_from_pixels(
         InternalFormat internal_format, base::Size width, base::Size height,
-        PixelFormat format, const void *pixels)
+        PixelFormat format, DataType type, const void *pixels, base::Size levels)
     {
-        return create_texture_2d_from_pixels(internal_format, width, height, format, DataType::UnsignedByte, pixels);
+        Texture2D texture = create_texture_2d(levels, internal_format, width, height);
+        texture.set_sub_image(0, width, height, format, type, pixels);
+
+        return texture;
+    }
+
+    Texture2D create_texture_2d_from_pixels(
+        InternalFormat internal_format, base::Size width, base::Size height,
+        PixelFormat format, const void *pixels, base::Size levels)
+    {
+        return create_texture_2d_from_pixels(
+            internal_format, width, height, format, DataType::UnsignedByte, pixels, levels);
     }
 
 } // namespace gl_wrapper

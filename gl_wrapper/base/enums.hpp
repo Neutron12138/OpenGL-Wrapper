@@ -115,6 +115,18 @@ namespace gl_wrapper
         RGBA16UI = GL_RGBA16UI,
         RGBA32I = GL_RGBA32I,
         RGBA32UI = GL_RGBA32UI,
+
+        DepthComponent16 = GL_DEPTH_COMPONENT16,
+        DepthComponent24 = GL_DEPTH_COMPONENT24,
+        DepthComponent32 = GL_DEPTH_COMPONENT32,
+
+        StencilIndex1 = GL_STENCIL_INDEX1,
+        StencilIndex4 = GL_STENCIL_INDEX4,
+        StencilIndex8 = GL_STENCIL_INDEX8,
+        StencilIndex16 = GL_STENCIL_INDEX16,
+
+        Depth24Stencil8 = GL_DEPTH24_STENCIL8,
+        Depth32FStencil8 = GL_DEPTH32F_STENCIL8,
     };
 
 } // namespace gl_wrapper

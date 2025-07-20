@@ -27,12 +27,18 @@ namespace gl_wrapper
                            DataType type, const void *pixels = nullptr);
     };
 
-    Texture2D create_texture_2d_from_pixels(
-        InternalFormat internal_format, base::Size width, base::Size height,
-        PixelFormat format, DataType type, const void *pixels = nullptr);
+    Texture2D create_texture_2d(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height);
+
+    Texture2D create_texture_2d(
+        InternalFormat internal_format, base::Size width, base::Size height);
 
     Texture2D create_texture_2d_from_pixels(
         InternalFormat internal_format, base::Size width, base::Size height,
-        PixelFormat format, const void *pixels = nullptr);
+        PixelFormat format, DataType type, const void *pixels = nullptr, base::Size levels = 1);
+
+    Texture2D create_texture_2d_from_pixels(
+        InternalFormat internal_format, base::Size width, base::Size height,
+        PixelFormat format, const void *pixels = nullptr, base::Size levels = 1);
 
 } // namespace gl_wrapper

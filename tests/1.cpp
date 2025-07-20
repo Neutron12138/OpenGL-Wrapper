@@ -70,17 +70,11 @@ int main()
     if (!pixels)
         throw "Failed to load image";
 
-    gl_wrapper::Texture2D texture;
-    texture.create();
-    texture.set_wrap_s();
-    texture.set_wrap_t();
-    texture.set_min_filter();
-    texture.set_mag_filter();
-    texture.set_storage(1, gl_wrapper::InternalFormat::RGB8, width, width);
-    texture.set_sub_image(0, 0, 0, width, height, gl_wrapper::PixelFormat::RGB, gl_wrapper::DataType::UnsignedByte, pixels);
+    gl_wrapper::Texture2D texture = gl_wrapper::create_texture_2d_from_pixels(
+        gl_wrapper::InternalFormat::RGB8, width, height, gl_wrapper::PixelFormat::RGB, pixels);
     texture.generate_mipmap();
-
     stbi_image_free(pixels);
+
     texture.set_border_color(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
     glm::vec4 color = texture.get_border_color();
     std::cout << "border color:" << std::endl
@@ -89,18 +83,13 @@ int main()
 
     // 创建帧缓冲
 
-    gl_wrapper::Texture2D color_texture;
-    color_texture.create();
-    color_texture.set_wrap_s();
-    color_texture.set_wrap_t();
-    color_texture.set_min_filter();
-    color_texture.set_mag_filter();
-    color_texture.set_storage(1, gl_wrapper::InternalFormat::RGB8, 512, 512);
-    gl_wrapper::Renderbuffer rbo;
-    rbo.create();
-    rbo.set_storage(GL_DEPTH24_STENCIL8, 512, 512);
-    gl_wrapper::Framebuffer fbo;
-    fbo.create(gl_wrapper::Framebuffer::FramebufferType::Default);
+    gl_wrapper::Texture2D color_texture = gl_wrapper::create_texture_2d(
+        gl_wrapper::InternalFormat::RGBA8, 512, 512);
+    gl_wrapper::Renderbuffer rbo = gl_wrapper::create_renderbuffer(
+        gl_wrapper::InternalFormat::Depth24Stencil8, 512, 512);
+
+    gl_wrapper::Framebuffer fbo = gl_wrapper::create_framebuffer(
+        gl_wrapper::Framebuffer::FramebufferType::Default);
     fbo.attach_color_texture(color_texture);
     fbo.attach_renderbuffer(gl_wrapper::Framebuffer::Attachment::Depth, rbo);
     std::cout << "is framebuffer complete: " << (fbo.check_status() == gl_wrapper::Framebuffer::Status::Complete) << std::endl

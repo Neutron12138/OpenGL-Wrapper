@@ -159,6 +159,7 @@ namespace gl_wrapper
 
     public:
         Framebuffer() = default;
+        Framebuffer(Framebuffer &&from);
         ~Framebuffer() override;
         BASE_DELETE_COPY_FUNCTION(Framebuffer);
 
@@ -193,11 +194,14 @@ namespace gl_wrapper
         GLint get_parameter(ParameterName pname) const;
         GLint get_attachment_parameter(Attachment attachment, GLenum pname) const;
         Status check_status() const;
-        void read_pixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void *pixels) const
-        {
-            glReadPixels(x, y, width, height, format, type, pixels);
-        }
-        std::vector<base::UInt8> read_pixels_as_RGBA(GLint x, GLint y, GLsizei width, GLsizei height) const;
+        void read_pixels(GLint x, GLint y, GLsizei width, GLsizei height,
+                         PixelFormat format, DataType type, GLsizei buf_size, void *pixels) const;
+        std::vector<base::Byte> read_pixels_as_Red(GLint x, GLint y, GLsizei width, GLsizei height) const;
+        std::vector<base::Byte> read_pixels_as_RG(GLint x, GLint y, GLsizei width, GLsizei height) const;
+        std::vector<base::Byte> read_pixels_as_RGB(GLint x, GLint y, GLsizei width, GLsizei height) const;
+        std::vector<base::Byte> read_pixels_as_RGBA(GLint x, GLint y, GLsizei width, GLsizei height) const;
     };
+
+    Framebuffer create_framebuffer(Framebuffer::FramebufferType type);
 
 } // namespace gl_wrapper

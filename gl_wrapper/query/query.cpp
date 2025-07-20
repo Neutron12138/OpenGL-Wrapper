@@ -72,4 +72,12 @@ namespace gl_wrapper
         return param;
     }
 
+    Query create_query(Query::QueryType type)
+    {
+        Query query;
+        query.create(type);
+
+        return query;
+    }
+
 } // namespace gl_wrapper

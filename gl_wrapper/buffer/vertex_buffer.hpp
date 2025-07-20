@@ -29,7 +29,7 @@ namespace gl_wrapper
         vbo.create();
         vbo.set_storage(vertices, flags);
 
-        return std::move(vbo);
+        return vbo;
     }
 
     template <typename VertexT>
@@ -41,7 +41,7 @@ namespace gl_wrapper
         vbo.create();
         vbo.set_storage(vertices, flags);
 
-        return std::move(vbo);
+        return vbo;
     }
 
 } // namespace gl_wrapper

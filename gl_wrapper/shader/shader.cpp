@@ -91,12 +91,14 @@ namespace gl_wrapper
         shader.create(type);
         shader.set_source(source);
         shader.compile_shader();
-        return std::move(shader);
+
+        return shader;
     }
 
     Shader load_shader_from_file(Shader::ShaderType type, const std::string &filename)
     {
-        return std::move(load_shader_from_string(type, base::read_string_from_file(filename)));
+        return load_shader_from_string(
+            type, base::read_string_from_file(filename));
     }
 
 } // namespace gl_wrapper

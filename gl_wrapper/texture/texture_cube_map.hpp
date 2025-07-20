@@ -27,4 +27,10 @@ namespace gl_wrapper
                            DataType type, const void *pixels);
     };
 
+    TextureCubeMap create_texture_cube_map(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height);
+
+    TextureCubeMap create_texture_cube_map(
+        InternalFormat internal_format, base::Size width, base::Size height);
+
 } // namespace gl_wrapper

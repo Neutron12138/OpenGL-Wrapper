@@ -6,6 +6,10 @@ namespace gl_wrapper
 {
     bool Framebuffer::is_framebuffer(GLuint id) { return glIsFramebuffer(id); }
 
+    Framebuffer::Framebuffer(Framebuffer &&from)
+        : Resource(std::move(from)),
+          m_type(std::exchange(from.m_type, FramebufferType::None)) {}
+
     Framebuffer::~Framebuffer() { destroy(); }
 
     Framebuffer &Framebuffer::operator=(Framebuffer &&from)
@@ -18,7 +22,7 @@ namespace gl_wrapper
 
     Framebuffer::FramebufferType Framebuffer::get_type() const { return m_type; }
     base::Int64 Framebuffer::get_resource_type() const { return static_cast<base::Int64>(ResourceType::Framebuffer); }
-    
+
     void Framebuffer::bind() const { glBindFramebuffer(static_cast<GLenum>(m_type), m_id); }
     void Framebuffer::bind_as(FramebufferType type) const { glBindFramebuffer(static_cast<GLenum>(type), m_id); }
     void Framebuffer::unbind() const { glBindFramebuffer(static_cast<GLenum>(m_type), 0); }
@@ -97,11 +101,46 @@ namespace gl_wrapper
         return static_cast<Status>(glCheckNamedFramebufferStatus(m_id, static_cast<GLenum>(m_type)));
     }
 
+    void Framebuffer::read_pixels(GLint x, GLint y, GLsizei width, GLsizei height,
+                                  PixelFormat format, DataType type, GLsizei buf_size, void *pixels) const
+    {
+        glReadnPixels(x, y, width, height, static_cast<GLenum>(format), static_cast<GLenum>(type), buf_size, pixels);
+    }
+
+    std::vector<base::UInt8> Framebuffer::read_pixels_as_Red(GLint x, GLint y, GLsizei width, GLsizei height) const
+    {
+        std::vector<base::UInt8> pixels(width * height);
+        read_pixels(x, y, width, height, PixelFormat::Red, DataType::UnsignedByte, pixels.size(), pixels.data());
+        return pixels;
+    }
+
+    std::vector<base::UInt8> Framebuffer::read_pixels_as_RG(GLint x, GLint y, GLsizei width, GLsizei height) const
+    {
+        std::vector<base::UInt8> pixels(width * height * 2);
+        read_pixels(x, y, width, height, PixelFormat::RG, DataType::UnsignedByte, pixels.size(), pixels.data());
+        return pixels;
+    }
+
+    std::vector<base::UInt8> Framebuffer::read_pixels_as_RGB(GLint x, GLint y, GLsizei width, GLsizei height) const
+    {
+        std::vector<base::UInt8> pixels(width * height * 3);
+        read_pixels(x, y, width, height, PixelFormat::RGB, DataType::UnsignedByte, pixels.size(), pixels.data());
+        return pixels;
+    }
+
     std::vector<base::UInt8> Framebuffer::read_pixels_as_RGBA(GLint x, GLint y, GLsizei width, GLsizei height) const
     {
         std::vector<base::UInt8> pixels(width * height * 4);
-        read_pixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+        read_pixels(x, y, width, height, PixelFormat::RGBA, DataType::UnsignedByte, pixels.size(), pixels.data());
         return pixels;
+    }
+
+    Framebuffer create_framebuffer(Framebuffer::FramebufferType type)
+    {
+        Framebuffer fbo;
+        fbo.create(type);
+
+        return fbo;
     }
 
 } // namespace gl_wrapper

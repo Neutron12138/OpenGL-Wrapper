@@ -41,4 +41,25 @@ namespace gl_wrapper
         set_sub_image(level, 0, 0, zoffset, width, height, 1, format, type, pixels);
     }
 
+    TextureCubeMap create_texture_cube_map(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        TextureCubeMap texture;
+        texture.create();
+        texture.set_storage(levels, internal_format, width, height);
+        texture.set_wrap_s();
+        texture.set_wrap_t();
+        texture.set_wrap_r();
+        texture.set_min_filter();
+        texture.set_mag_filter();
+
+        return texture;
+    }
+
+    TextureCubeMap create_texture_cube_map(
+        InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        return create_texture_cube_map(1, internal_format, width, height);
+    }
+
 } // namespace gl_wrapper
