@@ -6,10 +6,10 @@ namespace gl_wrapper
 {
     bool Query::is_query(GLuint id) { return glIsQuery(id); }
 
-    Query::Query(QueryType type) { create(type); }
     Query::Query(Query &&from)
         : Resource(std::move(from)),
           m_type(std::exchange(from.m_type, QueryType::None)) {}
+
     Query::~Query() { destroy(); }
 
     Query &Query::operator=(Query &&from)

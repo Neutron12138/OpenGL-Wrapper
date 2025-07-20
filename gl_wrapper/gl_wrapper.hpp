@@ -23,10 +23,24 @@
 // buffer
 
 #include "buffer/buffer.hpp"
+#include "buffer/vertex_buffer.hpp"
+#include "buffer/element_buffer.hpp"
+
+// vertex
+
+#include "vertex/vertex_attrib.hpp"
+#include "vertex/vertex_layout.hpp"
+#include "vertex/vertex_2d.hpp"
+#include "vertex/vertex_2d_tex.hpp"
+#include "vertex/vertex_3d.hpp"
+#include "vertex/vertex_3d_tex.hpp"
+#include "vertex/vertex_3d_norm.hpp"
+#include "vertex/vertex_3d_tex_norm.hpp"
 
 // vertex array
 
 #include "vertex_array/vertex_array.hpp"
+#include "vertex_array/create_vertex_array.hpp"
 
 // shader
 

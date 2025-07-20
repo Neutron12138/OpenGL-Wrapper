@@ -24,6 +24,8 @@
 // buffer
 
 #include "buffer/buffer.cpp"
+#include "buffer/vertex_buffer.cpp"
+#include "buffer/element_buffer.cpp"
 
 // vertex array
 

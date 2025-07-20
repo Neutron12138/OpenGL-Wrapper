@@ -6,9 +6,14 @@ namespace gl_wrapper
 {
     bool Texture::is_texture(GLuint id) { return glIsTexture(id); }
 
-    Texture::Texture(TextureType type) : m_type(type) { create(type); }
-    Texture::Texture(Texture &&from) : Resource(std::move(from)),
-                                       m_type(std::exchange(from.m_type, TextureType::None)) {}
+    Texture::Texture(Texture &&from)
+        : Resource(std::move(from)),
+          m_type(std::exchange(from.m_type, TextureType::None)),
+          m_width(std::exchange(from.m_width, 0)),
+          m_height(std::exchange(from.m_height, 0)),
+          m_depth(std::exchange(from.m_depth, 0)),
+          m_internal_format(std::exchange(from.m_internal_format, InternalFormat::None)) {}
+
     Texture::~Texture() { destroy(); }
 
     Texture &Texture::operator=(Texture &&from)
@@ -16,6 +21,11 @@ namespace gl_wrapper
         destroy();
         m_id = std::exchange(from.m_id, 0);
         m_type = std::exchange(from.m_type, TextureType::None);
+        m_width = std::exchange(from.m_width, 0);
+        m_height = std::exchange(from.m_height, 0);
+        m_depth = std::exchange(from.m_depth, 0);
+        m_internal_format = std::exchange(from.m_internal_format, InternalFormat::None);
+
         return *this;
     }
 
@@ -24,6 +34,11 @@ namespace gl_wrapper
     void Texture::bind() const { glBindTexture(static_cast<GLenum>(m_type), m_id); }
     void Texture::unbind() const { glBindTexture(static_cast<GLenum>(m_type), 0); }
     void Texture::bind_unit(GLuint unit) const { glBindTextureUnit(unit, m_id); }
+
+    base::Size Texture::get_width() const { return m_width; }
+    base::Size Texture::get_height() const { return m_height; }
+    base::Size Texture::get_depth() const { return m_depth; }
+    InternalFormat Texture::get_internal_format() const { return m_internal_format; }
 
     void Texture::create(TextureType type)
     {

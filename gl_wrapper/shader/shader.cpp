@@ -7,25 +7,10 @@ namespace gl_wrapper
 {
     bool Shader::is_shader(GLuint id) { return glIsShader(id); }
 
-    Shader Shader::load_from_string(ShaderType type, const std::string &source)
-    {
-        return std::move(Shader(type, source));
-    }
+    Shader::Shader(Shader &&from)
+        : Resource(std::move(from)),
+          m_type(std::exchange(from.m_type, ShaderType::None)) {}
 
-    Shader Shader::load_from_file(ShaderType type, const std::string &filename)
-    {
-        return std::move(Shader(type, base::read_string_from_file(filename)));
-    }
-
-    Shader::Shader(ShaderType type, const std::string &source)
-    {
-        create(type);
-        set_source(source);
-        compile_shader();
-    }
-
-    Shader::Shader(Shader &&from) : Resource(std::move(from)),
-                                    m_type(std::exchange(from.m_type, ShaderType::None)) {}
     Shader::~Shader() { destroy(); }
 
     Shader &Shader::operator=(Shader &&from)
@@ -98,6 +83,20 @@ namespace gl_wrapper
         source.resize(length);
         glGetShaderSource(m_id, length, nullptr, source.data());
         return source;
+    }
+
+    Shader load_shader_from_string(Shader::ShaderType type, const std::string &source)
+    {
+        Shader shader;
+        shader.create(type);
+        shader.set_source(source);
+        shader.compile_shader();
+        return std::move(shader);
+    }
+
+    Shader load_shader_from_file(Shader::ShaderType type, const std::string &filename)
+    {
+        return std::move(load_shader_from_string(type, base::read_string_from_file(filename)));
     }
 
 } // namespace gl_wrapper

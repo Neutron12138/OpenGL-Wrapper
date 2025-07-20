@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 #include "../base/resource.hpp"
 
@@ -78,14 +79,12 @@ namespace gl_wrapper
 
     public:
         Buffer() = default;
-        Buffer(BufferType type);
         Buffer(Buffer &&from);
         ~Buffer() override;
         BASE_DELETE_COPY_FUNCTION(Buffer);
 
     public:
         Buffer &operator=(Buffer &&from);
-        void set_type(BufferType type);
         BufferType get_type() const;
         base::Int64 get_resource_type() const override;
 
@@ -95,20 +94,20 @@ namespace gl_wrapper
 
     public:
         void bind() const;
+        void bind_as(BufferType type) const;
         void unbind() const;
 
     public:
-        void set_data(GLsizeiptr size, const void *data, Usage usage = Usage::StaticDraw);
         void set_storage(GLsizeiptr size, const void *data, StorageFlag flags = StorageFlag::Dynamic);
         void set_sub_data(GLintptr offset, GLsizeiptr size, const void *data);
-        void clear_data(InternalFormat internalformat, BaseFormat format, GLenum type, const void *data);
+        void clear_data(InternalFormat internalformat, PixelFormat format, GLenum type, const void *data);
         void clear_sub_data(InternalFormat internalformat, GLintptr offset, GLsizeiptr size,
-                            BaseFormat format, GLenum type, const void *data);
-
-        template <typename T>
-        inline void set_data(const std::vector<T> &data, Usage usage = Usage::StaticDraw)
+                            PixelFormat format, GLenum type, const void *data);
+                            
+        template <typename T, std::size_t N>
+        inline void set_storage(const std::array<T, N> &data, StorageFlag flags = StorageFlag::Dynamic)
         {
-            set_data(data.size() * sizeof(T), data.data(), usage);
+            set_storage(data.size() * sizeof(T), data.data(), flags);
         }
 
         template <typename T>

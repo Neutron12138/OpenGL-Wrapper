@@ -6,9 +6,10 @@ namespace gl_wrapper
 {
     bool Buffer::is_buffer(GLuint id) { return glIsBuffer(id); }
 
-    Buffer::Buffer(BufferType type) { create(type); }
-    Buffer::Buffer(Buffer &&from) : Resource(std::move(from)),
-                                    m_type(std::exchange(from.m_type, BufferType::None)) {}
+    Buffer::Buffer(Buffer &&from)
+        : Resource(std::move(from)),
+          m_type(std::exchange(from.m_type, BufferType::None)) {}
+
     Buffer::~Buffer() { destroy(); }
 
     Buffer &Buffer::operator=(Buffer &&from)
@@ -19,7 +20,6 @@ namespace gl_wrapper
         return *this;
     }
 
-    void Buffer::set_type(BufferType type) { m_type = type; }
     Buffer::BufferType Buffer::get_type() const { return m_type; }
     base::Int64 Buffer::get_resource_type() const { return static_cast<base::Int64>(ResourceType::Buffer); }
 
@@ -45,12 +45,8 @@ namespace gl_wrapper
     }
 
     void Buffer::bind() const { glBindBuffer(static_cast<GLenum>(m_type), m_id); }
+    void Buffer::bind_as(BufferType type) const { glBindBuffer(static_cast<GLenum>(type), m_id); }
     void Buffer::unbind() const { glBindBuffer(static_cast<GLenum>(m_type), 0); }
-
-    void Buffer::set_data(GLsizeiptr size, const void *data, Usage usage)
-    {
-        glNamedBufferData(m_id, size, data, static_cast<GLenum>(usage));
-    }
 
     void Buffer::set_storage(GLsizeiptr size, const void *data, StorageFlag flags)
     {
@@ -62,13 +58,13 @@ namespace gl_wrapper
         glNamedBufferSubData(m_id, offset, size, data);
     }
 
-    void Buffer::clear_data(InternalFormat internalformat, BaseFormat format, GLenum type, const void *data)
+    void Buffer::clear_data(InternalFormat internalformat, PixelFormat format, GLenum type, const void *data)
     {
         glClearNamedBufferData(m_id, static_cast<GLenum>(internalformat), static_cast<GLenum>(format), type, data);
     }
 
     void Buffer::clear_sub_data(InternalFormat internalformat, GLintptr offset, GLsizeiptr size,
-                                BaseFormat format, GLenum type, const void *data)
+                                PixelFormat format, GLenum type, const void *data)
     {
         glClearNamedBufferSubData(m_id, static_cast<GLenum>(internalformat), offset,
                                   size, static_cast<GLenum>(format), type, data);

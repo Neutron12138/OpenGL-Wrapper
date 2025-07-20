@@ -39,7 +39,6 @@ namespace gl_wrapper
 
     public:
         Query() = default;
-        Query(QueryType type);
         Query(Query &&from);
         ~Query() override;
 

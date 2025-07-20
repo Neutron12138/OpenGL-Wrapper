@@ -37,18 +37,23 @@ namespace gl_wrapper
         Never = GL_NEVER,
     };
 
-    /// @brief 基础格式
-    enum class BaseFormat : GLenum
+    /// @brief 像素格式
+    enum class PixelFormat : GLenum
     {
         Red = GL_RED,
         RG = GL_RG,
         RGB = GL_RGB,
+        BGR = GL_BGR,
         RGBA = GL_RGBA,
+        BGRA = GL_BGRA,
+        DepthComponent = GL_DEPTH_COMPONENT,
+        StencilIndex = GL_STENCIL_INDEX,
     };
 
     /// @brief 内部格式
     enum class InternalFormat : GLenum
     {
+        None = GL_NONE,
         R8 = GL_R8,
         R8Snorm = GL_R8_SNORM,
         R16 = GL_R16,

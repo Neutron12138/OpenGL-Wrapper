@@ -7,27 +7,9 @@ namespace gl_wrapper
     bool Program::is_program(GLuint id) { return glIsProgram(id); }
     void Program::unuse() { glUseProgram(0); }
 
-    Program Program::link_shaders(const Shader &shader1, const Shader &shader2)
-    {
-        return std::move(Program(shader1, shader2));
-    }
+    Program::Program(Program &&from)
+        : Resource(std::move(from)) {}
 
-    Program Program::load_from_file(const std::string &vfilename, const std::string &ffilename)
-    {
-        return std::move(Program(
-            Shader::load_from_file(Shader::ShaderType::Vertex, vfilename),
-            Shader::load_from_file(Shader::ShaderType::Fragment, ffilename)));
-    }
-
-    Program::Program(const Shader &shader1, const Shader &shader2)
-    {
-        create();
-        attach_shader(shader1);
-        attach_shader(shader2);
-        link_program();
-    }
-
-    Program::Program(Program &&from) : Resource(std::move(from)) {}
     Program::~Program() { destroy(); }
 
     Program &Program::operator=(Program &&from)
@@ -88,6 +70,23 @@ namespace gl_wrapper
         GLint value;
         glGetProgramiv(m_id, static_cast<GLenum>(pname), &value);
         return value;
+    }
+
+    Program create_program_from_shaders(const Shader &shader1, const Shader &shader2)
+    {
+        Program program;
+        program.create();
+        program.attach_shader(shader1);
+        program.attach_shader(shader2);
+        program.link_program();
+        return std::move(program);
+    }
+
+    Program load_program_from_file(const std::string &vfilename, const std::string &ffilename)
+    {
+        return std::move(create_program_from_shaders(
+            load_shader_from_file(Shader::ShaderType::Vertex, vfilename),
+            load_shader_from_file(Shader::ShaderType::Fragment, ffilename)));
     }
 
 } // namespace gl_wrapper

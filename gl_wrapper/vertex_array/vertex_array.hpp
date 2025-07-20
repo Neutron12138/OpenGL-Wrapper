@@ -2,7 +2,9 @@
 
 #include <glm/glm.hpp>
 #include "../base/resource.hpp"
-#include "../buffer/buffer.hpp"
+#include "../buffer/vertex_buffer.hpp"
+#include "../buffer/element_buffer.hpp"
+#include "../vertex/vertex_layout.hpp"
 
 namespace gl_wrapper
 {
@@ -56,8 +58,8 @@ namespace gl_wrapper
         void set_attrib_format(GLuint attribindex, GLint size, DataType type,
                                GLuint relativeoffset = 0);
         void set_attrib_binding(GLuint attribindex, GLuint bindingindex);
-        void bind_vertex_buffer(GLuint bindingindex, const Buffer &vbo, GLintptr offset, GLsizei stride);
-        void bind_element_buffer(const Buffer &ebo);
+        void bind_vertex_buffer(GLuint bindingindex, const VertexBuffer &vbo, GLintptr offset, GLsizei stride);
+        void bind_element_buffer(const ElementBuffer &ebo);
 
         template <typename T>
         void set_attrib_format(GLuint attribindex, GLuint relativeoffset = 0);

@@ -20,11 +20,11 @@ namespace gl_wrapper
         void create();
 
     public:
-        void set_storage(GLsizei levels, InternalFormat internalformat, GLsizei width, GLsizei height);
+        void set_storage(GLsizei levels, InternalFormat internal_format, GLsizei width, GLsizei height);
         void set_sub_image(GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
-                           GLsizei height, GLsizei depth, BaseFormat format, DataType type, const void *pixels = nullptr);
-        void set_sub_image(GLint level, GLint zoffset, GLsizei width, GLsizei height, BaseFormat format,
-                           DataType type, const void *pixels = nullptr);
+                           GLsizei height, GLsizei depth, PixelFormat format, DataType type, const void *pixels);
+        void set_sub_image(GLint level, GLint zoffset, GLsizei width, GLsizei height, PixelFormat format,
+                           DataType type, const void *pixels);
     };
 
 } // namespace gl_wrapper

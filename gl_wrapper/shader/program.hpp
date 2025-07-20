@@ -38,12 +38,9 @@ namespace gl_wrapper
 
         static bool is_program(GLuint id);
         static void unuse();
-        static Program link_shaders(const Shader &shader1, const Shader &shader2);
-        static Program load_from_file(const std::string &vfilename, const std::string &ffilename);
 
     public:
         Program() = default;
-        Program(const Shader &shader1, const Shader &shader2);
         Program(Program &&from);
         ~Program() override;
         BASE_DELETE_COPY_FUNCTION(Program);
@@ -73,5 +70,8 @@ namespace gl_wrapper
         void set_parameter(ParameterName pname, GLint value);
         GLint get_parameter(ParameterName pname) const;
     };
+
+    Program create_program_from_shaders(const Shader &shader1, const Shader &shader2);
+    Program load_program_from_file(const std::string &vfilename, const std::string &ffilename);
 
 } // namespace gl_wrapper

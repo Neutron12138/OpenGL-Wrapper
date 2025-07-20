@@ -6,7 +6,6 @@ namespace gl_wrapper
 {
     bool Framebuffer::is_framebuffer(GLuint id) { return glIsFramebuffer(id); }
 
-    Framebuffer::Framebuffer(FramebufferType type) { create(type); }
     Framebuffer::~Framebuffer() { destroy(); }
 
     Framebuffer &Framebuffer::operator=(Framebuffer &&from)
@@ -17,10 +16,11 @@ namespace gl_wrapper
         return *this;
     }
 
-    void Framebuffer::set_type(FramebufferType type) { m_type = type; }
     Framebuffer::FramebufferType Framebuffer::get_type() const { return m_type; }
     base::Int64 Framebuffer::get_resource_type() const { return static_cast<base::Int64>(ResourceType::Framebuffer); }
+    
     void Framebuffer::bind() const { glBindFramebuffer(static_cast<GLenum>(m_type), m_id); }
+    void Framebuffer::bind_as(FramebufferType type) const { glBindFramebuffer(static_cast<GLenum>(type), m_id); }
     void Framebuffer::unbind() const { glBindFramebuffer(static_cast<GLenum>(m_type), 0); }
 
     void Framebuffer::create(FramebufferType type)

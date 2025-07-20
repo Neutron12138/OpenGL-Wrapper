@@ -87,9 +87,18 @@ namespace gl_wrapper
         /// @brief 纹理类型
         TextureType m_type = TextureType::None;
 
+    protected:
+        /// @brief 纹理宽度
+        base::Size m_width = 0;
+        /// @brief 纹理高度
+        base::Size m_height = 0;
+        /// @brief 纹理深度
+        base::Size m_depth = 0;
+        /// @brief 内部格式
+        InternalFormat m_internal_format = InternalFormat::None;
+
     public:
         Texture() = default;
-        Texture(TextureType type);
         Texture(Texture &&from);
         ~Texture() override;
         BASE_DELETE_COPY_FUNCTION(Texture);
@@ -101,6 +110,12 @@ namespace gl_wrapper
         void bind() const;
         void unbind() const;
         void bind_unit(GLuint unit) const;
+
+    public:
+        base::Size get_width() const;
+        base::Size get_height() const;
+        base::Size get_depth() const;
+        InternalFormat get_internal_format() const;
 
     public:
         void create(TextureType type);

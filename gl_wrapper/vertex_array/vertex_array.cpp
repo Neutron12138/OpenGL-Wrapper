@@ -57,12 +57,12 @@ namespace gl_wrapper
         glVertexArrayAttribBinding(m_id, attribindex, bindingindex);
     }
 
-    void VertexArray::bind_vertex_buffer(GLuint bindingindex, const Buffer &vbo, GLintptr offset, GLsizei stride)
+    void VertexArray::bind_vertex_buffer(GLuint bindingindex, const VertexBuffer &vbo, GLintptr offset, GLsizei stride)
     {
         glVertexArrayVertexBuffer(m_id, bindingindex, vbo, offset, stride);
     }
 
-    void VertexArray::bind_element_buffer(const Buffer &ebo)
+    void VertexArray::bind_element_buffer(const ElementBuffer &ebo)
     {
         glVertexArrayElementBuffer(m_id, ebo);
     }

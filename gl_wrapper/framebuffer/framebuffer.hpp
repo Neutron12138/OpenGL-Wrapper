@@ -159,16 +159,17 @@ namespace gl_wrapper
 
     public:
         Framebuffer() = default;
-        Framebuffer(FramebufferType type);
         ~Framebuffer() override;
         BASE_DELETE_COPY_FUNCTION(Framebuffer);
 
     public:
         Framebuffer &operator=(Framebuffer &&from);
-        void set_type(FramebufferType type);
         FramebufferType get_type() const;
         base::Int64 get_resource_type() const override;
+
+    public:
         void bind() const;
+        void bind_as(FramebufferType type) const;
         void unbind() const;
 
     public:

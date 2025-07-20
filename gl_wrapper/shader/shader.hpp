@@ -35,8 +35,6 @@ namespace gl_wrapper
         };
 
         static bool is_shader(GLuint id);
-        static Shader load_from_string(ShaderType type, const std::string &source);
-        static Shader load_from_file(ShaderType type, const std::string &filename);
 
     private:
         /// @brief 着色器类型
@@ -44,7 +42,6 @@ namespace gl_wrapper
 
     public:
         Shader() = default;
-        Shader(ShaderType type, const std::string &source);
         Shader(Shader &&from);
         ~Shader() override;
         BASE_DELETE_COPY_FUNCTION(Shader);
@@ -66,5 +63,8 @@ namespace gl_wrapper
         GLint get_parameter(ParameterName pname) const;
         std::string get_source() const;
     };
+
+    Shader load_shader_from_string(Shader::ShaderType type, const std::string &source);
+    Shader load_shader_from_file(Shader::ShaderType type, const std::string &filename);
 
 } // namespace gl_wrapper

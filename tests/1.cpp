@@ -29,7 +29,7 @@ int main()
 
     // 加载着色器
 
-    gl_wrapper::Program program = gl_wrapper::Program::load_from_file("shaders/1.vert", "shaders/1.frag");
+    gl_wrapper::Program program = gl_wrapper::load_program_from_file("shaders/1.vert", "shaders/1.frag");
 
     // 创建顶点数组
 
@@ -47,8 +47,8 @@ int main()
         glm::vec3(0.933f, 0.75f, 0.0f),
     };
 
-    gl_wrapper::Buffer vbo;
-    vbo.create(gl_wrapper::Buffer::BufferType::Array);
+    gl_wrapper::VertexBuffer vbo;
+    vbo.create();
     vbo.set_storage(vertices);
     gl_wrapper::VertexArray vao;
     vao.create();
@@ -77,7 +77,7 @@ int main()
     texture.set_min_filter();
     texture.set_mag_filter();
     texture.set_storage(1, gl_wrapper::InternalFormat::RGB8, width, width);
-    texture.set_sub_image(0, 0, 0, width, height, gl_wrapper::BaseFormat::RGB, gl_wrapper::DataType::UnsignedByte, pixels);
+    texture.set_sub_image(0, 0, 0, width, height, gl_wrapper::PixelFormat::RGB, gl_wrapper::DataType::UnsignedByte, pixels);
     texture.generate_mipmap();
 
     stbi_image_free(pixels);
@@ -108,7 +108,8 @@ int main()
 
     // 渲染到帧缓冲
 
-    gl_wrapper::Query query(gl_wrapper::Query::QueryType::TimeElapsed);
+    gl_wrapper::Query query;
+    query.create(gl_wrapper::Query::QueryType::TimeElapsed);
 
     {
         auto binder = [&]()
