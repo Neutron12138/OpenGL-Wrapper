@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <functional>
-#include <base/core/noncopyable_object.hpp>
+#include <base/misc/noncopyable_object.hpp>
 
 namespace gl_wrapper
 {

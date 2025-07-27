@@ -1,6 +1,5 @@
 #pragma once
 
-#include <base/misc/read_string.hpp>
 #include "shader.hpp"
 
 namespace gl_wrapper

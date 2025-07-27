@@ -3,7 +3,6 @@
 #include <stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
-#include <base/misc/read_string.hpp>
 #include <glfw_wrapper/glfw_wrapper.hpp>
 #include "../gl_wrapper/gl_wrapper.hpp"
 

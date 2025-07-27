@@ -2,6 +2,7 @@
 
 #include <string>
 #include <base/core/exception.hpp>
+#include <base/misc/read_from_file.hpp>
 #include "../base/resource.hpp"
 
 namespace gl_wrapper

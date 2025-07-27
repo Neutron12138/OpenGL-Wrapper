@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <base/core/exception.hpp>
-#include <base/core/noncopyable_object.hpp>
+#include <base/misc/noncopyable_object.hpp>
 #include <glad/glad.h>
 
 namespace gl_wrapper
