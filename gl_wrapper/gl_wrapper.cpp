@@ -39,6 +39,10 @@
 #include "shader/program_set_uniform.cpp"
 #include "shader/program_get_uniform.cpp"
 
+// sampler
+
+#include "sampler/sampler.cpp"
+
 // texture
 
 #include "texture/texture.cpp"

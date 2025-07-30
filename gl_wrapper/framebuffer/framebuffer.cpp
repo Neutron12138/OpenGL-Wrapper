@@ -33,7 +33,7 @@ namespace gl_wrapper
 
         glCreateFramebuffers(1, &m_id);
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Framebuffer object");
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR("Failed to create Framebuffer object");
 
         m_type = type;
     }
@@ -82,17 +82,27 @@ namespace gl_wrapper
         glNamedFramebufferParameteri(m_id, static_cast<GLenum>(pname), param);
     }
 
+    void Framebuffer::get_parameter(ParameterName pname, GLint &result) const
+    {
+        glGetNamedFramebufferParameteriv(m_id, static_cast<GLenum>(pname), &result);
+    }
+
     GLint Framebuffer::get_parameter(ParameterName pname) const
     {
         GLint param;
-        glGetNamedFramebufferParameteriv(m_id, static_cast<GLenum>(pname), &param);
+        get_parameter(pname, param);
         return param;
+    }
+
+    void Framebuffer::get_attachment_parameter(Attachment attachment, GLenum pname, GLint &result) const
+    {
+        glGetNamedFramebufferAttachmentParameteriv(m_id, static_cast<GLenum>(attachment), static_cast<GLenum>(pname), &result);
     }
 
     GLint Framebuffer::get_attachment_parameter(Attachment attachment, GLenum pname) const
     {
         GLint param;
-        glGetNamedFramebufferAttachmentParameteriv(m_id, static_cast<GLenum>(attachment), static_cast<GLenum>(pname), &param);
+        get_attachment_parameter(attachment, pname, param);
         return param;
     }
 

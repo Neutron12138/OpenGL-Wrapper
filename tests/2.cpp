@@ -17,6 +17,7 @@ private:
     gl_wrapper::Program program;
     gl_wrapper::VertexArray vao;
     gl_wrapper::Texture2D texture;
+    gl_wrapper::Sampler sampler;
 
 protected:
     void _initialize() override
@@ -36,6 +37,8 @@ protected:
         texture = gl_wrapper::create_texture_2d_from_pixels(
             gl_wrapper::InternalFormat::RGB8, width, height, gl_wrapper::PixelFormat::RGB, pixels);
         stbi_image_free(pixels);
+
+        sampler = gl_wrapper::create_default_sampler();
     }
 
     void _draw() override
@@ -43,7 +46,8 @@ protected:
         glClear(GL_COLOR_BUFFER_BIT);
         program.use();
         vao.bind();
-        texture.bind();
+        sampler.bind(0);
+        texture.bind_unit(0);
         vao.draw_arrays(gl_wrapper::VertexArray::DrawMode::TriangleStrip, 4);
     }
 

@@ -103,7 +103,7 @@ namespace gl_wrapper
         void clear_data(InternalFormat internalformat, PixelFormat format, GLenum type, const void *data);
         void clear_sub_data(InternalFormat internalformat, GLintptr offset, GLsizeiptr size,
                             PixelFormat format, GLenum type, const void *data);
-                            
+
         template <typename T, std::size_t N>
         inline void set_storage(const std::array<T, N> &data, StorageFlag flags = StorageFlag::Dynamic)
         {
@@ -116,6 +116,12 @@ namespace gl_wrapper
             set_storage(data.size() * sizeof(T), data.data(), flags);
         }
 
+        template <typename T, std::size_t N>
+        inline void set_sub_data(GLintptr offset, const std::array<T, N> &data)
+        {
+            set_sub_data(offset, data.size() * sizeof(T), data.data());
+        }
+
         template <typename T>
         inline void set_sub_data(GLintptr offset, const std::vector<T> &data)
         {
@@ -123,10 +129,18 @@ namespace gl_wrapper
         }
 
     public:
-        template <typename T>
-        T get_parameter(ParameterName pname) const;
+        void get_parameter(ParameterName pname, GLint &result) const;
+        void get_parameter(ParameterName pname, GLint64 &result) const;
         void *get_pointer() const;
         std::vector<base::UInt8> get_sub_data(GLintptr offset, GLsizeiptr size) const;
+
+        template <typename T>
+        T get_parameter(ParameterName pname) const
+        {
+            T result;
+            get_parameter(pname, result);
+            return result;
+        }
 
     public:
         void *map(GLenum access = GL_READ_WRITE);

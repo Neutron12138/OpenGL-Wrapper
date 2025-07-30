@@ -29,7 +29,7 @@ namespace gl_wrapper
 
         glCreateBuffers(1, &m_id);
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Buffer object");
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR("Failed to create Buffer object");
 
         m_type = type;
     }
@@ -70,20 +70,14 @@ namespace gl_wrapper
                                   size, static_cast<GLenum>(format), type, data);
     }
 
-    template <>
-    GLint Buffer::get_parameter(ParameterName pname) const
+    void Buffer::get_parameter(ParameterName pname, GLint &result) const
     {
-        GLint param;
-        glGetNamedBufferParameteriv(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetNamedBufferParameteriv(m_id, static_cast<GLenum>(pname), &result);
     }
 
-    template <>
-    GLint64 Buffer::get_parameter(ParameterName pname) const
+    void Buffer::get_parameter(ParameterName pname, GLint64 &result) const
     {
-        GLint64 param;
-        glGetNamedBufferParameteri64v(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetNamedBufferParameteri64v(m_id, static_cast<GLenum>(pname), &result);
     }
 
     void *Buffer::get_pointer() const

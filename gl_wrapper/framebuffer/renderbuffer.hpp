@@ -49,6 +49,7 @@ namespace gl_wrapper
         void set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 
     public:
+        void get_parameter(ParameterName pname, GLint &result) const;
         GLint get_parameter(ParameterName pname) const;
     };
 

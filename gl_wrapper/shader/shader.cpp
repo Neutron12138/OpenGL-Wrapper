@@ -29,7 +29,7 @@ namespace gl_wrapper
 
         m_id = glCreateShader(static_cast<GLenum>(type));
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR(
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR(
                 "Failed to create Shader object, type: ", static_cast<GLenum>(type));
 
         m_type = type;
@@ -64,15 +64,20 @@ namespace gl_wrapper
         std::string info_log;
         info_log.resize(length);
         glGetShaderInfoLog(m_id, length, nullptr, info_log.data());
-        throw BASE_MAKE_RUNTIME_ERROR(
+        throw BASE_MAKE_CLASS_RUNTIME_ERROR(
             "Failed to compile shader, info log:\n", info_log);
+    }
+
+    void Shader::get_parameter(ParameterName pname, GLint &result) const
+    {
+        glGetShaderiv(m_id, static_cast<GLenum>(pname), &result);
     }
 
     GLint Shader::get_parameter(ParameterName pname) const
     {
-        GLint value;
-        glGetShaderiv(m_id, static_cast<GLenum>(pname), &value);
-        return value;
+        GLint result;
+        get_parameter(pname, result);
+        return result;
     }
 
     std::string Shader::get_source() const

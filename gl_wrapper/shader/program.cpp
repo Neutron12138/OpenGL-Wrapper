@@ -28,7 +28,7 @@ namespace gl_wrapper
 
         m_id = glCreateProgram();
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Program object");
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR("Failed to create Program object");
     }
 
     void Program::destroy()
@@ -55,7 +55,7 @@ namespace gl_wrapper
         std::string info_log;
         info_log.resize(length);
         glGetProgramInfoLog(m_id, length, nullptr, info_log.data());
-        throw BASE_MAKE_RUNTIME_ERROR(
+        throw BASE_MAKE_CLASS_RUNTIME_ERROR(
             "Failed to link program, info log:\n",
             info_log);
     }
@@ -65,11 +65,16 @@ namespace gl_wrapper
 
     void Program::set_parameter(ParameterName pname, GLint value) { glProgramParameteri(m_id, static_cast<GLenum>(pname), value); }
 
+    void Program::get_parameter(ParameterName pname, GLint &result) const
+    {
+        glGetProgramiv(m_id, static_cast<GLenum>(pname), &result);
+    }
+
     GLint Program::get_parameter(ParameterName pname) const
     {
-        GLint value;
-        glGetProgramiv(m_id, static_cast<GLenum>(pname), &value);
-        return value;
+        GLint result;
+        get_parameter(pname, result);
+        return result;
     }
 
     Program create_program_from_shaders(const Shader &shader1, const Shader &shader2)

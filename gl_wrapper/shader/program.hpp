@@ -61,13 +61,82 @@ namespace gl_wrapper
     public:
         GLint get_uniform_location(const std::string &name) const;
         GLint get_attrib_location(const std::string &name) const;
+
+        // set uniform
+
+        void set_uniform(GLint location, const GLint &value);
+        void set_uniform(GLint location, const GLuint &value);
+        void set_uniform(GLint location, const GLfloat &value);
+        void set_uniform(GLint location, const GLdouble &value);
+
+        void set_uniform(GLint location, const glm::ivec2 &value);
+        void set_uniform(GLint location, const glm::uvec2 &value);
+        void set_uniform(GLint location, const glm::vec2 &value);
+        void set_uniform(GLint location, const glm::dvec2 &value);
+
+        void set_uniform(GLint location, const glm::ivec3 &value);
+        void set_uniform(GLint location, const glm::uvec3 &value);
+        void set_uniform(GLint location, const glm::vec3 &value);
+        void set_uniform(GLint location, const glm::dvec3 &value);
+
+        void set_uniform(GLint location, const glm::ivec4 &value);
+        void set_uniform(GLint location, const glm::uvec4 &value);
+        void set_uniform(GLint location, const glm::vec4 &value);
+        void set_uniform(GLint location, const glm::dvec4 &value);
+
+        void set_uniform(GLint location, const glm::mat2 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat2x3 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat2x4 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat3 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat3x2 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat3x4 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat4 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat4x2 &value, GLboolean transpose = GL_FALSE);
+        void set_uniform(GLint location, const glm::mat4x3 &value, GLboolean transpose = GL_FALSE);
+
+        // get uniform
+
+        void get_uniform(GLint location, GLint &result) const;
+        void get_uniform(GLint location, GLuint &result) const;
+        void get_uniform(GLint location, GLfloat &result) const;
+        void get_uniform(GLint location, GLdouble &result) const;
+
+        void get_uniform(GLint location, glm::ivec2 &result) const;
+        void get_uniform(GLint location, glm::uvec2 &result) const;
+        void get_uniform(GLint location, glm::vec2 &result) const;
+        void get_uniform(GLint location, glm::dvec2 &result) const;
+
+        void get_uniform(GLint location, glm::ivec3 &result) const;
+        void get_uniform(GLint location, glm::uvec3 &result) const;
+        void get_uniform(GLint location, glm::vec3 &result) const;
+        void get_uniform(GLint location, glm::dvec3 &result) const;
+
+        void get_uniform(GLint location, glm::ivec4 &result) const;
+        void get_uniform(GLint location, glm::uvec4 &result) const;
+        void get_uniform(GLint location, glm::vec4 &result) const;
+        void get_uniform(GLint location, glm::dvec4 &result) const;
+
+        void get_uniform(GLint location, glm::mat2 &result) const;
+        void get_uniform(GLint location, glm::mat2x3 &result) const;
+        void get_uniform(GLint location, glm::mat2x4 &result) const;
+        void get_uniform(GLint location, glm::mat3 &result) const;
+        void get_uniform(GLint location, glm::mat3x2 &result) const;
+        void get_uniform(GLint location, glm::mat3x4 &result) const;
+        void get_uniform(GLint location, glm::mat4 &result) const;
+        void get_uniform(GLint location, glm::mat4x2 &result) const;
+        void get_uniform(GLint location, glm::mat4x3 &result) const;
+
         template <typename T>
-        void set_uniform(GLint location, const T &value);
-        template <typename T>
-        T get_uniform(GLint location);
+        T get_uniform(GLint location)
+        {
+            T result;
+            get_uniform(location, result);
+            return result;
+        }
 
     public:
         void set_parameter(ParameterName pname, GLint value);
+        void get_parameter(ParameterName pname, GLint &result) const;
         GLint get_parameter(ParameterName pname) const;
     };
 

@@ -61,6 +61,7 @@ namespace gl_wrapper
         void compile_shader();
 
     public:
+        void get_parameter(ParameterName pname, GLint &result) const;
         GLint get_parameter(ParameterName pname) const;
         std::string get_source() const;
     };

@@ -26,7 +26,7 @@ namespace gl_wrapper
 
         glCreateRenderbuffers(1, &m_id);
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Renderbuffer object");
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR("Failed to create Renderbuffer object");
     }
 
     void Renderbuffer::destroy()
@@ -46,6 +46,11 @@ namespace gl_wrapper
     void Renderbuffer::set_storage_multisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
     {
         glNamedRenderbufferStorageMultisample(m_id, samples, internalformat, width, height);
+    }
+
+    void Renderbuffer::get_parameter(ParameterName pname, GLint &result) const
+    {
+        glGetNamedRenderbufferParameteriv(m_id, static_cast<GLenum>(pname), &result);
     }
 
     GLint Renderbuffer::get_parameter(ParameterName pname) const

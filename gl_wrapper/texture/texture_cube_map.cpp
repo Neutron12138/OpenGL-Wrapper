@@ -18,7 +18,7 @@ namespace gl_wrapper
     void TextureCubeMap::set_storage(GLsizei levels, InternalFormat internal_format, GLsizei width, GLsizei height)
     {
         if (m_internal_format != InternalFormat::None)
-            throw BASE_MAKE_RUNTIME_ERROR("Unable to modify the internal format of the texture");
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR("Unable to modify the internal format of the texture");
 
         m_internal_format = internal_format;
         m_width = width;

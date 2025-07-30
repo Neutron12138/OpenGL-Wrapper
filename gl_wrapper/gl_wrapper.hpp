@@ -47,6 +47,10 @@
 #include "shader/shader.hpp"
 #include "shader/program.hpp"
 
+// sampler
+
+#include "sampler/sampler.hpp"
+
 // texture
 
 #include "texture/texture.hpp"

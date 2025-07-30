@@ -29,7 +29,7 @@ namespace gl_wrapper
 
         glCreateQueries(static_cast<GLenum>(type), 1, &m_id);
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR("Failed to create Query object");
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR("Failed to create Query object");
 
         m_type = type;
     }
@@ -48,28 +48,19 @@ namespace gl_wrapper
     void Query::begin_indexed(GLuint index) { glBeginQueryIndexed(static_cast<GLenum>(m_type), index, m_id); }
     void Query::end_indexed(GLuint index) { glEndQueryIndexed(static_cast<GLenum>(m_type), index); }
 
-    template <>
-    GLint Query::get_parameter(ParameterName pname) const
+    void Query::get_parameter(ParameterName pname, GLint &result) const
     {
-        GLint param;
-        glGetQueryObjectiv(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetQueryObjectiv(m_id, static_cast<GLenum>(pname), &result);
     }
 
-    template <>
-    GLuint Query::get_parameter(ParameterName pname) const
+    void Query::get_parameter(ParameterName pname, GLuint &result) const
     {
-        GLuint param;
-        glGetQueryObjectuiv(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetQueryObjectuiv(m_id, static_cast<GLenum>(pname), &result);
     }
 
-    template <>
-    GLint64 Query::get_parameter(ParameterName pname) const
+    void Query::get_parameter(ParameterName pname, GLint64 &result) const
     {
-        GLint64 param;
-        glGetQueryObjecti64v(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetQueryObjecti64v(m_id, static_cast<GLenum>(pname), &result);
     }
 
     Query create_query(Query::QueryType type)

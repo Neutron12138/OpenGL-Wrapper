@@ -47,7 +47,7 @@ namespace gl_wrapper
 
         glCreateTextures(static_cast<GLenum>(type), 1, &m_id);
         if (m_id == 0)
-            throw BASE_MAKE_RUNTIME_ERROR(
+            throw BASE_MAKE_CLASS_RUNTIME_ERROR(
                 "Failed to create Texture object, type: ", static_cast<GLenum>(type));
 
         m_type = type;
@@ -70,46 +70,34 @@ namespace gl_wrapper
     void Texture::set_min_filter(MinFilter filter) { glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(filter)); }
     void Texture::set_mag_filter(MagFilter filter) { glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filter)); }
 
-    template <>
     void Texture::set_parameter(ParameterName pname, GLint param)
     {
         glTextureParameteri(m_id, static_cast<GLenum>(pname), param);
     }
 
-    template <>
     void Texture::set_parameter(ParameterName pname, GLuint param)
     {
         glTextureParameteri(m_id, static_cast<GLenum>(pname), param);
     }
 
-    template <>
     void Texture::set_parameter(ParameterName pname, GLfloat param)
     {
         glTextureParameterf(m_id, static_cast<GLenum>(pname), param);
     }
 
-    template <>
-    GLint Texture::get_parameter(ParameterName pname) const
+    void Texture::get_parameter(ParameterName pname, GLint &result) const
     {
-        GLint param;
-        glGetTextureParameteriv(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetTextureParameteriv(m_id, static_cast<GLenum>(pname), &result);
     }
 
-    template <>
-    GLfloat Texture::get_parameter(ParameterName pname) const
+    void Texture::get_parameter(ParameterName pname, GLfloat &result) const
     {
-        GLfloat param;
-        glGetTextureParameterfv(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetTextureParameterfv(m_id, static_cast<GLenum>(pname), &result);
     }
 
-    template <>
-    GLuint Texture::get_parameter(ParameterName pname) const
+    void Texture::get_parameter(ParameterName pname, GLuint &result) const
     {
-        GLuint param;
-        glGetTextureParameterIuiv(m_id, static_cast<GLenum>(pname), &param);
-        return param;
+        glGetTextureParameterIuiv(m_id, static_cast<GLenum>(pname), &result);
     }
 
     void Texture::set_border_color(const glm::vec4 &color)

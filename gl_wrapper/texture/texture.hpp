@@ -53,35 +53,7 @@ namespace gl_wrapper
             SwizzleRGBA = GL_TEXTURE_SWIZZLE_RGBA,
         };
 
-        /// @brief 缩小过滤器
-        enum class MinFilter : GLenum
-        {
-            Nearest = GL_NEAREST,
-            Linear = GL_LINEAR,
-            NearestMipmapNearest = GL_NEAREST_MIPMAP_NEAREST,
-            LinearMipmapNearest = GL_LINEAR_MIPMAP_NEAREST,
-            NearestMipmapLinear = GL_NEAREST_MIPMAP_LINEAR,
-            LinearMipmapLinear = GL_LINEAR_MIPMAP_LINEAR,
-        };
-
-        /// @brief 放大过滤器
-        enum class MagFilter : GLenum
-        {
-            Nearest = GL_NEAREST,
-            Linear = GL_LINEAR,
-        };
-
-        /// @brief 环绕参数
-        enum class WrapParameter : GLenum
-        {
-            ClampToEdge = GL_CLAMP_TO_EDGE,
-            ClampToBorder = GL_CLAMP_TO_BORDER,
-            MirroredRepeat = GL_MIRRORED_REPEAT,
-            Repeat = GL_REPEAT,
-            MirrorClampToEdge = GL_MIRROR_CLAMP_TO_EDGE,
-        };
-
-        /// @brief 纹理单元
+               /// @brief 纹理单元
         enum class TextureUnit : GLenum
         {
             Unit0 = GL_TEXTURE0,
@@ -168,12 +140,23 @@ namespace gl_wrapper
         void set_mag_filter(MagFilter filter = MagFilter::Linear);
 
     public:
-        template <typename T>
-        void set_parameter(ParameterName pname, T param);
-        template <typename T>
-        T get_parameter(ParameterName pname) const;
+        void set_parameter(ParameterName pname, GLint param);
+        void set_parameter(ParameterName pname, GLfloat param);
+        void set_parameter(ParameterName pname, GLuint param);
+        void get_parameter(ParameterName pname, GLint &param) const;
+        void get_parameter(ParameterName pname, GLfloat &param) const;
+        void get_parameter(ParameterName pname, GLuint &param) const;
+
         void set_border_color(const glm::vec4 &color);
         glm::vec4 get_border_color() const;
+
+        template <typename T>
+        T get_parameter(ParameterName pname) const
+        {
+            T result;
+            get_parameter(pname, result);
+            return result;
+        }
     };
 
 } // namespace gl_wrapper

@@ -59,8 +59,17 @@ namespace gl_wrapper
         void end_indexed(GLuint index);
 
     public:
+        void get_parameter(ParameterName pname, GLint &result) const;
+        void get_parameter(ParameterName pname, GLuint &result) const;
+        void get_parameter(ParameterName pname, GLint64 &result) const;
+
         template <typename T>
-        T get_parameter(ParameterName pname) const;
+        T get_parameter(ParameterName pname) const
+        {
+            T result;
+            get_parameter(pname, result);
+            return result;
+        }
     };
 
     Query create_query(Query::QueryType type);

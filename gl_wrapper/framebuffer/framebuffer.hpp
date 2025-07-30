@@ -225,8 +225,12 @@ namespace gl_wrapper
 
     public:
         void set_parameter(ParameterName pname, GLint param);
+        void get_parameter(ParameterName pname, GLint &result) const;
         GLint get_parameter(ParameterName pname) const;
+        void get_attachment_parameter(Attachment attachment, GLenum pname, GLint &result) const;
         GLint get_attachment_parameter(Attachment attachment, GLenum pname) const;
+
+    public:
         Status check_status() const;
         void read_pixels(GLint x, GLint y, GLsizei width, GLsizei height,
                          PixelFormat format, DataType type, GLsizei buf_size, void *pixels) const;
