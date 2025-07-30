@@ -1,10 +1,8 @@
 #pragma once
 
-// base
+#include "gl_wrapper.hpp"
 
-#ifdef GL_WRAPPER_INCLUDE_GLAD_IMPL
-#include <glad/glad.c>
-#endif
+// base
 
 #include "base/gl_loader.cpp"
 #include "base/resource.cpp"
@@ -57,3 +55,9 @@
 // query
 
 #include "query/query.cpp"
+
+// implementation
+
+#ifdef GL_WRAPPER_INCLUDE_GLAD_IMPL
+#include <glad/glad.c>
+#endif

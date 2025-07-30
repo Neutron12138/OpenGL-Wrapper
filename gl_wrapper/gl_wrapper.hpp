@@ -65,3 +65,9 @@
 // query
 
 #include "query/query.hpp"
+
+// implementation
+
+#ifdef GL_WRAPPER_INCLUDE_IMPL
+#include "gl_wrapper.cpp"
+#endif

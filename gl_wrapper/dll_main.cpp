@@ -1,5 +1,5 @@
+#define GL_WRAPPER_INCLUDE_IMPL
 #include "gl_wrapper.hpp"
-#include "gl_wrapper.cpp"
 
 #include <windows.h>
 
