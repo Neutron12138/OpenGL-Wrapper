@@ -50,7 +50,7 @@ namespace gl_wrapper
         BASE_DELETE_COPY_FUNCTION(Resource);
 
     public:
-        virtual Resource &operator=(Resource &&from);
+        Resource &operator=(Resource &&from);
         operator GLuint() const;
         GLuint get_id() const;
         bool is_valid() const override;
