@@ -16,7 +16,7 @@ int main()
     auto &context = glfw_wrapper::Context::get_instance();
 
     glfw_wrapper::Window::set_opengl(glm::ivec2(4, 5), true);
-    auto window = glfw_wrapper::Window(glm::ivec2(512, 512));
+    auto window = glfw_wrapper::create_window(glm::ivec2(512, 512), "test 1");
     glfwSetFramebufferSizeCallback(window, on_framebuffer_resize);
     window.make_context_current();
 
@@ -28,7 +28,7 @@ int main()
 
     // 加载着色器
 
-    gl_wrapper::Program program = gl_wrapper::load_program_from_file("shaders/1.vert", "shaders/1.frag");
+    gl_wrapper::Program program = gl_wrapper::create_program_from_file("shaders/1.vert", "shaders/1.frag");
 
     // 创建顶点数组
 
@@ -83,7 +83,7 @@ int main()
     // 创建帧缓冲
 
     gl_wrapper::Texture2D color_texture = gl_wrapper::create_texture_2d(
-        gl_wrapper::InternalFormat::RGBA8, 512, 512);
+        1, gl_wrapper::InternalFormat::RGBA8, 512, 512);
     gl_wrapper::Renderbuffer rbo = gl_wrapper::create_renderbuffer(
         gl_wrapper::InternalFormat::Depth24Stencil8, 512, 512);
 

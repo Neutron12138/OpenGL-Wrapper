@@ -65,7 +65,22 @@ namespace gl_wrapper
         Renderbuffer rbo;
         rbo.create();
         rbo.set_storage(internal_format, width, height);
+        return rbo;
+    }
 
+    RenderbufferRef create_renderbuffer_shared(InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        RenderbufferRef rbo = std::make_shared<Renderbuffer>();
+        rbo->create();
+        rbo->set_storage(internal_format, width, height);
+        return rbo;
+    }
+
+    RenderbufferUniqueRef create_renderbuffer_unique(InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        RenderbufferUniqueRef rbo = std::make_unique<Renderbuffer>();
+        rbo->create();
+        rbo->set_storage(internal_format, width, height);
         return rbo;
     }
 

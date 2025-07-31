@@ -50,14 +50,33 @@ namespace gl_wrapper
         texture.set_wrap_t();
         texture.set_min_filter();
         texture.set_mag_filter();
-
         return texture;
     }
 
-    Texture2D create_texture_2d(
-        InternalFormat internal_format, base::Size width, base::Size height)
+    Texture2DRef create_texture_2d_shared(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height)
     {
-        return create_texture_2d(1, internal_format, width, height);
+        Texture2DRef texture = std::make_shared<Texture2D>();
+        texture->create();
+        texture->set_storage(levels, internal_format, width, height);
+        texture->set_wrap_s();
+        texture->set_wrap_t();
+        texture->set_min_filter();
+        texture->set_mag_filter();
+        return texture;
+    }
+
+    Texture2DUniqueRef create_texture_2d_unique(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        Texture2DUniqueRef texture = std::make_unique<Texture2D>();
+        texture->create();
+        texture->set_storage(levels, internal_format, width, height);
+        texture->set_wrap_s();
+        texture->set_wrap_t();
+        texture->set_min_filter();
+        texture->set_mag_filter();
+        return texture;
     }
 
     Texture2D create_texture_2d_from_pixels(
@@ -66,13 +85,12 @@ namespace gl_wrapper
     {
         Texture2D texture = create_texture_2d(levels, internal_format, width, height);
         texture.set_sub_image(0, width, height, format, type, pixels);
-
         return texture;
     }
 
     Texture2D create_texture_2d_from_pixels(
         InternalFormat internal_format, base::Size width, base::Size height,
-        PixelFormat format, const void *pixels, base::Size levels)
+        PixelFormat format, const base::Byte *pixels, base::Size levels)
     {
         return create_texture_2d_from_pixels(
             internal_format, width, height, format, DataType::UnsignedByte, pixels, levels);

@@ -53,7 +53,7 @@ namespace gl_wrapper
             SwizzleRGBA = GL_TEXTURE_SWIZZLE_RGBA,
         };
 
-               /// @brief 纹理单元
+        /// @brief 纹理单元
         enum class TextureUnit : GLenum
         {
             Unit0 = GL_TEXTURE0,
@@ -158,5 +158,9 @@ namespace gl_wrapper
             return result;
         }
     };
+
+    Texture create_texture(Texture::TextureType type);
+    TextureRef create_texture_shared(Texture::TextureType type);
+    TextureUniqueRef create_texture_unique(Texture::TextureType type);
 
 } // namespace gl_wrapper

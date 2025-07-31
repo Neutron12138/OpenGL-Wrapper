@@ -101,4 +101,25 @@ namespace gl_wrapper
         glDrawElementsInstanced(static_cast<GLenum>(mode), count, static_cast<GLenum>(type), nullptr, instancecount);
     }
 
+    VertexArray create_vertex_array()
+    {
+        VertexArray vertex_array;
+        vertex_array.create();
+        return vertex_array;
+    }
+
+    VertexArrayRef create_vertex_array_shared()
+    {
+        VertexArrayRef vertex_array = std::make_shared<VertexArray>();
+        vertex_array->create();
+        return vertex_array;
+    }
+
+    VertexArrayUniqueRef create_vertex_array_unique()
+    {
+        VertexArrayUniqueRef vertex_array = std::make_unique<VertexArray>();
+        vertex_array->create();
+        return vertex_array;
+    }
+
 } // namespace gl_wrapper

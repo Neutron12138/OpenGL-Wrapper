@@ -76,4 +76,8 @@ namespace gl_wrapper
                                      GLsizei instancecount) const;
     };
 
+    VertexArray create_vertex_array();
+    VertexArrayRef create_vertex_array_shared();
+    VertexArrayUniqueRef create_vertex_array_unique();
+
 } // namespace gl_wrapper

@@ -77,22 +77,70 @@ namespace gl_wrapper
         return result;
     }
 
-    Program create_program_from_shaders(const Shader &shader1, const Shader &shader2)
+    Program create_program()
     {
         Program program;
         program.create();
-        program.attach_shader(shader1);
-        program.attach_shader(shader2);
-        program.link_program();
-
         return program;
     }
 
-    Program load_program_from_file(const std::string &vfilename, const std::string &ffilename)
+    ProgramRef create_program_shared()
+    {
+        ProgramRef program = std::make_shared<Program>();
+        program->create();
+        return program;
+    }
+
+    ProgramUniqueRef create_program_unique()
+    {
+        ProgramUniqueRef program = std::make_unique<Program>();
+        program->create();
+        return program;
+    }
+
+    Program create_program_from_shaders(const Shader &shader)
+    {
+        Program program = create_program();
+        program.attach_shader(shader);
+        program.link_program();
+        return program;
+    }
+
+    Program create_program_from_shaders(const Shader &shader1, const Shader &shader2)
+    {
+        Program program = create_program();
+        program.attach_shader(shader1);
+        program.attach_shader(shader2);
+        program.link_program();
+        return program;
+    }
+
+    Program create_program_from_shaders(const Shader &shader1, const Shader &shader2, const Shader &shader3)
+    {
+        Program program = create_program();
+        program.attach_shader(shader1);
+        program.attach_shader(shader2);
+        program.attach_shader(shader3);
+        program.link_program();
+        return program;
+    }
+
+    Program create_program_from_file(const std::filesystem::path &vfilename,
+                                     const std::filesystem::path &ffilename)
     {
         return create_program_from_shaders(
-            load_shader_from_file(Shader::ShaderType::Vertex, vfilename),
-            load_shader_from_file(Shader::ShaderType::Fragment, ffilename));
+            create_shader_from_file(Shader::ShaderType::Vertex, vfilename),
+            create_shader_from_file(Shader::ShaderType::Fragment, ffilename));
+    }
+
+    Program create_program_from_file(const std::filesystem::path &vfilename,
+                                     const std::filesystem::path &ffilename,
+                                     const std::filesystem::path &gfilename)
+    {
+        return create_program_from_shaders(
+            create_shader_from_file(Shader::ShaderType::Vertex, vfilename),
+            create_shader_from_file(Shader::ShaderType::Fragment, ffilename),
+            create_shader_from_file(Shader::ShaderType::Geometry, gfilename));
     }
 
 } // namespace gl_wrapper

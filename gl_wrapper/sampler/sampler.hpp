@@ -70,6 +70,12 @@ namespace gl_wrapper
         }
     };
 
+    Sampler create_sampler();
+    SamplerRef create_sampler_shared();
+    SamplerUniqueRef create_sampler_unique();
+
     Sampler create_default_sampler();
+    SamplerRef create_default_sampler_shared();
+    SamplerUniqueRef create_default_sampler_unique();
 
 } // namespace gl_wrapper

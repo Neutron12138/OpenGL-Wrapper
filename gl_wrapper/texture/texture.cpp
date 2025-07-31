@@ -112,4 +112,25 @@ namespace gl_wrapper
         return color;
     }
 
+    Texture create_texture(Texture::TextureType type)
+    {
+        Texture texture;
+        texture.create(type);
+        return texture;
+    }
+
+    TextureRef create_texture_shared(Texture::TextureType type)
+    {
+        TextureRef texture = std::make_shared<Texture>();
+        texture->create(type);
+        return texture;
+    }
+
+    TextureUniqueRef create_texture_unique(Texture::TextureType type)
+    {
+        TextureUniqueRef texture = std::make_unique<Texture>();
+        texture->create(type);
+        return texture;
+    }
+
 } // namespace gl_wrapper

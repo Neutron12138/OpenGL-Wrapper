@@ -27,7 +27,7 @@ protected:
         glViewport(0, 0, 1152, 648);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-        program = gl_wrapper::load_program_from_file("shaders/2.vert", "shaders/2.frag");
+        program = gl_wrapper::create_program_from_file("shaders/2.vert", "shaders/2.frag");
         vao = gl_wrapper::create_vertex_array_from_vertices(VERTICES);
 
         int width, height;
@@ -55,6 +55,7 @@ public:
     MainLoop()
     {
         m_is_opengl_debug_context_enabled = true;
+        m_initial_window_title = "test 2";
     }
 };
 

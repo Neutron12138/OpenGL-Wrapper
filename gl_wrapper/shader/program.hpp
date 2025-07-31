@@ -140,7 +140,17 @@ namespace gl_wrapper
         GLint get_parameter(ParameterName pname) const;
     };
 
+    Program create_program();
+    ProgramRef create_program_shared();
+    ProgramUniqueRef create_program_unique();
+
+    Program create_program_from_shaders(const Shader &shader);
     Program create_program_from_shaders(const Shader &shader1, const Shader &shader2);
-    Program load_program_from_file(const std::string &vfilename, const std::string &ffilename);
+    Program create_program_from_shaders(const Shader &shader1, const Shader &shader2, const Shader &shader3);
+    Program create_program_from_file(const std::filesystem::path &vfilename,
+                                     const std::filesystem::path &ffilename);
+    Program create_program_from_file(const std::filesystem::path &vfilename,
+                                     const std::filesystem::path &ffilename,
+                                     const std::filesystem::path &gfilename);
 
 } // namespace gl_wrapper

@@ -119,4 +119,25 @@ namespace gl_wrapper
             static_cast<GLbitfield>(flag1) | static_cast<GLbitfield>(flag2));
     }
 
+    Buffer create_buffer(Buffer::BufferType type)
+    {
+        Buffer buffer;
+        buffer.create(type);
+        return buffer;
+    }
+
+    BufferRef create_buffer_shared(Buffer::BufferType type)
+    {
+        BufferRef buffer = std::make_shared<Buffer>();
+        buffer->create(type);
+        return buffer;
+    }
+
+    BufferUniqueRef create_buffer_unique(Buffer::BufferType type)
+    {
+        BufferUniqueRef buffer = std::make_unique<Buffer>();
+        buffer->create(type);
+        return buffer;
+    }
+
 } // namespace gl_wrapper

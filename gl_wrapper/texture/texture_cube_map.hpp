@@ -29,8 +29,9 @@ namespace gl_wrapper
 
     TextureCubeMap create_texture_cube_map(
         base::Size levels, InternalFormat internal_format, base::Size width, base::Size height);
-
-    TextureCubeMap create_texture_cube_map(
-        InternalFormat internal_format, base::Size width, base::Size height);
+    TextureCubeMapRef create_texture_cube_map_shared(
+        base::Size levels,  InternalFormat internal_format, base::Size width, base::Size height);
+    TextureCubeMapUniqueRef create_texture_cube_map_unique(
+        base::Size levels,  InternalFormat internal_format, base::Size width, base::Size height);
 
 } // namespace gl_wrapper

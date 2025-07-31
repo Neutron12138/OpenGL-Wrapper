@@ -155,4 +155,30 @@ namespace gl_wrapper
 
     Buffer::StorageFlag operator|(Buffer::StorageFlag flag1, Buffer::StorageFlag flag2);
 
+    Buffer create_buffer(Buffer::BufferType type);
+    BufferRef create_buffer_shared(Buffer::BufferType type);
+    BufferUniqueRef create_buffer_unique(Buffer::BufferType type);
+
+    template <typename T, std::size_t N>
+    Buffer create_buffer_from_data(Buffer::BufferType type,
+                                   const std::array<T, N> &data,
+                                   Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
+    {
+        Buffer buffer;
+        buffer.create(type);
+        buffer.set_storage(data, flags);
+        return buffer;
+    }
+
+    template <typename T>
+    Buffer create_buffer_from_data(Buffer::BufferType type,
+                                   const std::vector<T> &data,
+                                   Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
+    {
+        Buffer buffer;
+        buffer.create(type);
+        buffer.set_storage(data, flags);
+        return buffer;
+    }
+
 } // namespace gl_wrapper

@@ -54,5 +54,9 @@ namespace gl_wrapper
     };
 
     Renderbuffer create_renderbuffer(InternalFormat internal_format, base::Size width, base::Size height);
+    RenderbufferRef create_renderbuffer_shared(InternalFormat internal_format,
+                                               base::Size width, base::Size height);
+    RenderbufferUniqueRef create_renderbuffer_unique(InternalFormat internal_format,
+                                                     base::Size width, base::Size height);
 
 } // namespace gl_wrapper

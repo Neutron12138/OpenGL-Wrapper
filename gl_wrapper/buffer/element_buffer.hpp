@@ -20,19 +20,29 @@ namespace gl_wrapper
         void create();
     };
 
-    ElementBuffer create_element_buffer_from_indices(
-        const std::vector<GLuint> &indices,
-        Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic);
+    ElementBuffer create_element_buffer();
+    ElementBufferRef create_element_buffer_shared();
+    ElementBufferUniqueRef create_element_buffer_unique();
 
-    template <std::size_t N>
+    template <typename VertexT, std::size_t N>
     ElementBuffer create_element_buffer_from_indices(
-        const std::array<GLuint, N> &indices,
+        const std::array<VertexT, N> &indices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
         ElementBuffer ebo;
         ebo.create();
         ebo.set_storage(indices, flags);
+        return ebo;
+    }
 
+    template <typename VertexT>
+    ElementBuffer create_element_buffer_from_indices(
+        const std::vector<VertexT> &indices,
+        Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
+    {
+        ElementBuffer ebo;
+        ebo.create();
+        ebo.set_storage(indices, flags);
         return ebo;
     }
 

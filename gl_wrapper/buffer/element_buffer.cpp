@@ -15,14 +15,24 @@ namespace gl_wrapper
 
     void ElementBuffer::create() { Buffer::create(BufferType::ElementArray); }
 
-    ElementBuffer create_element_buffer_from_indices(
-        const std::vector<GLuint> &indices,
-        Buffer::StorageFlag flags)
+    ElementBuffer create_element_buffer_from_indices()
     {
         ElementBuffer ebo;
         ebo.create();
-        ebo.set_storage(indices, flags);
+        return ebo;
+    }
 
+    ElementBufferRef create_element_buffer_shared_from_indices()
+    {
+        ElementBufferRef ebo = std::make_shared<ElementBuffer>();
+        ebo->create();
+        return ebo;
+    }
+
+    ElementBufferUniqueRef create_element_buffer_unique_from_indices()
+    {
+        ElementBufferUniqueRef ebo = std::make_unique<ElementBuffer>();
+        ebo->create();
         return ebo;
     }
 

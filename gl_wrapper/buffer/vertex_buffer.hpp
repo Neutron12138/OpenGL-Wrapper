@@ -20,6 +20,10 @@ namespace gl_wrapper
         void create();
     };
 
+    VertexBuffer create_vertex_buffer();
+    VertexBufferRef create_vertex_buffer_shared();
+    VertexBufferUniqueRef create_vertex_buffer_unique();
+
     template <typename VertexT, std::size_t N>
     VertexBuffer create_vertex_buffer_from_vertices(
         const std::array<VertexT, N> &vertices,
@@ -28,7 +32,6 @@ namespace gl_wrapper
         VertexBuffer vbo;
         vbo.create();
         vbo.set_storage(vertices, flags);
-
         return vbo;
     }
 
@@ -40,7 +43,6 @@ namespace gl_wrapper
         VertexBuffer vbo;
         vbo.create();
         vbo.set_storage(vertices, flags);
-
         return vbo;
     }
 

@@ -241,5 +241,7 @@ namespace gl_wrapper
     };
 
     Framebuffer create_framebuffer(Framebuffer::FramebufferType type);
+    FramebufferRef create_framebuffer_shared(Framebuffer::FramebufferType type);
+    FramebufferUniqueRef create_framebuffer_unique(Framebuffer::FramebufferType type);
 
 } // namespace gl_wrapper

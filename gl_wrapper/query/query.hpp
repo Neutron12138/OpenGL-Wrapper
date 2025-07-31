@@ -73,5 +73,7 @@ namespace gl_wrapper
     };
 
     Query create_query(Query::QueryType type);
+    QueryRef create_query_shared(Query::QueryType type);
+    QueryUniqueRef create_query_unique(Query::QueryType type);
 
 } // namespace gl_wrapper

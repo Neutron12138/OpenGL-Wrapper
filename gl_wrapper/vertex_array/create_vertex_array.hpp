@@ -22,24 +22,20 @@ namespace gl_wrapper
     template <typename VertexT>
     VertexArray create_vertex_array_from_buffers(const VertexBuffer &vbo)
     {
-        VertexArray vao;
-        vao.create();
+        VertexArray vao = create_vertex_array();
         vao.bind_vertex_buffer(0, vbo, 0, sizeof(VertexT));
         vertex_array_set_vertex_attrib<VertexLayout<VertexT>>(vao);
-
-        return std::move(vao);
+        return vao;
     }
 
     template <typename VertexT>
     VertexArray create_vertex_array_from_buffers(const VertexBuffer &vbo, const ElementBuffer &ebo)
     {
-        VertexArray vao;
-        vao.create();
+        VertexArray vao = create_vertex_array();
         vao.bind_vertex_buffer(0, vbo, 0, sizeof(VertexT));
         vao.bind_element_buffer(ebo);
         vertex_array_set_vertex_attrib<VertexLayout<VertexT>>(vao);
-
-        return std::move(vao);
+        return vao;
     }
 
     // 通过顶点创建VAO
@@ -49,9 +45,8 @@ namespace gl_wrapper
         const std::array<VertexT, N> &vertices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
-        return std::move(
-            create_vertex_array_from_buffers<VertexT>(
-                create_vertex_buffer_from_vertices(vertices, flags)));
+        return create_vertex_array_from_buffers<VertexT>(
+            create_vertex_buffer_from_vertices(vertices, flags));
     }
 
     template <typename VertexT>
@@ -59,9 +54,8 @@ namespace gl_wrapper
         const std::vector<VertexT> &vertices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
-        return std::move(
-            create_vertex_array_from_buffers<VertexT>(
-                create_vertex_buffer_from_vertices(vertices, flags)));
+        return create_vertex_array_from_buffers<VertexT>(
+            create_vertex_buffer_from_vertices(vertices, flags));
     }
 
     // 通过顶点与顶点索引创建VAO
@@ -72,10 +66,9 @@ namespace gl_wrapper
         const std::array<GLuint, N2> &indices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
-        return std::move(
-            create_vertex_array_from_buffers<VertexT>(
-                create_vertex_buffer_from_vertices(vertices, flags),
-                create_element_buffer_from_indices(indices, flags)));
+        return create_vertex_array_from_buffers<VertexT>(
+            create_vertex_buffer_from_vertices(vertices, flags),
+            create_element_buffer_from_indices(indices, flags));
     }
 
     template <typename VertexT, std::size_t N>
@@ -84,10 +77,9 @@ namespace gl_wrapper
         const std::array<GLuint, N> &indices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
-        return std::move(
-            create_vertex_array_from_buffers<VertexT>(
-                create_vertex_buffer_from_vertices(vertices, flags),
-                create_element_buffer_from_indices(indices, flags)));
+        return create_vertex_array_from_buffers<VertexT>(
+            create_vertex_buffer_from_vertices(vertices, flags),
+            create_element_buffer_from_indices(indices, flags));
     }
 
     template <typename VertexT, std::size_t N>
@@ -96,10 +88,9 @@ namespace gl_wrapper
         const std::vector<GLuint> &indices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
-        return std::move(
-            create_vertex_array_from_buffers<VertexT>(
-                create_vertex_buffer_from_vertices(vertices, flags),
-                create_element_buffer_from_indices(indices, flags)));
+        return create_vertex_array_from_buffers<VertexT>(
+            create_vertex_buffer_from_vertices(vertices, flags),
+            create_element_buffer_from_indices(indices, flags));
     }
 
     template <typename VertexT>
@@ -108,10 +99,9 @@ namespace gl_wrapper
         const std::vector<GLuint> &indices,
         Buffer::StorageFlag flags = Buffer::StorageFlag::Dynamic)
     {
-        return std::move(
-            create_vertex_array_from_buffers<VertexT>(
-                create_vertex_buffer_from_vertices(vertices, flags),
-                create_element_buffer_from_indices(indices, flags)));
+        return create_vertex_array_from_buffers<VertexT>(
+            create_vertex_buffer_from_vertices(vertices, flags),
+            create_element_buffer_from_indices(indices, flags));
     }
 
 } // namespace gl_wrapper

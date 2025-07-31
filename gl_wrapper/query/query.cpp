@@ -67,7 +67,20 @@ namespace gl_wrapper
     {
         Query query;
         query.create(type);
+        return query;
+    }
 
+    QueryRef create_query_shared(Query::QueryType type)
+    {
+        QueryRef query = std::make_shared<Query>();
+        query->create(type);
+        return query;
+    }
+
+    QueryUniqueRef create_query_unique(Query::QueryType type)
+    {
+        QueryUniqueRef query = std::make_unique<Query>();
+        query->create(type);
         return query;
     }
 

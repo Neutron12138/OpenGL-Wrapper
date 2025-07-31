@@ -15,4 +15,25 @@ namespace gl_wrapper
 
     void VertexBuffer::create() { Buffer::create(BufferType::Array); }
 
+    VertexBuffer create_vertex_buffer()
+    {
+        VertexBuffer buffer;
+        buffer.create();
+        return buffer;
+    }
+
+    VertexBufferRef create_vertex_buffer_shared()
+    {
+        VertexBufferRef buffer = std::make_shared<VertexBuffer>();
+        buffer->create();
+        return buffer;
+    }
+
+    VertexBufferUniqueRef create_vertex_buffer_unique()
+    {
+        VertexBufferUniqueRef buffer = std::make_unique<VertexBuffer>();
+        buffer->create();
+        return buffer;
+    }
+
 } // namespace gl_wrapper

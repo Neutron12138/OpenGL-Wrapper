@@ -66,7 +66,11 @@ namespace gl_wrapper
         std::string get_source() const;
     };
 
-    Shader load_shader_from_string(Shader::ShaderType type, const std::string &source);
-    Shader load_shader_from_file(Shader::ShaderType type, const std::string &filename);
+    Shader create_shader(Shader::ShaderType type);
+    ShaderRef create_shader_shared(Shader::ShaderType type);
+    ShaderUniqueRef create_shader_unique(Shader::ShaderType type);
+
+    Shader create_shader_from_string(Shader::ShaderType type, const std::string &source);
+    Shader create_shader_from_file(Shader::ShaderType type, const std::filesystem::path &filename);
 
 } // namespace gl_wrapper

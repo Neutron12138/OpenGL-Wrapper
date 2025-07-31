@@ -52,14 +52,35 @@ namespace gl_wrapper
         texture.set_wrap_r();
         texture.set_min_filter();
         texture.set_mag_filter();
-
         return texture;
     }
 
-    TextureCubeMap create_texture_cube_map(
-        InternalFormat internal_format, base::Size width, base::Size height)
+    TextureCubeMapRef create_texture_cube_map_shared(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height)
     {
-        return create_texture_cube_map(1, internal_format, width, height);
+        TextureCubeMapRef texture = std::make_shared<TextureCubeMap>();
+        texture->create();
+        texture->set_storage(levels, internal_format, width, height);
+        texture->set_wrap_s();
+        texture->set_wrap_t();
+        texture->set_wrap_r();
+        texture->set_min_filter();
+        texture->set_mag_filter();
+        return texture;
+    }
+
+    TextureCubeMapUniqueRef create_texture_cube_map_unique(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height)
+    {
+        TextureCubeMapUniqueRef texture = std::make_unique<TextureCubeMap>();
+        texture->create();
+        texture->set_storage(levels, internal_format, width, height);
+        texture->set_wrap_s();
+        texture->set_wrap_t();
+        texture->set_wrap_r();
+        texture->set_min_filter();
+        texture->set_mag_filter();
+        return texture;
     }
 
 } // namespace gl_wrapper

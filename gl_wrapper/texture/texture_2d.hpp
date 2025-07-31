@@ -29,9 +29,10 @@ namespace gl_wrapper
 
     Texture2D create_texture_2d(
         base::Size levels, InternalFormat internal_format, base::Size width, base::Size height);
-
-    Texture2D create_texture_2d(
-        InternalFormat internal_format, base::Size width, base::Size height);
+    Texture2DRef create_texture_2d_shared(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height);
+    Texture2DUniqueRef create_texture_2d_unique(
+        base::Size levels, InternalFormat internal_format, base::Size width, base::Size height);
 
     Texture2D create_texture_2d_from_pixels(
         InternalFormat internal_format, base::Size width, base::Size height,
@@ -39,6 +40,6 @@ namespace gl_wrapper
 
     Texture2D create_texture_2d_from_pixels(
         InternalFormat internal_format, base::Size width, base::Size height,
-        PixelFormat format, const void *pixels = nullptr, base::Size levels = 1);
+        PixelFormat format, const base::Byte *pixels = nullptr, base::Size levels = 1);
 
 } // namespace gl_wrapper

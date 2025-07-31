@@ -89,19 +89,38 @@ namespace gl_wrapper
         return source;
     }
 
-    Shader load_shader_from_string(Shader::ShaderType type, const std::string &source)
+    Shader create_shader(Shader::ShaderType type)
     {
         Shader shader;
         shader.create(type);
-        shader.set_source(source);
-        shader.compile_shader();
-
         return shader;
     }
 
-    Shader load_shader_from_file(Shader::ShaderType type, const std::string &filename)
+    ShaderRef create_shader_shared(Shader::ShaderType type)
     {
-        return load_shader_from_string(
+        ShaderRef shader = std::make_shared<Shader>();
+        shader->create(type);
+        return shader;
+    }
+
+    ShaderUniqueRef create_shader_unique(Shader::ShaderType type)
+    {
+        ShaderUniqueRef shader = std::make_unique<Shader>();
+        shader->create(type);
+        return shader;
+    }
+
+    Shader create_shader_from_string(Shader::ShaderType type, const std::string &source)
+    {
+        Shader shader = create_shader(type);
+        shader.set_source(source);
+        shader.compile_shader();
+        return shader;
+    }
+
+    Shader create_shader_from_file(Shader::ShaderType type, const std::filesystem::path &filename)
+    {
+        return create_shader_from_string(
             type, base::read_string_from_file(filename));
     }
 

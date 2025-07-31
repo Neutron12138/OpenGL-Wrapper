@@ -87,15 +87,57 @@ namespace gl_wrapper
         return color;
     }
 
-    Sampler create_default_sampler()
+    Sampler create_sampler()
     {
         Sampler sampler;
         sampler.create();
+        return sampler;
+    }
+
+    SamplerRef create_sampler_shared()
+    {
+        SamplerRef sampler = std::make_shared<Sampler>();
+        sampler->create();
+        return sampler;
+    }
+
+    SamplerUniqueRef create_sampler_unique()
+    {
+        SamplerUniqueRef sampler = std::make_unique<Sampler>();
+        sampler->create();
+        return sampler;
+    }
+
+    Sampler create_default_sampler()
+    {
+        Sampler sampler = create_sampler();
         sampler.set_wrap_s();
         sampler.set_wrap_t();
         sampler.set_wrap_r();
         sampler.set_min_filter();
         sampler.set_mag_filter();
+        return sampler;
+    }
+
+    SamplerRef create_default_sampler_shared()
+    {
+        SamplerRef sampler = create_sampler_shared();
+        sampler->set_wrap_s();
+        sampler->set_wrap_t();
+        sampler->set_wrap_r();
+        sampler->set_min_filter();
+        sampler->set_mag_filter();
+        return sampler;
+    }
+
+    SamplerUniqueRef create_default_sampler_unique()
+    {
+        SamplerUniqueRef sampler = create_sampler_unique();
+        sampler->set_wrap_s();
+        sampler->set_wrap_t();
+        sampler->set_wrap_r();
+        sampler->set_min_filter();
+        sampler->set_mag_filter();
         return sampler;
     }
 

@@ -149,7 +149,20 @@ namespace gl_wrapper
     {
         Framebuffer fbo;
         fbo.create(type);
+        return fbo;
+    }
 
+    FramebufferRef create_framebuffer_shared(Framebuffer::FramebufferType type)
+    {
+        FramebufferRef fbo = std::make_shared<Framebuffer>();
+        fbo->create(type);
+        return fbo;
+    }
+
+    FramebufferUniqueRef create_framebuffer_unique(Framebuffer::FramebufferType type)
+    {
+        FramebufferUniqueRef fbo = std::make_unique<Framebuffer>();
+        fbo->create(type);
         return fbo;
     }
 
